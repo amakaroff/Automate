@@ -18,9 +18,9 @@ public class TaskOne {
                 automate.nextState(signal);
                 if (automate.isEnd()) {
                     if ((i - index) % 2 == 0) {
-                        return "Выйграл Петя";
+                        return "Выиграл Петя";
                     } else {
-                        return "Выйграл Вася";
+                        return "Выиграл Вася";
                     }
                 }
             } catch (AutomateException exception) {
