@@ -10,11 +10,7 @@ public class DeterministicAutomate extends Automate<String> {
 
     @Override
     public void nextState(String signal) throws AutomateException {
-        if (!alphabet.contains(signal)) {
-            throw new AutomateException();
-        }
-
-        if (table.get(currentState) == null) {
+        if (!alphabet.contains(signal) || table.get(currentState) == null) {
             throw new AutomateException();
         }
 

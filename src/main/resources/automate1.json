@@ -1,70 +1,40 @@
 {
   "alphabet": [
-    "+", "*"
+    "0", "1"
   ],
   "beginState": [
-    "5"
+    "A"
   ],
   "endState": [
-    "50"
+    "C"
   ],
   "table": {
     "columns": [
-      "+", "*"
+      "0", "1"
     ],
     "rows": [
       {
-        "rowName": "5",
+        "rowName": "A",
         "transitions": [
-          "10", "10"
+          "B", "C"
         ]
       },
       {
-        "rowName": "10",
+        "rowName": "B",
         "transitions": [
-          "15", "20"
+          "A", "D"
         ]
       },
       {
-        "rowName": "15",
+        "rowName": "C",
         "transitions": [
-          "20", "30"
+          "D", "A"
         ]
       },
       {
-        "rowName": "20",
+        "rowName": "D",
         "transitions": [
-          "25", "40"
-        ]
-      },
-      {
-        "rowName": "25",
-        "transitions": [
-          "30", "50"
-        ]
-      },
-      {
-        "rowName": "30",
-        "transitions": [
-          "35", "60"
-        ]
-      },
-      {
-        "rowName": "35",
-        "transitions": [
-          "40", "70"
-        ]
-      },
-      {
-        "rowName": "40",
-        "transitions": [
-          "45", "80"
-        ]
-      },
-      {
-        "rowName": "45",
-        "transitions": [
-          "50", "90"
+          "C", "B"
         ]
       }
     ]

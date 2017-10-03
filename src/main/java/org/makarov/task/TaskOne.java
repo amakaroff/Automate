@@ -16,19 +16,16 @@ public class TaskOne {
             try {
                 String signal = String.valueOf(line.charAt(i));
                 automate.nextState(signal);
-                if (automate.isEnd()) {
-                    if ((i - index) % 2 == 0) {
-                        return "Выиграл Петя";
-                    } else {
-                        return "Выиграл Вася";
-                    }
-                }
             } catch (AutomateException exception) {
-                return "Ошибка!";
+                return "Symbol is undefined!";
             }
         }
 
-        return "Ничья";
+        if (automate.isEnd()) {
+            return "Line is true!";
+        } else {
+            return "Line is false!";
+        }
     }
 
     public static Pair<Boolean, Set<String>> function(NonDeterministicAutomate automate, String line, int index) {
