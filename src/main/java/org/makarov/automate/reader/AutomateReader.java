@@ -12,4 +12,6 @@ public interface AutomateReader<T> {
     T getBeginState();
 
     List<String> getEndState();
+
+    String getName();
 }

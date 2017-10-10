@@ -63,6 +63,15 @@ public class JSONDeterminateAutomateReader implements AutomateReader<String> {
         return jsonArrayToList(endState);
     }
 
+    public String getName() {
+        String name = json.getString("name");
+        if (name == null) {
+            return "";
+        } else {
+            return name;
+        }
+    }
+
     private List<String> jsonArrayToList(JSONArray array) {
         List<Object> objects = array.toList();
 

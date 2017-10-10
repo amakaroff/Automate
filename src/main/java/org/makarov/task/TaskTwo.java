@@ -16,6 +16,10 @@ public class TaskTwo {
         int tempCount = 0;
 
         automate.init();
+        if (automate.isEnd()) {
+            return new Pair<>(true, allCount);
+        }
+
         for (int i = index; i < line.length(); i++) {
             try {
                 String signal = translate(line.charAt(i));
@@ -29,6 +33,10 @@ public class TaskTwo {
             } catch (AutomateException exception) {
                 break;
             }
+        }
+
+        if (line.length() == 0) {
+            isEnd = true;
         }
 
         return new Pair<>(isEnd, allCount);

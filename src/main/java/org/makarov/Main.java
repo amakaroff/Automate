@@ -21,6 +21,6 @@ public class Main {
         filePath = "C:\\Users\\makarovaa\\IdeaProjects\\Automates\\src\\main\\resources\\automate3.json";
         Automate<String> automate3 = new DeterministicAutomate(new JSONDeterminateAutomateReader(filePath));
         //System.out.println(TaskTwo.function(automate3, "-0.0e5+9", 0));
-        System.out.println(TaskTwo.findAllNumbers(automate3, "-.0e5a1+92.d.03e-3"));
+        System.out.println(TaskTwo.findAllNumbers(automate3, "-.0e5a1+92.d.03e-3.25e+a++23.e45+4+e6++.45+e45.+5e+4..6e+7"));
     }
 }
