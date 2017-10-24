@@ -1,11 +1,13 @@
 package org.makarov.automate.reader;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,9 +17,12 @@ public class JSONDeterminateAutomateReader implements AutomateReader<String> {
 
     private JSONObject json;
 
-    public JSONDeterminateAutomateReader(String filePath) {
+    public JSONDeterminateAutomateReader(String fileName) {
         try {
-            json = new JSONObject(FileUtils.readFileToString(new File(filePath)));
+            ClassLoader loader = Thread.currentThread().getContextClassLoader();
+            InputStream stream = loader.getResourceAsStream(fileName);
+            String content = IOUtils.toString(stream);
+            json = new JSONObject(content);
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
@@ -65,11 +70,11 @@ public class JSONDeterminateAutomateReader implements AutomateReader<String> {
 
     public String getName() {
         String name = json.getString("name");
-        if (name == null) {
-            return "";
-        } else {
-            return name;
-        }
+        return name == null ? "" : name;
+    }
+
+    public int getPriority() {
+        return json.getInt("priority");
     }
 
     private List<String> jsonArrayToList(JSONArray array) {

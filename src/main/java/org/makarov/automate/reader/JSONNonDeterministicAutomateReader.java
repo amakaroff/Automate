@@ -78,6 +78,11 @@ public class JSONNonDeterministicAutomateReader implements AutomateReader<Set<St
         }
     }
 
+    @Override
+    public int getPriority() {
+        return json.getInt("priority");
+    }
+
     private List<String> jsonArrayToList(JSONArray array) {
         List<Object> objects = array.toList();
 
