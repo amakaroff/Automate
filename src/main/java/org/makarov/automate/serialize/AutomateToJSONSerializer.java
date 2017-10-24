@@ -38,11 +38,13 @@ public class AutomateToJSONSerializer implements AutomateSerializer {
             Field beginStateField = Automate.class.getDeclaredField("beginState");
             beginStateField.setAccessible(true);
 
+            Field translatorField = Automate.class.getDeclaredField("translator");
+            translatorField.setAccessible(true);
+
             Field endStateField = Automate.class.getDeclaredField("endState");
-
             endStateField.setAccessible(true);
-            Field tableField = Automate.class.getDeclaredField("table");
 
+            Field tableField = Automate.class.getDeclaredField("table");
             tableField.setAccessible(true);
 
             String name = automate.getName();
@@ -52,9 +54,15 @@ public class AutomateToJSONSerializer implements AutomateSerializer {
 
             JSONObject object = new JSONObject();
             object.put("name", name);
-            object.put("priority", priority);
+            if (priority != 0) {
+                object.put("priority", priority);
+            }
             object.put("alphabet", alphabet.toArray());
             object.put("endStates", endStates.toArray());
+            Class<?> translator = (Class<?>) translatorField.get(automate);
+            if (translator != null) {
+                object.put("translator", translator.getName());
+            }
 
             addBeginState(object, beginStateField.get(automate));
 

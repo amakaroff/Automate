@@ -9,4 +9,4 @@ endStates* - end states for automate [TYPE: Array of Strings]
 table* - table of transitions [TYPE: Array of Objects]
     row - one row in transitions table [TYPE: Object]
         rowName* - transition by state [TYPE: String]
-        transitions* - transitions by signal [TYPE: Array of Strings] (String my be null value)
+        transitions* - transitions by signal [TYPE: Array of Strings/Array of Arrays of Strings] (String my be null value)
