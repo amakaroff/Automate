@@ -2,10 +2,10 @@
   "alphabet": [
     "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"
   ],
-  "beginState": [
+  "beginStates": [
     "0", "1"
   ],
-  "endState": [
+  "endStates": [
     "5"
   ],
   "table": [

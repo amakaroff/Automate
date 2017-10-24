@@ -27,9 +27,6 @@ public class JSONDeterminateAutomateReader extends JSONAutomateReader<String> {
             List<String> row = jsonArrayToList(metaRow.getJSONArray("transitions"));
             for (int j = 0; j < columns.size(); j++) {
                 String element = row.get(j);
-                if (element == null || "-".equals(element)) {
-                    element = null;
-                }
                 map.put(columns.get(j), element);
             }
         }

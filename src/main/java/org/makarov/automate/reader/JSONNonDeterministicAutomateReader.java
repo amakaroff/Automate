@@ -27,14 +27,7 @@ public class JSONNonDeterministicAutomateReader extends JSONAutomateReader<Set<S
             for (int j = 0; j < alphabet.size(); j++) {
                 Set<String> row = new HashSet<>(jsonArrayToList(transitions.getJSONArray(j)));
                 Set<String> newRow = new HashSet<>();
-                for (String element : row) {
-                    if (element.equals("-")) {
-                        newRow.add(null);
-                    } else {
-                        newRow.add(element);
-                    }
-                }
-
+                newRow.addAll(row);
 
                 map.put(alphabet.get(j), newRow);
             }
@@ -45,7 +38,7 @@ public class JSONNonDeterministicAutomateReader extends JSONAutomateReader<Set<S
     }
 
     public Set<String> getBeginState() {
-        JSONArray beginState = json.getJSONArray("beginState");
+        JSONArray beginState = json.getJSONArray("beginStates");
         return jsonArrayToSet(beginState);
     }
 

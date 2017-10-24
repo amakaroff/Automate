@@ -7,15 +7,11 @@
 
   "beginState": "",
 
-  "endState": [
+  "endStates": [
 
   ],
 
-  "table": {
-    "columns": [
-
-    ],
-    "rows": [
+  "table": [
       {
         "rowName": "",
         "transitions": [
@@ -23,5 +19,4 @@
         ]
       }
     ]
-  }
 }

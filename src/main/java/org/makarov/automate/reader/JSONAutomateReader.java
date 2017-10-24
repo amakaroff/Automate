@@ -33,7 +33,7 @@ public abstract class JSONAutomateReader<T> implements AutomateReader<T> {
     }
 
     public List<String> getEndStates() {
-        JSONArray endState = json.getJSONArray("endState");
+        JSONArray endState = json.getJSONArray("endStates");
         return jsonArrayToList(endState);
     }
 
