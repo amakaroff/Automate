@@ -2,6 +2,8 @@ package org.makarov.task;
 
 import org.makarov.automate.Automate;
 import org.makarov.automate.AutomateException;
+import org.makarov.automate.Translator;
+import org.makarov.task.translators.RealTranslator;
 import org.makarov.util.Pair;
 
 import java.util.ArrayList;
@@ -20,9 +22,11 @@ public class TaskTwo {
             return new Pair<>(true, allCount);
         }
 
+        Translator translator = new RealTranslator();
+
         for (int i = index; i < line.length(); i++) {
             try {
-                String signal = translate(line.charAt(i));
+                String signal = translator.translate(line.charAt(i));
                 automate.nextState(signal);
                 tempCount++;
                 if (automate.isEnd()) {
@@ -40,26 +44,6 @@ public class TaskTwo {
         }
 
         return new Pair<>(isEnd, allCount);
-    }
-
-    private static String translate(char character) {
-        if (Character.isDigit(character)) {
-            return "N";
-        }
-
-        if (character == '+' || character == '-') {
-            return "S";
-        }
-
-        if (character == '.') {
-            return "P";
-        }
-
-        if (character == 'e' || character == 'E') {
-            return "E";
-        }
-
-        return "";
     }
 
 

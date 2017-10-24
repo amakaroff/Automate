@@ -12,19 +12,20 @@ public class NonDeterministicAutomate extends Automate<Set<String>> {
     }
 
     @Override
-    public void nextState(String signal) throws AutomateException {
+    public void nextState(char signal) throws AutomateException {
+        String currentSignal = String.valueOf(signal);
         if (translator != null) {
-            signal = translator.translate(signal);
+            currentSignal = translator.translate(signal);
         }
 
-        if (!alphabet.contains(signal) || currentState.size() == 0) {
+        if (!alphabet.contains(currentSignal) || currentState.size() == 0) {
             throw new AutomateException();
         }
 
         Set<String> newStates = new HashSet<>();
 
         for (String state : currentState) {
-            Set<String> newState = table.get(state).get(signal);
+            Set<String> newState = table.get(state).get(currentSignal);
             if (!newState.isEmpty()) {
                 newStates.addAll(newState);
             }

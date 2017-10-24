@@ -1,5 +1,7 @@
 package org.makarov.automate.reader;
 
+import org.makarov.automate.Translator;
+
 import java.util.List;
 import java.util.Map;
 
@@ -16,4 +18,6 @@ public interface AutomateReader<T> {
     String getName();
 
     int getPriority();
+
+    Translator getTranslator();
 }

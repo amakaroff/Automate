@@ -2,19 +2,30 @@ package org.makarov.automate.serialize;
 
 import org.json.JSONObject;
 import org.makarov.automate.Automate;
-import org.makarov.automate.DeterministicAutomate;
-import org.makarov.automate.NonDeterministicAutomate;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-/**
- * Created by Aleksei Makarov on 24.10.2017.
- */
 public class AutomateToJSONSerializer implements AutomateSerializer {
+
+    private static void addBeginState(JSONObject object, Object element) {
+        if (element instanceof Collection) {
+            object.put("beginStates", ((Collection) element).toArray());
+        } else {
+            object.put("beginState", element);
+        }
+    }
+
+    private static Object getObjectToJsonValue(Object object) {
+        if (object instanceof Collection) {
+            return ((Collection) object).toArray();
+        } else {
+            return object;
+        }
+    }
 
     @Override
     @SuppressWarnings("unchecked")
@@ -45,57 +56,30 @@ public class AutomateToJSONSerializer implements AutomateSerializer {
             object.put("alphabet", alphabet.toArray());
             object.put("endStates", endStates.toArray());
 
-            if (clazz == DeterministicAutomate.class) {
-                String beginState = (String) beginStateField.get(automate);
-                object.put("beginState", beginState);
-                Map<String, Map<String, String>> table = (Map<String, Map<String, String>>) tableField.get(automate);
+            addBeginState(object, beginStateField.get(automate));
 
-                List<JSONObject> rows = new ArrayList<>();
-                for (String transition : table.keySet()) {
-                    JSONObject row = new JSONObject();
-                    row.put("rowName", transition);
+            Map<String, Map<String, Object>> table = (Map<String, Map<String, Object>>) tableField.get(automate);
 
-                    List<String> values = new ArrayList<>();
-                    for (String signal : alphabet) {
-                        values.add(table.get(transition).get(signal));
-                    }
+            List<JSONObject> rows = new ArrayList<>();
+            for (String transition : table.keySet()) {
+                JSONObject row = new JSONObject();
+                row.put("rowName", transition);
 
-                    row.put("transitions", values.toArray());
-                    rows.add(row);
+                List<Object> values = new ArrayList<>();
+                for (String signal : alphabet) {
+                    values.add(getObjectToJsonValue(table.get(transition).get(signal)));
                 }
 
-                object.put("table", rows.toArray());
-
-                return object.toString();
-            } else if (clazz == NonDeterministicAutomate.class) {
-                Set<String> beginState = (Set<String>) beginStateField.get(automate);
-                object.put("beginState", beginState.toArray());
-
-                Map<String, Map<String, Set<String>>> table = (Map<String, Map<String, Set<String>>>) tableField.get(automate);
-
-                List<JSONObject> rows = new ArrayList<>();
-                for (String transition : table.keySet()) {
-                    JSONObject row = new JSONObject();
-                    row.put("rowName", transition);
-
-                    List<Object[]> values = new ArrayList<>();
-                    for (String signal : alphabet) {
-                        values.add(table.get(transition).get(signal).toArray());
-                    }
-
-                    row.put("transitions", values.toArray());
-                    rows.add(row);
-                }
-
-                object.put("table", rows.toArray());
-
-                return object.toString();
-            } else {
-                throw new RuntimeException("Unknown automate!");
+                row.put("transitions", values.toArray());
+                rows.add(row);
             }
 
+            object.put("table", rows.toArray());
+
+            return object.toString();
         } catch (NoSuchFieldException | IllegalAccessException exception) {
             throw new RuntimeException(exception);
         }
     }
+
 }

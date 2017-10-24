@@ -2,5 +2,5 @@ package org.makarov.automate;
 
 public interface Translator {
 
-    String translate(String signal);
+    String translate(char signal);
 }

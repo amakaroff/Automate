@@ -3,6 +3,7 @@ package org.makarov.automate.reader;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.makarov.automate.Translator;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -56,9 +57,26 @@ public abstract class JSONAutomateReader<T> implements AutomateReader<T> {
 
         List<String> strings = new ArrayList<>();
         for (Object object : objects) {
-            strings.add(object.toString());
+            strings.add(object == null ? null : String.valueOf(object));
         }
 
         return strings;
+    }
+
+    @Override
+    public Translator getTranslator() {
+        if (json.isNull("translator")) {
+            String translatorClass = json.getString("translator");
+            try {
+                Class<?> clazz = Class.forName(translatorClass);
+                if (clazz.isAssignableFrom(Translator.class)) {
+                    return (Translator) clazz.newInstance();
+                }
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException exception) {
+                return null;
+            }
+        }
+
+        return null;
     }
 }

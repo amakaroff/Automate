@@ -5,7 +5,6 @@ import org.makarov.automate.reader.AutomateReader;
 import java.util.List;
 import java.util.Map;
 
-
 public abstract class Automate<T> {
 
     protected Map<String, Map<String, T>> table;
@@ -50,7 +49,7 @@ public abstract class Automate<T> {
         }
     }
 
-    public abstract void nextState(String signal) throws AutomateException;
+    public abstract void nextState(char signal) throws AutomateException;
 
     public abstract boolean isEnd();
 
@@ -65,17 +64,19 @@ public abstract class Automate<T> {
 
         Automate<?> automate = (Automate<?>) o;
 
-        return !(name != null ? !name.equals(automate.name) : automate.name != null);
-
-    }
-
-    public void refresh() {
-        currentState = beginState;
+        return priority == automate.priority &&
+                (name != null ? name.equals(automate.name) : automate.name == null);
     }
 
     @Override
     public int hashCode() {
-        return name != null ? name.hashCode() : 0;
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + priority;
+        return result;
+    }
+
+    public void refresh() {
+        currentState = beginState;
     }
 
     public String getName() {

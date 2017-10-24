@@ -9,16 +9,17 @@ public class DeterministicAutomate extends Automate<String> {
     }
 
     @Override
-    public void nextState(String signal) throws AutomateException {
+    public void nextState(char signal) throws AutomateException {
+        String currentSignal = String.valueOf(signal);
         if (translator != null) {
-            signal = translator.translate(signal);
+            currentSignal = translator.translate(signal);
         }
 
-        if (!alphabet.contains(signal) || table.get(currentState) == null) {
+        if (!alphabet.contains(currentSignal) || table.get(currentState) == null) {
             throw new AutomateException();
         }
 
-        String newState = table.get(currentState).get(signal);
+        String newState = table.get(currentState).get(currentSignal);
 
         if (newState == null) {
             throw new AutomateException();

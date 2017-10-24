@@ -23,8 +23,7 @@ public class Functions {
 
         for (int i = index; i < line.length(); i++) {
             try {
-                String signal = String.valueOf(line.charAt(i));
-                automate.nextState(signal);
+                automate.nextState(line.charAt(i));
                 tempCount++;
                 if (automate.isEnd()) {
                     allCount += tempCount;
