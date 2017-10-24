@@ -1,0 +1,12 @@
+(* - is required)
+(exp/exps - different for deterministic and non deterministic automate)
+
+name - name of automate [TYPE: String]
+priority - priority of automate [TYPE: Number]
+translator - translator of signals for authomate [TYPE: String] (Full class name)
+beginState/beginStates* - begin states for automate [TYPE: String/Array of Strings]
+endStates* - end states for automate [TYPE: Array of Strings]
+table* - table of transitions [TYPE: Array of Objects]
+    row - one row in transitions table [TYPE: Object]
+        rowName* - transition by state [TYPE: String]
+        transitions* - transitions by signal [TYPE: Array of Strings] (String my be null value)
