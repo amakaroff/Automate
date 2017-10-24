@@ -53,6 +53,7 @@ public class AutomateToJSONSerializer implements AutomateSerializer {
             List<String> endStates = (List<String>) endStateField.get(automate);
 
             JSONObject object = new JSONObject();
+
             object.put("name", name);
             if (priority != 0) {
                 object.put("priority", priority);
