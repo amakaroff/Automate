@@ -1,0 +1,32 @@
+{
+  "name": "KeyWord",
+  "priority": 0,
+  "alphabet": [
+    "d",
+    "e",
+    "f",
+    "i",
+    "n",
+    "e",
+    "c",
+    "o",
+    "l",
+    "a",
+    "m",
+    "b"
+  ],
+  "beginState": "",
+  "endState": [
+  ],
+  "table": {
+    "columns": [
+    ],
+    "rows": [
+      {
+        "rowName": "",
+        "transitions": [
+        ]
+      }
+    ]
+  }
+}

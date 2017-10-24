@@ -1,28 +1,14 @@
 package org.makarov.automate.reader;
 
-import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
-public class JSONNonDeterministicAutomateReader implements AutomateReader<Set<String>> {
+public class JSONNonDeterministicAutomateReader extends JSONAutomateReader<Set<String>> {
 
-    private JSONObject json;
-
-    public JSONNonDeterministicAutomateReader(String filePath) {
-        try {
-            json = new JSONObject(FileUtils.readFileToString(new File(filePath)));
-        } catch (IOException exception) {
-            throw new RuntimeException(exception);
-        }
-    }
-
-    public List<String> getAlphabet() {
-        JSONArray alphabet = json.getJSONArray("alphabet");
-        return jsonArrayToList(alphabet);
+    public JSONNonDeterministicAutomateReader(String fileName) {
+        super(fileName);
     }
 
     public Map<String, Map<String, Set<String>>> getTable() {
@@ -62,36 +48,6 @@ public class JSONNonDeterministicAutomateReader implements AutomateReader<Set<St
     public Set<String> getBeginState() {
         JSONArray beginState = json.getJSONArray("beginState");
         return jsonArrayToSet(beginState);
-    }
-
-    public List<String> getEndState() {
-        JSONArray endState = json.getJSONArray("endState");
-        return jsonArrayToList(endState);
-    }
-
-    public String getName() {
-        String name = json.getString("name");
-        if (name == null) {
-            return "";
-        } else {
-            return name;
-        }
-    }
-
-    @Override
-    public int getPriority() {
-        return json.getInt("priority");
-    }
-
-    private List<String> jsonArrayToList(JSONArray array) {
-        List<Object> objects = array.toList();
-
-        List<String> strings = new ArrayList<>();
-        for (Object object : objects) {
-            strings.add(object.toString());
-        }
-
-        return strings;
     }
 
     private Set<String> jsonArrayToSet(JSONArray array) {

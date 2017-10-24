@@ -13,6 +13,10 @@ public class NonDeterministicAutomate extends Automate<Set<String>> {
 
     @Override
     public void nextState(String signal) throws AutomateException {
+        if (translator != null) {
+            signal = translator.translate(signal);
+        }
+
         if (!alphabet.contains(signal) || currentState.size() == 0) {
             throw new AutomateException();
         }

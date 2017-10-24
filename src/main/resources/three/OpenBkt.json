@@ -1,22 +1,19 @@
 {
+  "name": "OpenBkt",
+  "priority": 0,
   "alphabet": [
-
+    "("
   ],
-  "beginState": [
-
-  ],
+  "beginState": "",
   "endState": [
-
   ],
   "table": {
     "columns": [
-
     ],
     "rows": [
       {
         "rowName": "",
         "transitions": [
-
         ]
       }
     ]

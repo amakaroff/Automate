@@ -1,0 +1,29 @@
+{
+  "name": "",
+
+  "priority": 0,
+
+  "alphabet": [
+
+  ],
+
+  "beginState": "",
+
+  "endState": [
+
+  ],
+
+  "table": {
+    "columns": [
+
+    ],
+    "rows": [
+      {
+        "rowName": "",
+        "transitions": [
+
+        ]
+      }
+    ]
+  }
+}

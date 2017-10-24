@@ -1,0 +1,27 @@
+{
+  "name": "Space",
+
+  "priority": 0,
+
+  "alphabet": [" ", "\n", "\r", "\t"],
+
+  "beginState": "",
+
+  "endState": [
+
+  ],
+
+  "table": {
+    "columns": [
+
+    ],
+    "rows": [
+      {
+        "rowName": "",
+        "transitions": [
+
+        ]
+      }
+    ]
+  }
+}

@@ -10,6 +10,10 @@ public class DeterministicAutomate extends Automate<String> {
 
     @Override
     public void nextState(String signal) throws AutomateException {
+        if (translator != null) {
+            signal = translator.translate(signal);
+        }
+
         if (!alphabet.contains(signal) || table.get(currentState) == null) {
             throw new AutomateException();
         }

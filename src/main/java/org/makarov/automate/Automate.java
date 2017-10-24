@@ -24,8 +24,15 @@ public abstract class Automate<T> {
 
     protected AutomateReader<T> reader;
 
+    protected Translator translator;
+
     public Automate(AutomateReader<T> reader) {
         this.reader = reader;
+    }
+
+    public Automate(AutomateReader<T> reader, Translator translator) {
+        this.reader = reader;
+        this.translator = translator;
     }
 
     public void init() {
@@ -33,7 +40,7 @@ public abstract class Automate<T> {
         name = reader.getName();
         priority = reader.getPriority();
         beginState = reader.getBeginState();
-        endState = reader.getEndState();
+        endState = reader.getEndStates();
         alphabet = reader.getAlphabet();
         currentState = beginState;
 
