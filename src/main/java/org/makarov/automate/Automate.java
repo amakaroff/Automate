@@ -44,7 +44,11 @@ public abstract class Automate<T> {
             beginState = reader.getBeginState();
             endState = reader.getEndStates();
             alphabet = reader.getAlphabet();
+            if (translator == null) {
+                translator = reader.getTranslator();
+            }
             currentState = beginState;
+
             isInit = true;
         }
     }

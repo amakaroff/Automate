@@ -9,7 +9,6 @@ public class SpaceTranslator implements Translator {
 
     @Override
     public String translate(char signal) {
-
         if (signal == '\r' || signal == '\n' || signal == '\t' || signal == ' ') {
            return "S";
         } else {

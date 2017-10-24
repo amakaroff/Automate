@@ -3,15 +3,11 @@ package org.makarov.util;
 import org.makarov.automate.Automate;
 import org.makarov.automate.AutomateException;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Functions {
 
-    public static Pair<Boolean, Integer> function(Automate<String> automate, String line, int index) {
+    public static Pair<Boolean, Integer> function(Automate automate, String line, int index) {
         boolean isEnd = false;
         int allCount = 0;
         int tempCount = 0;
@@ -42,7 +38,7 @@ public class Functions {
         return new Pair<>(isEnd, allCount);
     }
 
-    public static Collection<Pair<String, String>> getLexems(Collection<Automate<String>> automates, String line) {
+    public static Collection<Pair<String, String>> getLexems(Collection<Automate> automates, String line) {
         List<Pair<String, String>> lexemes = new ArrayList<>();
         List<String> errors = new ArrayList<>();
 
@@ -68,22 +64,23 @@ public class Functions {
         return lexemes;
     }
 
-    public static Pair<String, String> getLexeme(Collection<Automate<String>> automates, String line, int index) {
+    public static Pair<String, String> getLexeme(Collection<Automate> automates, String line, int index) {
         Map<Automate, Pair<Boolean, Integer>> results = new HashMap<>();
-        for (Automate<String> automate : automates) {
+        for (Automate automate : automates) {
             results.put(automate, function(automate, line, index));
+            allRefresh(automates);
         }
 
         Automate resultAutomate = getAutomateWithMaxPriority(results);
         Pair<Boolean, Integer> resultPair = results.get(resultAutomate);
 
-        return new Pair<>(resultAutomate.getName(), line.substring(index, resultPair.getValue()));
+        return new Pair<>(resultAutomate.getName(), line.substring(index, index + resultPair.getValue()));
     }
 
     private static Automate getAutomateWithMaxPriority(Map<Automate, Pair<Boolean, Integer>> results) {
         if (results.isEmpty()) {
             throw new AutomateException("Results is incorrect!");
-        } else if (isCorrectResults(results.values())) {
+        } else if (!isCorrectResults(results.values())) {
             throw new AutomateException("Automate for this lexeme is not found!");
         }
 
@@ -132,5 +129,11 @@ public class Functions {
         }
 
         return false;
+    }
+
+    private static void allRefresh(Collection<Automate> automates) {
+        for (Automate automate : automates) {
+            automate.refresh();
+        }
     }
 }

@@ -1,0 +1,5 @@
+lambda
+
+    |string1|
+ (cond
+    123      193.3)

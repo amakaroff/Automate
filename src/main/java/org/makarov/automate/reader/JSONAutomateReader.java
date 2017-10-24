@@ -1,12 +1,10 @@
 package org.makarov.automate.reader;
 
-import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.makarov.automate.Translator;
+import org.makarov.util.FileUtils;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,15 +15,8 @@ public abstract class JSONAutomateReader<T> implements AutomateReader<T> {
     protected String fileName;
 
     public JSONAutomateReader(String fileName) {
-        try {
-            this.fileName = fileName;
-            ClassLoader loader = Thread.currentThread().getContextClassLoader();
-            InputStream stream = loader.getResourceAsStream(fileName);
-            String content = IOUtils.toString(stream);
-            json = new JSONObject(content);
-        } catch (IOException exception) {
-            throw new RuntimeException(exception);
-        }
+        this.fileName = fileName;
+        json = new JSONObject(FileUtils.readFile(fileName));
     }
 
     public List<String> getAlphabet() {
@@ -40,7 +31,7 @@ public abstract class JSONAutomateReader<T> implements AutomateReader<T> {
 
     public String getName() {
         if (json.isNull("name")) {
-            int dotIndex = fileName.contains(".") ? fileName.lastIndexOf('.'): fileName.length();
+            int dotIndex = fileName.contains(".") ? fileName.lastIndexOf('.') : fileName.length();
             int slashIndex = fileName.contains("/") ? fileName.lastIndexOf('/') + 1 : 0;
             return fileName.substring(slashIndex, dotIndex);
         }
@@ -65,11 +56,11 @@ public abstract class JSONAutomateReader<T> implements AutomateReader<T> {
 
     @Override
     public Translator getTranslator() {
-        if (json.isNull("translator")) {
+        if (!json.isNull("translator")) {
             String translatorClass = json.getString("translator");
             try {
                 Class<?> clazz = Class.forName(translatorClass);
-                if (clazz.isAssignableFrom(Translator.class)) {
+                if (Translator.class.isAssignableFrom(clazz)) {
                     return (Translator) clazz.newInstance();
                 }
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException exception) {
