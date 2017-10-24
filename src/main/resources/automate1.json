@@ -2,46 +2,41 @@
   "name": "Automate one",
   "priority": 5,
   "alphabet": [
-    "0", "1"
+    "0",
+    "1"
   ],
-  "beginState": [
-    "A"
-  ],
+  "beginState": "A",
   "endState": [
     "C"
   ],
-  "table": {
-    "columns": [
-      "0", "1"
-    ],
-
-    "rows": [
-      {
-        "rowName": "A",
-        "transitions": [
-          "B", "C"
-        ]
-      },
-
-      {
-        "rowName": "B",
-        "transitions": [
-          "A", "D"
-        ]
-      },
-
-      {
-        "rowName": "C",
-        "transitions": [
-          "D", "A"
-        ]
-      },
-      {
-        "rowName": "D",
-        "transitions": [
-          "C", "B"
-        ]
-      }
-    ]
-  }
+  "table": [
+    {
+      "rowName": "A",
+      "transitions": [
+        "B",
+        "C"
+      ]
+    },
+    {
+      "rowName": "B",
+      "transitions": [
+        "A",
+        "D"
+      ]
+    },
+    {
+      "rowName": "C",
+      "transitions": [
+        "D",
+        "A"
+      ]
+    },
+    {
+      "rowName": "D",
+      "transitions": [
+        "C",
+        "B"
+      ]
+    }
+  ]
 }

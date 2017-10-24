@@ -26,6 +26,8 @@ public abstract class Automate<T> {
 
     protected Translator translator;
 
+    protected boolean isInit = false;
+
     public Automate(AutomateReader<T> reader) {
         this.reader = reader;
     }
@@ -36,14 +38,16 @@ public abstract class Automate<T> {
     }
 
     public void init() {
-        table = reader.getTable();
-        name = reader.getName();
-        priority = reader.getPriority();
-        beginState = reader.getBeginState();
-        endState = reader.getEndStates();
-        alphabet = reader.getAlphabet();
-        currentState = beginState;
-
+        if (!isInit) {
+            table = reader.getTable();
+            name = reader.getName();
+            priority = reader.getPriority();
+            beginState = reader.getBeginState();
+            endState = reader.getEndStates();
+            alphabet = reader.getAlphabet();
+            currentState = beginState;
+            isInit = true;
+        }
     }
 
     public abstract void nextState(String signal) throws AutomateException;
@@ -63,6 +67,10 @@ public abstract class Automate<T> {
 
         return !(name != null ? !name.equals(automate.name) : automate.name != null);
 
+    }
+
+    public void refresh() {
+        currentState = beginState;
     }
 
     @Override

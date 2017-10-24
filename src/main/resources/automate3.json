@@ -5,94 +5,84 @@
     "P",
     "E"
   ],
-  "beginState": [
-    "A"
-  ],
+  "beginState": "A",
   "endState": [
     "C",
     "E",
     "G"
   ],
-  "table": {
-    "columns": [
-      "S",
-      "N",
-      "P",
-      "E"
-    ],
-    "rows": [
-      {
-        "rowName": "A",
-        "transitions": [
-          "B",
-          "C",
-          "D",
-          "-"
-        ]
-      },
-      {
-        "rowName": "B",
-        "transitions": [
-          "-",
-          "C",
-          "D",
-          "-"
-        ]
-      },
-      {
-        "rowName": "C",
-        "transitions": [
-          "-",
-          "C",
-          "E",
-          "F"
-        ]
-      },
-      {
-        "rowName": "D",
-        "transitions": [
-          "-",
-          "E",
-          "-",
-          "-"
-        ]
-      },
-      {
-        "rowName": "E",
-        "transitions": [
-          "-",
-          "E",
-          "-",
-          "F"
-        ]
-      },
-      {
-        "rowName": "F",
-        "transitions": [
-          "H",
-          "G",
-          "-",
-          "-"
-        ]
-      },
-      {
-        "rowName": "G",
-        "transitions": [
-          "-",
-          "G",
-          "-",
-          "-"
-        ]
-      },
-      {
-        "rowName": "H",
-        "transitions": [
-          "-",
-          "G",
-          "-",
-          "-"
-        ]
-      }
-    ]
-  }
+  "table": [
+    {
+      "rowName": "A",
+      "transitions": [
+        "B",
+        "C",
+        "D",
+        "-"
+      ]
+    },
+    {
+      "rowName": "B",
+      "transitions": [
+        "-",
+        "C",
+        "D",
+        "-"
+      ]
+    },
+    {
+      "rowName": "C",
+      "transitions": [
+        "-",
+        "C",
+        "E",
+        "F"
+      ]
+    },
+    {
+      "rowName": "D",
+      "transitions": [
+        "-",
+        "E",
+        "-",
+        "-"
+      ]
+    },
+    {
+      "rowName": "E",
+      "transitions": [
+        "-",
+        "E",
+        "-",
+        "F"
+      ]
+    },
+    {
+      "rowName": "F",
+      "transitions": [
+        "H",
+        "G",
+        "-",
+        "-"
+      ]
+    },
+    {
+      "rowName": "G",
+      "transitions": [
+        "-",
+        "G",
+        "-",
+        "-"
+      ]
+    },
+    {
+      "rowName": "H",
+      "transitions": [
+        "-",
+        "G",
+        "-",
+        "-"
+      ]
+    }
+  ]
 }
