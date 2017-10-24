@@ -54,7 +54,7 @@ public class Functions {
                 lexemes.add(lexeme);
                 index += lexeme.getValue().length();
             } catch (AutomateException exception) {
-                errors.add("Position " + index + " has some error (" + exception.getMessage() + ")\n");
+                errors.add("Position " + index + " has some error : " + exception.getMessage() + "\n");
                 index++;
             }
         }
@@ -81,8 +81,10 @@ public class Functions {
     }
 
     private static Automate getAutomateWithMaxPriority(Map<Automate, Pair<Boolean, Integer>> results) {
-        if (results.isEmpty() || isCorrectResults(results.values())) {
+        if (results.isEmpty()) {
             throw new AutomateException("Results is incorrect!");
+        } else if (isCorrectResults(results.values())) {
+            throw new AutomateException("Automate for this lexeme is not found!");
         }
 
         Map<Automate, Pair<Boolean, Integer>> newResults = new HashMap<>();

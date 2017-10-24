@@ -30,7 +30,6 @@ public class AutomateToJSONSerializer implements AutomateSerializer {
     @Override
     @SuppressWarnings("unchecked")
     public String serialize(Automate automate) {
-        Class<? extends Automate> clazz = automate.getClass();
         try {
             Field alphabetField = Automate.class.getDeclaredField("alphabet");
             alphabetField.setAccessible(true);

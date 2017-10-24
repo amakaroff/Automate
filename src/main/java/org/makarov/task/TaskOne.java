@@ -14,8 +14,7 @@ public class TaskOne {
         automate.init();
         for (int i = index; i < line.length(); i++) {
             try {
-                String signal = String.valueOf(line.charAt(i));
-                automate.nextState(signal);
+                automate.nextState(line.charAt(i));
             } catch (AutomateException exception) {
                 return "Symbol is undefined!";
             }
@@ -34,8 +33,7 @@ public class TaskOne {
         automate.init();
         for (int i = index; i < line.length(); i++) {
             try {
-                String signal = String.valueOf(line.charAt(i));
-                automate.nextState(signal);
+                automate.nextState(line.charAt(i));
                 lastState = automate.getCurrentState();
             } catch (AutomateException exception) {
                 return new Pair<>(false, new HashSet<>());
