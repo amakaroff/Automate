@@ -66,7 +66,6 @@ public class AutomateRenamer {
         return String.valueOf(index);
     }
 
-    @SuppressWarnings("unchecked")
     private static void renameTransition(AutomateReflection reflection, String oldState, String newState) {
         renameTransitions(reflection, oldState, newState);
         renameState(reflection, oldState, newState);
@@ -99,11 +98,7 @@ public class AutomateRenamer {
     private static void renameBeginState(AutomateReflection reflection, String oldState, String newState) {
         Object beginState = reflection.getBeginState();
         if (beginState instanceof Collection) {
-            Collection<String> states = (Collection) beginState;
-            if (states.contains(oldState)) {
-                states.remove(oldState);
-                states.add(newState);
-            }
+            renameInCollection(beginState, oldState, newState);
         } else {
             if (String.valueOf(beginState).equals(oldState)) {
                 reflection.setBeginState(newState);
@@ -114,12 +109,7 @@ public class AutomateRenamer {
 
     private static void renameEndState(AutomateReflection reflection, String oldState, String newState) {
         Object endState = reflection.getEndStates();
-        @SuppressWarnings("unchecked")
-        Collection<String> states = (Collection) endState;
-        if (states.contains(oldState)) {
-            states.remove(oldState);
-            states.add(newState);
-        }
+        renameInCollection(endState, oldState, newState);
     }
 
     private static void renameTransitions(AutomateReflection reflection, String oldState, String newState) {
@@ -134,12 +124,7 @@ public class AutomateRenamer {
         List<String> changeKeyList = new ArrayList<>();
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             if (entry.getValue() instanceof Collection) {
-                @SuppressWarnings("unchecked")
-                Collection<String> value = (Collection) entry.getValue();
-                while (value.contains(oldState)) {
-                    value.remove(oldState);
-                    value.add(newState);
-                }
+                renameInCollection(entry.getValue(), oldState, newState);
             } else {
                 Object value = entry.getValue();
                 value = (value == null ? null : String.valueOf(value));
@@ -151,6 +136,17 @@ public class AutomateRenamer {
 
         for (String key : changeKeyList) {
             map.replace(key, newState);
+        }
+    }
+
+    private static void renameInCollection(Object states, String oldState, String newState) {
+        if (states instanceof Collection) {
+            @SuppressWarnings("unchecked")
+            Collection<String> value = (Collection<String>) states;
+            if (value.contains(oldState)) {
+                value.remove(oldState);
+                value.add(newState);
+            }
         }
     }
 }

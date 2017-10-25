@@ -19,11 +19,11 @@ public class Main {
         Automate automate2 = new DeterministicAutomate(new JSONDeterminateAutomateReader("automate3.json"));
         automate.init();
         automate2.init();
-        //AutomateRenamer.renameStates(automate, automate2);
-        AutomateRenamer.renameAutomate(automate);
+        AutomateRenamer.renameStates(automate, automate2);
+        //AutomateRenamer.renameAutomate(automate);
         AutomateSerializer serializer = new AutomateToJSONSerializer();
-        //System.out.println(serializer.serialize(automate));
-        //System.out.println();
         System.out.println(serializer.serialize(automate));
+        System.out.println();
+        System.out.println(serializer.serialize(automate2));
     }
 }
