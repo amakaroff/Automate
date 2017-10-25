@@ -3,13 +3,7 @@ package org.makarov.util.operations;
 import org.makarov.automate.Automate;
 import org.makarov.util.AutomateReflection;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class AutomateRenamer {
 
@@ -52,10 +46,14 @@ public class AutomateRenamer {
                 state = tempState;
             }
 
-            System.out.println("State: " + state + " | New State: " + newState);
-
             renameTransition(reflection, state, newState);
             index++;
+        }
+
+        if (!changes.isEmpty()) {
+            String newState = String.valueOf(index - 1);
+            String string = changes.get(newState);
+            renameTransition(reflection, string, newState);
         }
     }
 
@@ -91,8 +89,10 @@ public class AutomateRenamer {
         @SuppressWarnings("unchecked")
         Map<String, Map<String, Object>> transitions = reflection.getTransitions();
         Map<String, Object> map = transitions.get(oldState);
-        transitions.remove(oldState);
-        transitions.put(newState, map);
+        if (!oldState.equals(newState)) {
+            transitions.remove(oldState);
+            transitions.put(newState, map);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -136,7 +136,7 @@ public class AutomateRenamer {
             if (entry.getValue() instanceof Collection) {
                 @SuppressWarnings("unchecked")
                 Collection<String> value = (Collection) entry.getValue();
-                if (value.contains(oldState)) {
+                while (value.contains(oldState)) {
                     value.remove(oldState);
                     value.add(newState);
                 }

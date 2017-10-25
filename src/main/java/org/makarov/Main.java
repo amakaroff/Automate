@@ -7,8 +7,10 @@ import org.makarov.automate.reader.JSONDeterminateAutomateReader;
 import org.makarov.automate.reader.JSONNonDeterministicAutomateReader;
 import org.makarov.automate.serialize.AutomateSerializer;
 import org.makarov.automate.serialize.AutomateToJSONSerializer;
-import org.makarov.util.operations.AutomateOperations;
 import org.makarov.util.operations.AutomateRenamer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 
