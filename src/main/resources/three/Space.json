@@ -1,26 +1,27 @@
 {
-    "name": "Space",
-    "priority": 3,
-    "translator": "org.makarov.task.translators.SpaceTranslator",
-    "alphabet": [
-        "S"
-    ],
-    "beginState": "A",
-    "endStates": [
+  "name": "Space",
+  "priority": 0,
+  "translator": "org.makarov.task.translators.SpaceTranslator",
+  "alphabet": [
+    "S"
+  ],
+  "beginState": "A",
+  "endStates": [
+    "B"
+  ],
+  "table": [
+    {
+      "rowName": "A",
+      "transitions": [
         "B"
-    ],
-    "table": [
-        {
-            "rowName": "A",
-            "transitions": [
-                "B"
-            ]
-        }, {
-            "rowName": "B",
-            "transitions": [
-                "B"
-            ]
-        }
+      ]
+    },
+    {
+      "rowName": "B",
+      "transitions": [
+        "B"
+      ]
+    }
 
-    ]
+  ]
 }

@@ -14,6 +14,10 @@ public class AutomateReflection<T> {
         this.automate = automate;
     }
 
+    public Automate<T> getAutomate() {
+        return automate;
+    }
+
     public String getName() {
         return automate.getName();
     }
@@ -25,6 +29,10 @@ public class AutomateReflection<T> {
     @SuppressWarnings("unchecked")
     public T getBeginState() {
         return (T) getFieldValue("beginState");
+    }
+
+    public void setBeginState(T newBeginState) {
+        setFieldValue("beginState", newBeginState);
     }
 
     @SuppressWarnings("unchecked")
@@ -54,10 +62,26 @@ public class AutomateReflection<T> {
 
     private Object getFieldValue(String fieldName) {
         try {
+            return getField(fieldName).get(automate);
+        } catch (IllegalAccessException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
+
+    private void setFieldValue(String fieldName, Object value) {
+        try {
+            getField(fieldName).set(automate, value);
+        } catch (IllegalAccessException exception) {
+            throw new RuntimeException(exception);
+        }
+    }
+
+    private Field getField(String fieldName) {
+        try {
             Field declaredField = Automate.class.getDeclaredField(fieldName);
             declaredField.setAccessible(true);
-            return declaredField.get(automate);
-        } catch (NoSuchFieldException | IllegalAccessException exception) {
+            return declaredField;
+        } catch (NoSuchFieldException exception) {
             System.err.println("Field [" + fieldName + "] - is not found!");
             throw new RuntimeException(exception);
         }
