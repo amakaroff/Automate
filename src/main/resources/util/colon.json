@@ -1,0 +1,25 @@
+{
+  "name": "colon",
+  "priority": 0,
+  "alphabet": [
+    ";"
+  ],
+  "beginState": "1",
+  "endStates": [
+    "2"
+  ],
+  "table": [
+    {
+      "rowName": "1",
+      "transitions": [
+        "2"
+      ]
+    },
+    {
+      "rowName": "2",
+      "transitions": [
+        null
+      ]
+    }
+  ]
+}

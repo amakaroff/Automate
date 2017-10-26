@@ -1,6 +1,7 @@
 package org.makarov.automate;
 
 import org.makarov.automate.reader.AutomateReader;
+import org.makarov.task.translators.BasicTranslator;
 
 import java.util.List;
 import java.util.Map;
@@ -49,6 +50,7 @@ public abstract class Automate<T> {
             }
             currentState = beginState;
 
+            unzipAutomate();
             isInit = true;
         }
     }
@@ -89,5 +91,21 @@ public abstract class Automate<T> {
 
     public int getPriority() {
         return priority;
+    }
+
+    private void unzipAutomate() {
+        for (String symbol : alphabet) {
+            List<String> newSymbols = BasicTranslator.getTranslationList(symbol);
+            if (newSymbols != null) {
+                for (String state : table.keySet()) {
+                    Map<String, T> transitionsMap = table.get(state);
+                    T states = transitionsMap.get(symbol);
+                    transitionsMap.remove(symbol);
+                    for (String newSymbol : newSymbols) {
+                        transitionsMap.put(newSymbol, states);
+                    }
+                }
+            }
+        }
     }
 }

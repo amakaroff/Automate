@@ -1,0 +1,25 @@
+{
+  "name": "priority",
+  "priority": 0,
+  "alphabet": [
+    "\\d"
+  ],
+  "beginState": "1",
+  "endStates": [
+    "2"
+  ],
+  "table": [
+    {
+      "rowName": "1",
+      "transitions": [
+        "2"
+      ]
+    },
+    {
+      "rowName": "2",
+      "transitions": [
+        "2"
+      ]
+    }
+  ]
+}

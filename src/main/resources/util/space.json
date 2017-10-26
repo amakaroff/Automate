@@ -1,0 +1,25 @@
+{
+  "name": "space",
+  "priority": 0,
+  "alphabet": [
+    "\\s"
+  ],
+  "beginState": "1",
+  "endStates": [
+    "2"
+  ],
+  "table": [
+    {
+      "rowName": "1",
+      "transitions": [
+        "1"
+      ]
+    },
+    {
+      "rowName": "2",
+      "transitions": [
+        "2"
+      ]
+    }
+  ]
+}
