@@ -47,8 +47,6 @@ public class AutomateToJSONSerializer implements AutomateSerializer {
         object.put("alphabet", alphabet.toArray());
         object.put("endStates", endStates.toArray());
 
-        object.put("translator", automateReflection.getTranslatorName());
-
         addBeginState(object, automateReflection.getBeginState());
 
         Map<String, Map<String, Object>> table = (Map<String, Map<String, Object>>) automateReflection.getTransitions();

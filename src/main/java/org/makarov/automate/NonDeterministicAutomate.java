@@ -1,11 +1,17 @@
 package org.makarov.automate;
 
 import org.makarov.automate.reader.AutomateReader;
+import org.makarov.automate.reader.JSONNonDeterministicAutomateReader;
+import org.makarov.task.translators.BasicTranslator;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class NonDeterministicAutomate extends Automate<Set<String>> {
+
+    public NonDeterministicAutomate(String filePath) {
+        super(new JSONNonDeterministicAutomateReader(filePath));
+    }
 
     public NonDeterministicAutomate(AutomateReader<Set<String>> reader) {
         super(reader);
@@ -14,18 +20,16 @@ public class NonDeterministicAutomate extends Automate<Set<String>> {
     @Override
     public void nextState(char signal) throws AutomateException {
         String currentSignal = String.valueOf(signal);
-        if (translator != null) {
-            currentSignal = translator.translate(signal);
-        }
-
-        if (!alphabet.contains(currentSignal) || currentState.size() == 0) {
-            throw new AutomateException();
-        }
+        checkNext(currentSignal);
 
         Set<String> newStates = new HashSet<>();
-
         for (String state : currentState) {
+
             Set<String> newState = table.get(state).get(currentSignal);
+            if (newState == null || newState.isEmpty()) {
+                newState = table.get(state).get("\\.");
+            }
+
             if (!newState.isEmpty()) {
                 newStates.addAll(newState);
             }

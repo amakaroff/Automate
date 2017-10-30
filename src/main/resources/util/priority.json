@@ -1,6 +1,6 @@
 {
   "name": "priority",
-  "priority": 0,
+  "priority": 5,
   "alphabet": [
     "\\d"
   ],

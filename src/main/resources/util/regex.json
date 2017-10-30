@@ -2,29 +2,35 @@
   "name": "regex",
   "priority": 0,
   "alphabet": [
-    "\\w", "\\d", "\\|", "\\(", "\\)", "\\*", "\\", ";"
+    "\\w", "\\d", "\\|", "\\(", "\\)", "\\*", "\\", ";", "\\s"
   ],
   "beginState": "1",
   "endStates": [
-    "2"
+    "1", "2"
   ],
   "table": [
     {
       "rowName": "1",
       "transitions": [
-        "1", "1", "1", "1", "1", "1", "2", "3"
+        "1", "1", "1", "1", "1", "1", "2", "3", "4"
       ]
     },
     {
       "rowName": "2",
       "transitions": [
-        "1", "1", "1", "1", "1", "1", "1", "1"
+        "1", "1", "1", "1", "1", "1", "1", "1", "4"
       ]
     },
     {
       "rowName": "3",
       "transitions": [
-        null, null, null, null, null, null, null, null
+        null, null, null, null, null, null, null, null, null
+      ]
+    },
+    {
+      "rowName": "4",
+      "transitions": [
+        "4", "4", "4", "4", "4", "4", "2", "3", "4"
       ]
     }
   ]

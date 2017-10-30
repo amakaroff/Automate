@@ -1,11 +1,7 @@
 package org.makarov.task;
 
 import org.makarov.automate.Automate;
-import org.makarov.automate.AutomateException;
-import org.makarov.automate.Translator;
-import org.makarov.task.translators.RealTranslator;
 import org.makarov.util.Functions;
-import org.makarov.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;

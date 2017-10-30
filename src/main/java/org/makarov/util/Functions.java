@@ -13,7 +13,7 @@ public class Functions {
         int tempCount = 0;
 
         automate.init();
-        if (automate.isEnd() || line.length() == 0) {
+        if (line.length() == 0) {
             return new Pair<>(true, allCount);
         }
 
@@ -34,7 +34,7 @@ public class Functions {
         return new Pair<>(isEnd, allCount);
     }
 
-    public static Collection<Pair<String, String>> getLexemes(Collection<Automate> automates, String line) {
+    public static Collection<Pair<String, String>> getLexemes(Collection<Automate> automates, String line,  boolean debug) {
         List<Pair<String, String>> lexemes = new ArrayList<>();
         List<String> errors = new ArrayList<>();
 
@@ -51,7 +51,7 @@ public class Functions {
             }
         }
 
-        if (!errors.isEmpty()) {
+        if (!errors.isEmpty() && debug) {
             for (String error : errors) {
                 System.out.println(error);
             }

@@ -53,21 +53,4 @@ public abstract class JSONAutomateReader<T> implements AutomateReader<T> {
 
         return strings;
     }
-
-    @Override
-    public Translator getTranslator() {
-        if (!json.isNull("translator")) {
-            String translatorClass = json.getString("translator");
-            try {
-                Class<?> clazz = Class.forName(translatorClass);
-                if (Translator.class.isAssignableFrom(clazz)) {
-                    return (Translator) clazz.newInstance();
-                }
-            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException exception) {
-                return null;
-            }
-        }
-
-        return null;
-    }
 }

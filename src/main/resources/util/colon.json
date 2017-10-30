@@ -1,8 +1,8 @@
 {
   "name": "colon",
-  "priority": 0,
+  "priority": 20,
   "alphabet": [
-    ";"
+    ":"
   ],
   "beginState": "1",
   "endStates": [

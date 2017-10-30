@@ -1,6 +1,6 @@
 {
   "name": "cotchie",
-  "priority": 0,
+  "priority": 20,
   "alphabet": [
     ";"
   ],

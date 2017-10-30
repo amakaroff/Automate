@@ -3,6 +3,7 @@ package org.makarov.automate;
 import org.makarov.automate.reader.AutomateReader;
 import org.makarov.task.translators.BasicTranslator;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,17 +25,12 @@ public abstract class Automate<T> {
 
     protected AutomateReader<T> reader;
 
-    protected Translator translator;
-
     protected boolean isInit = false;
+
+    boolean isAll = false;
 
     public Automate(AutomateReader<T> reader) {
         this.reader = reader;
-    }
-
-    public Automate(AutomateReader<T> reader, Translator translator) {
-        this.reader = reader;
-        this.translator = translator;
     }
 
     public void init() {
@@ -45,13 +41,9 @@ public abstract class Automate<T> {
             beginState = reader.getBeginState();
             endState = reader.getEndStates();
             alphabet = reader.getAlphabet();
-            if (translator == null) {
-                translator = reader.getTranslator();
-            }
             currentState = beginState;
-
-            unzipAutomate();
             isInit = true;
+            parseAlphabet();
         }
     }
 
@@ -93,16 +85,29 @@ public abstract class Automate<T> {
         return priority;
     }
 
-    private void unzipAutomate() {
-        for (String symbol : alphabet) {
-            List<String> newSymbols = BasicTranslator.getTranslationList(symbol);
-            if (newSymbols != null) {
-                for (String state : table.keySet()) {
-                    Map<String, T> transitionsMap = table.get(state);
-                    T states = transitionsMap.get(symbol);
-                    transitionsMap.remove(symbol);
-                    for (String newSymbol : newSymbols) {
-                        transitionsMap.put(newSymbol, states);
+    protected void checkNext(String currentSignal) {
+        if ((!alphabet.contains(currentSignal) && !alphabet.contains("\\.")) || table.get(currentState) == null) {
+            throw new AutomateException();
+        }
+    }
+
+    private void parseAlphabet() {
+        List<String> tempAlphabet = new ArrayList<>(alphabet);
+        for (String letter : tempAlphabet) {
+            List<String> translations = BasicTranslator.getTranslationList(letter);
+            if (translations != null) {
+                int index = alphabet.indexOf(letter);
+                alphabet.remove(index);
+                for (String translation : translations) {
+                    alphabet.add(index, translation);
+                    index++;
+                }
+                for (String key : table.keySet()) {
+                    Map<String, T> map = table.get(key);
+                    T value = map.get(letter);
+                    map.remove(letter);
+                    for (String translation : translations) {
+                        map.put(translation, value);
                     }
                 }
             }

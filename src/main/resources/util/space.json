@@ -1,6 +1,6 @@
 {
   "name": "space",
-  "priority": 0,
+  "priority": 10,
   "alphabet": [
     "\\s"
   ],
@@ -12,7 +12,7 @@
     {
       "rowName": "1",
       "transitions": [
-        "1"
+        "2"
       ]
     },
     {

@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class LexerParser {
 
-    public static Collection<Automate> getAutomates(String filePath) {
+    public static Collection<Automate> getAutomates(String filePath, boolean debug) {
         String context = FileUtils.readFile(filePath);
 
         List<Automate> automates = new ArrayList<>();
@@ -28,15 +28,18 @@ public class LexerParser {
         automates.add(new DeterministicAutomate(new JSONDeterminateAutomateReader("util/priority.json")));
         automates.add(new DeterministicAutomate(new JSONDeterminateAutomateReader("util/colon.json")));
         automates.add(new DeterministicAutomate(new JSONDeterminateAutomateReader("util/space.json")));
+        automates.add(new DeterministicAutomate(new JSONDeterminateAutomateReader("util/regex.json")));
         automates.add(new DeterministicAutomate(new JSONDeterminateAutomateReader("util/cotchie.json")));
 
-        return parseText(Functions.getLexemes(automates, context));
+        return parseText(Functions.getLexemes(automates, context, debug));
     }
 
     private static Collection<Automate> parseText(Collection<Pair<String, String>> oldTokens) {
         List<Automate> automates = new ArrayList<>();
+        List<Pair<String, String>> tokens = new ArrayList<>(oldTokens);
+        removeLastSpace(tokens);
 
-        Iterator<Pair<String, String>> iterator = oldTokens.iterator();
+        Iterator<Pair<String, String>> iterator = tokens.iterator();
         while (iterator.hasNext()) {
             String name = getTokenValue(iterator, "name");
             getTokenValue(iterator, "colon");
@@ -51,16 +54,24 @@ public class LexerParser {
     }
 
     private static String getTokenValue(Iterator<Pair<String, String>> tokens, String tokenName) {
-        Pair<String, String> next = tokens.next();
-        if (next.getKey().equals("space")) {
-            next = tokens.next();
-            if (next.getKey().equals(tokenName)) {
-                return next.getValue();
+        Pair<String, String> token = tokens.next();
+        if ("space".equals(token.getKey())) {
+            token = tokens.next();
+            if (token.getKey().equals(tokenName)) {
+                return token.getValue();
             }
-        } else if (next.getKey().equals(tokenName)) {
-            return next.getValue();
+        } else if (token.getKey().equals(tokenName)) {
+            return token.getValue();
         }
 
         throw new AutomateException("Name token is incorrect");
     }
+
+    private static void removeLastSpace(List<Pair<String, String>> tokens) {
+        int lastIndex = tokens.size() - 1;
+        if ("space".equals(tokens.get(lastIndex).getKey())) {
+            tokens.remove(lastIndex);
+        }
+    }
+
 }

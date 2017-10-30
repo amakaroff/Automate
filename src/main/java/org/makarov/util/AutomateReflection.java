@@ -46,16 +46,6 @@ public class AutomateReflection<T> {
     }
 
     @SuppressWarnings("unchecked")
-    public String getTranslatorName() {
-        Object translator = getFieldValue("translator");
-        if (translator == null) {
-            return null;
-        } else {
-            return translator.getClass().getName();
-        }
-    }
-
-    @SuppressWarnings("unchecked")
     public Map<String, Map<String, T>> getTransitions() {
         return (Map<String, Map<String, T>>) getFieldValue("table");
     }

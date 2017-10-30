@@ -4,5 +4,5 @@ import org.makarov.automate.Automate;
 
 public interface AutomateSerializer {
 
-    public String serialize(Automate automate);
+    String serialize(Automate automate);
 }
