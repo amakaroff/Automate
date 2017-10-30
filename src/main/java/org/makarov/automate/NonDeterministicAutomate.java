@@ -30,7 +30,7 @@ public class NonDeterministicAutomate extends Automate<Set<String>> {
                 newState = table.get(state).get("\\.");
             }
 
-            if (!newState.isEmpty()) {
+            if (newState != null && !newState.isEmpty()) {
                 newStates.addAll(newState);
             }
         }

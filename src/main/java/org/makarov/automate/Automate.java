@@ -102,6 +102,7 @@ public abstract class Automate<T> {
                     alphabet.add(index, translation);
                     index++;
                 }
+
                 for (String key : table.keySet()) {
                     Map<String, T> map = table.get(key);
                     T value = map.get(letter);

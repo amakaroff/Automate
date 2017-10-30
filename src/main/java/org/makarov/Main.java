@@ -14,8 +14,9 @@ public class Main {
     public static void main(String[] args) {
         //System.out.println(LexerParser.getAutomates("lexic/lexer.lex", false));
 
-        Automate automate = new DeterministicAutomate("util/regex.json");
+        Automate automate = new DeterministicAutomate(new GenerateAutomateReader("\\."));
         automate.init();
+        System.out.println(Functions.function(automate, "1", 0));
         AutomateSerializer serializer = new AutomateToJSONSerializer();
         System.out.println(serializer.serialize(automate));
     }

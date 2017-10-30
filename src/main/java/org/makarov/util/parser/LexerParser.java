@@ -23,13 +23,13 @@ public class LexerParser {
         String context = FileUtils.readFile(filePath);
 
         List<Automate> automates = new ArrayList<>();
-        automates.add(new DeterministicAutomate(new JSONDeterminateAutomateReader("util/name.json")));
-        automates.add(new DeterministicAutomate(new JSONDeterminateAutomateReader("util/priority.json")));
-        automates.add(new DeterministicAutomate(new JSONDeterminateAutomateReader("util/priority.json")));
-        automates.add(new DeterministicAutomate(new JSONDeterminateAutomateReader("util/colon.json")));
-        automates.add(new DeterministicAutomate(new JSONDeterminateAutomateReader("util/space.json")));
-        automates.add(new DeterministicAutomate(new JSONDeterminateAutomateReader("util/regex.json")));
-        automates.add(new DeterministicAutomate(new JSONDeterminateAutomateReader("util/cotchie.json")));
+        automates.add(new DeterministicAutomate(new JSONDeterminateAutomateReader("lexer-util/name.json")));
+        automates.add(new DeterministicAutomate(new JSONDeterminateAutomateReader("lexer-util/priority.json")));
+        automates.add(new DeterministicAutomate(new JSONDeterminateAutomateReader("lexer-util/priority.json")));
+        automates.add(new DeterministicAutomate(new JSONDeterminateAutomateReader("lexer-util/colon.json")));
+        automates.add(new DeterministicAutomate(new JSONDeterminateAutomateReader("lexer-util/space.json")));
+        automates.add(new DeterministicAutomate(new JSONDeterminateAutomateReader("lexer-util/regex.json")));
+        automates.add(new DeterministicAutomate(new JSONDeterminateAutomateReader("lexer-util/cotchie.json")));
 
         return parseText(Functions.getLexemes(automates, context, debug));
     }
