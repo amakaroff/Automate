@@ -36,13 +36,13 @@ public class LexerParser {
         String context = FileUtils.readFile(filePath);
 
         List<Automate> automates = new ArrayList<>();
-        automates.add(new DeterministicAutomate(new JSONDeterminateAutomateReader("lexer-util/name.json")));
-        automates.add(new DeterministicAutomate(new JSONDeterminateAutomateReader("lexer-util/priority.json")));
-        automates.add(new DeterministicAutomate(new JSONDeterminateAutomateReader("lexer-util/priority.json")));
-        automates.add(new DeterministicAutomate(new JSONDeterminateAutomateReader("lexer-util/colon.json")));
-        automates.add(new DeterministicAutomate(new JSONDeterminateAutomateReader("lexer-util/space.json")));
-        automates.add(new DeterministicAutomate(new JSONDeterminateAutomateReader("lexer-util/regex.json")));
-        automates.add(new DeterministicAutomate(new JSONDeterminateAutomateReader("lexer-util/cotchie.json")));
+        automates.add(new DeterministicAutomate(new JSONDeterminateAutomateReader("lexer-util/name")));
+        automates.add(new DeterministicAutomate(new JSONDeterminateAutomateReader("lexer-util/priority")));
+        automates.add(new DeterministicAutomate(new JSONDeterminateAutomateReader("lexer-util/priority")));
+        automates.add(new DeterministicAutomate(new JSONDeterminateAutomateReader("lexer-util/colon")));
+        automates.add(new DeterministicAutomate(new JSONDeterminateAutomateReader("lexer-util/space")));
+        automates.add(new DeterministicAutomate(new JSONDeterminateAutomateReader("lexer-util/regex")));
+        automates.add(new DeterministicAutomate(new JSONDeterminateAutomateReader("lexer-util/cotchie")));
 
         return parseText(Functions.getLexemes(automates, context, debug));
     }
@@ -77,7 +77,7 @@ public class LexerParser {
             return token.getValue();
         }
 
-        throw new AutomateException("Name token is incorrect");
+        throw new AutomateException("Token name: {" + tokenName + "} is incorrect");
     }
 
     private static void removeLastSpace(List<Pair<String, String>> tokens) {
@@ -86,5 +86,4 @@ public class LexerParser {
             tokens.remove(lastIndex);
         }
     }
-
 }
