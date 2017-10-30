@@ -3,13 +3,7 @@ package org.makarov.util.operations;
 import org.makarov.automate.Automate;
 import org.makarov.util.AutomateReflection;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class AutomateRenamer {
 
@@ -30,6 +24,7 @@ public class AutomateRenamer {
 
     @SuppressWarnings("unchecked")
     public static void renameAutomate(Automate automate) {
+        automate.init();
         AutomateReflection reflection = new AutomateReflection(automate);
         int index = 1;
         Map transitions = reflection.getTransitions();

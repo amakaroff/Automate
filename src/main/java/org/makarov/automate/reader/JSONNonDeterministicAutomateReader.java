@@ -15,14 +15,14 @@ public class JSONNonDeterministicAutomateReader extends JSONAutomateReader<Set<S
         List<String> alphabet = getAlphabet();
         Map<String, Map<String, Set<String>>> resultMap = new HashMap<>();
 
-        JSONArray table = json.getJSONArray("table");
+        JSONArray table = json.getJSONArray(TABLE);
         for (int i = 0; i < table.length(); i++) {
             JSONObject metaRow = table.getJSONObject(i);
-            String rowName = metaRow.getString("rowName");
+            String rowName = metaRow.getString(ROW_NAME);
             Map<String, Set<String>> map = new HashMap<>();
             resultMap.put(rowName, map);
 
-            JSONArray transitions = metaRow.getJSONArray("transitions");
+            JSONArray transitions = metaRow.getJSONArray(TRANSITIONS);
 
             for (int j = 0; j < alphabet.size(); j++) {
                 Set<String> row = new HashSet<>(jsonArrayToList(transitions.getJSONArray(j)));
@@ -38,7 +38,7 @@ public class JSONNonDeterministicAutomateReader extends JSONAutomateReader<Set<S
     }
 
     public Set<String> getBeginState() {
-        JSONArray beginState = json.getJSONArray("beginStates");
+        JSONArray beginState = json.getJSONArray(BEGIN_STATES);
         return jsonArrayToSet(beginState);
     }
 

@@ -1,34 +1,38 @@
 {
     "name": "Identify",
     "priority": 0,
-    "translator": "org.makarov.task.translators.IdentifyTranslator",
     "alphabet": [
-        "|", "C", "A"
+        "\\|", "\\.", "\\w", "_"
     ],
     "beginState": "A",
     "endStates": [
-        "C", "D"
+        "C", "E"
     ],
     "table": [
         {
             "rowName": "A",
             "transitions": [
-                "B", "D", null
+                "D", null, "B", "B"
             ]
         }, {
             "rowName": "B",
             "transitions": [
-                "C", "B", "B"
+                null, null, "B", "B"
             ]
         }, {
             "rowName": "C",
             "transitions": [
-                null, null, null
+                null, null, null, null
             ]
         }, {
             "rowName": "D",
             "transitions": [
-                null, "D", null
+                "E", "D", null, null
+            ]
+        }, {
+            "rowName": "E",
+            "transitions": [
+                null, null, null, null
             ]
         }
     ]

@@ -4,20 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-/**
- * Created by Aleksei Makarov on 26.10.2017.
- */
-public class BasicTranslator {
+public class DefaultRegexTranslator implements Translator {
 
     private static Map<String, List<String>> translators = new HashMap<>();
 
-    static {
-        init();
-    }
-
-    private static void init() {
+    public DefaultRegexTranslator() {
         List<String> letters = new ArrayList<>();
         fillListOfSymbols(letters, 'a', 'z');
         fillListOfSymbols(letters, 'A', 'Z');
@@ -55,17 +47,8 @@ public class BasicTranslator {
         translators.put("\\\\", slash);
     }
 
-    private static void fillListOfSymbols(List<String> list, char startChar, char endChar) {
-        char currentChar = startChar;
-
-        while (currentChar != endChar) {
-            list.add(String.valueOf(currentChar));
-            currentChar++;
-        }
-        list.add(String.valueOf(currentChar));
-    }
-
-    public static List<String> getTranslationList(String character) {
+    @Override
+    public List<String> getTranslateElements(String character) {
         return translators.get(character);
     }
 }

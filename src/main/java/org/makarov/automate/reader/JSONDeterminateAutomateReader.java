@@ -17,14 +17,14 @@ public class JSONDeterminateAutomateReader extends JSONAutomateReader<String> {
     public Map<String, Map<String, String>> getTable() {
         Map<String, Map<String, String>> resultMap = new HashMap<>();
 
-        JSONArray table = json.getJSONArray("table");
+        JSONArray table = json.getJSONArray(TABLE);
         List<String> columns = getAlphabet();
         for (int i = 0; i < table.length(); i++) {
             JSONObject metaRow = table.getJSONObject(i);
-            String rowName = metaRow.getString("rowName");
+            String rowName = metaRow.getString(ROW_NAME);
             Map<String, String> map = new HashMap<>();
             resultMap.put(rowName, map);
-            List<String> row = jsonArrayToList(metaRow.getJSONArray("transitions"));
+            List<String> row = jsonArrayToList(metaRow.getJSONArray(TRANSITIONS));
             for (int j = 0; j < columns.size(); j++) {
                 String element = row.get(j);
                 map.put(columns.get(j), element);
@@ -36,6 +36,6 @@ public class JSONDeterminateAutomateReader extends JSONAutomateReader<String> {
     }
 
     public String getBeginState() {
-        return json.getString("beginState");
+        return json.getString(BEGIN_STATE);
     }
 }

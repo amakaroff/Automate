@@ -1,7 +1,8 @@
 package org.makarov.automate;
 
 import org.makarov.automate.reader.AutomateReader;
-import org.makarov.task.translators.BasicTranslator;
+import org.makarov.task.translators.DefaultRegexTranslator;
+import org.makarov.task.translators.Translator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,23 +28,86 @@ public abstract class Automate<T> {
 
     protected boolean isInit = false;
 
-    boolean isAll = false;
+    protected Translator translator;
+
+    protected String alwaysSymbol;
+
+    protected boolean debug = false;
 
     public Automate(AutomateReader<T> reader) {
         this.reader = reader;
     }
 
     public void init() {
+        init(false);
+    }
+
+    public void init(boolean debug) {
         if (!isInit) {
-            table = reader.getTable();
-            name = reader.getName();
-            priority = reader.getPriority();
-            beginState = reader.getBeginState();
-            endState = reader.getEndStates();
-            alphabet = reader.getAlphabet();
-            currentState = beginState;
-            isInit = true;
-            parseAlphabet();
+            try {
+                this.debug = debug;
+                if (this.debug) {
+                    System.out.println("\nInitializating of Automate is started!");
+                }
+
+                name = reader.getName();
+                if (this.debug) {
+                    System.out.println("Automate name: " + name);
+                }
+
+                table = reader.getTable();
+                if (this.debug) {
+                    System.out.println("Automate transitions: " + table);
+                }
+
+                priority = reader.getPriority();
+                if (this.debug) {
+                    System.out.println("Automate priority: " + priority);
+                }
+
+                beginState = reader.getBeginState();
+                if (this.debug) {
+                    System.out.println("Automate begin state: " + beginState);
+                }
+
+                endState = reader.getEndStates();
+                if (this.debug) {
+                    System.out.println("Automate end state: " + endState);
+                }
+
+                alphabet = reader.getAlphabet();
+                if (this.debug) {
+                    System.out.println("Automate alphabet: " + alphabet);
+                }
+
+                alwaysSymbol = reader.getAlwaysSymbol();
+                if (this.debug) {
+                    System.out.println("Automate always symbol: " + alwaysSymbol);
+                }
+
+                translator = reader.getTranslator();
+                if (this.debug && translator != null) {
+                    System.out.println("Translator for Automate: " + translator.getClass().getName());
+                }
+                if (translator == null) {
+                    translator = new DefaultRegexTranslator();
+                    if (this.debug) {
+                        System.out.println("Translator for Automate is degault: " + translator.getClass().getName() + "");
+                    }
+                }
+                currentState = beginState;
+                isInit = true;
+                parseAlphabet();
+                if (this.debug) {
+                    System.out.println("Initializating of Automate: " + name + " complete!\n");
+                }
+
+                if (this.debug) {
+                    System.out.println("Current state is " + currentState);
+                }
+            } catch (Exception exception) {
+                throw new AutomateException("Problem at reading automate: " + name, exception);
+            }
         }
     }
 
@@ -74,7 +138,13 @@ public abstract class Automate<T> {
     }
 
     public void refresh() {
+        if (debug) {
+            System.out.println("Automate has been refreshed!\n");
+        }
         currentState = beginState;
+        if (debug) {
+            System.out.println("Current state is " + currentState);
+        }
     }
 
     public String getName() {
@@ -86,15 +156,27 @@ public abstract class Automate<T> {
     }
 
     protected void checkNext(String currentSignal) {
-        if ((!alphabet.contains(currentSignal) && !alphabet.contains("\\.")) || table.get(currentState) == null) {
+        if ((!alphabet.contains(currentSignal) && !alphabet.contains(alwaysSymbol)) || table.get(currentState) == null) {
+            if (debug) {
+                System.out.println("Signal: " + currentSignal + " is can't complete next");
+            }
             throw new AutomateException();
         }
     }
 
     private void parseAlphabet() {
+        if (debug) {
+            System.out.println("Parsing alphabet is started!");
+        }
         List<String> tempAlphabet = new ArrayList<>(alphabet);
         for (String letter : tempAlphabet) {
-            List<String> translations = BasicTranslator.getTranslationList(letter);
+            if (debug) {
+                System.out.println("Parsing of letter: " + letter);
+            }
+            List<String> translations = translator.getTranslateElements(letter);
+            if (debug) {
+                System.out.println("Maps of letters: " + translations);
+            }
             if (translations != null) {
                 int index = alphabet.indexOf(letter);
                 alphabet.remove(index);
@@ -112,6 +194,10 @@ public abstract class Automate<T> {
                     }
                 }
             }
+        }
+
+        if (debug) {
+            System.out.println("Parsing alphabet is finished!");
         }
     }
 }

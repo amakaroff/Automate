@@ -1,9 +1,9 @@
 {
     "name": "Real",
+    "debug": true,
     "priority": 4,
-    "translator": "org.makarov.task.translators.RealTranslator",
     "alphabet": [
-        "S", "N", "P", "E"
+        "+", "-", "\\d", ".", "e", "E"
     ],
     "beginState": "A",
     "endStates": [
@@ -13,42 +13,42 @@
         {
             "rowName": "A",
             "transitions": [
-                "B", "C", "D", null
+                "B", "B", "C", "D", null, null
             ]
         }, {
             "rowName": "B",
             "transitions": [
-                null, "C", "D", null
+                null, null, "C", "D", null, null
             ]
         }, {
             "rowName": "C",
             "transitions": [
-                null, "C", "E", "F"
+                null, null, "C", "E", "F", "F"
             ]
         }, {
             "rowName": "D",
             "transitions": [
-                null, "E", null, null
+                null, null, "E", null, null, null
             ]
         }, {
             "rowName": "E",
             "transitions": [
-                null, "E", null, "F"
+                null, null, "E", null, "F", "F"
             ]
         }, {
             "rowName": "F",
             "transitions": [
-                "H", "G", null, null
+                "H", "H", "G", null, null, null
             ]
         }, {
             "rowName": "G",
             "transitions": [
-                null, "G", null, null
+                null, null, "G", null, null, null
             ]
         }, {
             "rowName": "H",
             "transitions": [
-                null, "G", null, null
+                null, null, "G", null, null, null
             ]
         }
     ]

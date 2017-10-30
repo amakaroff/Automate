@@ -12,7 +12,7 @@
         {
             "rowName": "A",
             "transitions": [
-                "B", null, null, "C", null,  "D", null, "E", null, null, null
+                "B", null, null, "C", null, "D", null, "E", null, null, null
             ]
         }, {
             "rowName": "B",

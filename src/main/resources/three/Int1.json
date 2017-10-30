@@ -1,22 +1,22 @@
 {
     "name": "Int",
     "priority": 5,
-    "translator": "org.makarov.task.translators.RealTranslator",
-    "alphabet": ["S", "N"],
+    "alwaysSymbol": "\\.",
+    "debug": true,
+    "translator": "",
+    "alphabet": ["+", "-", "\\d"],
     "beginState": "A",
     "endStates": ["C"],
     "table": [
         {
             "rowName": "A",
-            "transitions": ["B", "C"]
+            "transitions": ["B", "B", "C"]
         }, {
             "rowName": "B",
-            "transitions": [null, "C"]
+            "transitions": [null, null, "C"]
         }, {
             "rowName": "C",
-            "transitions": [
-                null, "C"
-            ]
+            "transitions": [null, null, "C"]
         }
     ]
 }

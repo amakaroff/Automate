@@ -8,12 +8,13 @@ import java.util.*;
 public class Functions {
 
     public static Pair<Boolean, Integer> function(Automate automate, String line, int index) {
+        automate.init();
+        automate.refresh();
         boolean isEnd = false;
         int allCount = 0;
         int tempCount = 0;
 
-        automate.init();
-        if (line.length() == 0) {
+        if (automate.isEnd() && line.length() == 0) {
             return new Pair<>(true, allCount);
         }
 
@@ -34,7 +35,7 @@ public class Functions {
         return new Pair<>(isEnd, allCount);
     }
 
-    public static Collection<Pair<String, String>> getLexemes(Collection<Automate> automates, String line,  boolean debug) {
+    public static Collection<Pair<String, String>> getLexemes(Collection<Automate> automates, String line, boolean debug) {
         List<Pair<String, String>> lexemes = new ArrayList<>();
         List<String> errors = new ArrayList<>();
 
@@ -51,7 +52,7 @@ public class Functions {
             }
         }
 
-        if (!errors.isEmpty() && debug) {
+        if (debug) {
             for (String error : errors) {
                 System.out.println(error);
             }
