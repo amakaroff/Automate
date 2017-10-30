@@ -42,9 +42,7 @@ public class AutomateToJSONSerializer implements AutomateSerializer {
         JSONObject object = new JSONObject();
 
         object.put(AutomateReader.NAME, name);
-        if (priority != 0) {
-            object.put(AutomateReader.PRIORITY, priority);
-        }
+        object.put(AutomateReader.PRIORITY, priority);
         object.put(AutomateReader.ALPHABET, alphabet.toArray());
         object.put(AutomateReader.END_STATES, endStates.toArray());
 

@@ -8,31 +8,62 @@ import java.util.*;
 public class Functions {
 
     public static Pair<Boolean, Integer> function(Automate automate, String line, int index) {
-        automate.init();
+        return function(automate, line, index, false);
+    }
+
+    public static Pair<Boolean, Integer> function(Automate automate, String line, int index, boolean debug) {
+        automate.init(debug);
         automate.refresh();
         boolean isEnd = false;
         int allCount = 0;
         int tempCount = 0;
 
+        if (debug) {
+            System.out.println("Functions is initialized!");
+        }
+
         if (automate.isEnd() && line.length() == 0) {
-            return new Pair<>(true, allCount);
+            Pair<Boolean, Integer> pair = new Pair<>(true, allCount);
+            if (debug) {
+                System.out.println("Automate has finished with result: " + pair + "\n");
+            }
+            return pair;
         }
 
         for (int i = index; i < line.length(); i++) {
             try {
+                if (debug) {
+                    System.out.println("Signal: {" + line.charAt(i) + "}. Try to next state!");
+                }
                 automate.nextState(line.charAt(i));
                 tempCount++;
                 if (automate.isEnd()) {
+                    if (debug) {
+                        System.out.println("Signal: {" + line.charAt(i) + "}. Data flush to line!");
+                    }
                     allCount += tempCount;
                     tempCount = 0;
                     isEnd = true;
                 }
             } catch (AutomateException exception) {
+                if (debug) {
+                    System.out.println("Signal: {" + line.charAt(i) + "}. Automate has finished hes worked!");
+                }
                 break;
             }
         }
 
-        return new Pair<>(isEnd, allCount);
+        Pair<Boolean, Integer> pair = new Pair<>(isEnd, allCount);
+
+        if (debug) {
+            System.out.println("Automate has finished hes worked correctly! " + pair + "\n");
+        }
+
+        return pair;
+    }
+
+    public static Collection<Pair<String, String>> getLexemes(Collection<Automate> automates, String line) {
+        return getLexemes(automates, line, false);
     }
 
     public static Collection<Pair<String, String>> getLexemes(Collection<Automate> automates, String line, boolean debug) {
@@ -44,6 +75,9 @@ public class Functions {
         while (index < line.length()) {
             try {
                 Pair<String, String> lexeme = getLexeme(automates, line, index);
+                if (debug) {
+                    System.out.println("Find lexeme: " + lexeme);
+                }
                 lexemes.add(lexeme);
                 index += lexeme.getValue().length();
             } catch (AutomateException exception) {

@@ -4,10 +4,12 @@
     "alphabet": [
         "\\|", "\\.", "\\w", "_"
     ],
+
     "beginState": "A",
     "endStates": [
         "C", "E"
     ],
+
     "table": [
         {
             "rowName": "A",
