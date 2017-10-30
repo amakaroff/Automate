@@ -14,7 +14,7 @@ public class AutomateOperations {
         return null;
     }
 
-    public static Automate repeat(Automate automate, int count) {
+    public static Automate repeat(Automate automate) {
 
         return null;
     }

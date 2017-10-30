@@ -1,7 +1,7 @@
 package org.makarov.util;
 
 import org.apache.commons.io.IOUtils;
-import org.makarov.automate.AutomateException;
+import org.makarov.automate.exception.AutomateException;
 
 import java.io.IOException;
 import java.io.InputStream;

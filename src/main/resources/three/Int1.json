@@ -1,9 +1,6 @@
 {
     "name": "Int",
     "priority": 5,
-    "alwaysSymbol": "\\.",
-    "debug": true,
-    "translator": "",
     "alphabet": ["+", "-", "\\d"],
     "beginState": "A",
     "endStates": ["C"],

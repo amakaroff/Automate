@@ -1,4 +1,4 @@
-package org.makarov.automate;
+package org.makarov.automate.exception;
 
 public class AutomateException extends RuntimeException {
 

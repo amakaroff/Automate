@@ -1,6 +1,6 @@
 package org.makarov.automate.reader;
 
-import org.makarov.task.translators.Translator;
+import org.makarov.automate.translators.Translator;
 
 import java.util.List;
 import java.util.Map;

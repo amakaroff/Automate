@@ -1,8 +1,9 @@
 package org.makarov.automate;
 
+import org.makarov.automate.exception.AutomateException;
 import org.makarov.automate.reader.AutomateReader;
-import org.makarov.task.translators.DefaultRegexTranslator;
-import org.makarov.task.translators.Translator;
+import org.makarov.automate.translators.DefaultRegexTranslator;
+import org.makarov.automate.translators.Translator;
 
 import java.util.ArrayList;
 import java.util.List;

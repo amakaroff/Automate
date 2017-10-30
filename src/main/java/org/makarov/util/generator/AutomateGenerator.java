@@ -4,9 +4,6 @@ import org.makarov.automate.Automate;
 import org.makarov.automate.DeterministicAutomate;
 import org.makarov.automate.reader.GenerateAutomateReader;
 
-/**
- * Created by Aleksei Makarov on 26.10.2017.
- */
 public class AutomateGenerator {
 
     public static Automate generate(String name, String priority, String regex) {

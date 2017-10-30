@@ -1,6 +1,6 @@
 package org.makarov.task;
 
-import org.makarov.automate.AutomateException;
+import org.makarov.automate.exception.AutomateException;
 import org.makarov.automate.DeterministicAutomate;
 import org.makarov.automate.NonDeterministicAutomate;
 import org.makarov.util.Pair;

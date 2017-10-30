@@ -1,4 +1,4 @@
-package org.makarov.task.translators;
+package org.makarov.automate.translators;
 
 import java.util.ArrayList;
 import java.util.HashMap;

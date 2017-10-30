@@ -2,7 +2,7 @@ package org.makarov.automate.reader;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.makarov.task.translators.Translator;
+import org.makarov.automate.translators.Translator;
 import org.makarov.util.FileUtils;
 
 import java.util.ArrayList;

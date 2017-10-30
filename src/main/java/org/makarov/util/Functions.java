@@ -1,7 +1,7 @@
 package org.makarov.util;
 
 import org.makarov.automate.Automate;
-import org.makarov.automate.AutomateException;
+import org.makarov.automate.exception.AutomateException;
 
 import java.util.*;
 

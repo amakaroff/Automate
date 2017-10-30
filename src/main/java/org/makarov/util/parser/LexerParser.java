@@ -1,7 +1,7 @@
 package org.makarov.util.parser;
 
 import org.makarov.automate.Automate;
-import org.makarov.automate.AutomateException;
+import org.makarov.automate.exception.AutomateException;
 import org.makarov.automate.DeterministicAutomate;
 import org.makarov.automate.reader.JSONDeterminateAutomateReader;
 import org.makarov.util.FileUtils;
@@ -14,9 +14,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * Created by Aleksei Makarov on 26.10.2017.
- */
 public class LexerParser {
 
     public static Collection<Automate> getAutomates(String filePath, boolean debug) {
