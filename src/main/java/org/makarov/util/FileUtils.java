@@ -16,7 +16,7 @@ public class FileUtils {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         } catch (NullPointerException exception) {
-            throw new AutomateException("File not found!", exception);
+            throw new AutomateException("File: " + fileName + " is not found in resources!", exception);
         }
     }
 }

@@ -4,10 +4,10 @@ import org.makarov.automate.Automate;
 import org.makarov.automate.DeterministicAutomate;
 import org.makarov.automate.exception.AutomateException;
 import org.makarov.automate.reader.JSONDeterministicAutomateReader;
+import org.makarov.util.AutomateReflection;
 import org.makarov.util.FileUtils;
 import org.makarov.util.Functions;
 import org.makarov.util.Pair;
-import org.makarov.util.generator.AutomateGenerator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -60,7 +60,7 @@ public class LexerParser {
             getTokenValue(iterator, COLON);
             String regex = getTokenValue(iterator, REGEX);
             getTokenValue(iterator, SEMICOLON);
-            automates.add(AutomateGenerator.generate(name, priority, regex));
+            automates.add(generate(name, priority, regex));
         }
 
         return automates;
@@ -76,7 +76,7 @@ public class LexerParser {
             return token.getValue();
         }
 
-        throw new AutomateException("Token name: {" + tokenName + "} is incorrect");
+        throw new AutomateException("Token: {" + token + "} is incorrect");
     }
 
     private static void removeLastSpace(List<Pair<String, String>> tokens) {
@@ -84,5 +84,15 @@ public class LexerParser {
         if (SPACE.equals(tokens.get(lastIndex).getKey())) {
             tokens.remove(lastIndex);
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Automate generate(String name, String priority, String regex) {
+        Automate automate = RegexParser.parseRegex(regex);
+        AutomateReflection reflection = new AutomateReflection(automate);
+        reflection.setName(name);
+        reflection.setPriority(Integer.valueOf(priority));
+
+        return reflection.getAutomate();
     }
 }

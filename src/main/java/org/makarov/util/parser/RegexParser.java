@@ -15,12 +15,7 @@ import java.util.List;
 public class RegexParser {
 
     public static Automate parseRegex(String regex) {
-        long time = System.currentTimeMillis();
-        Automate automate = parseRegex0(regex);
-        time = System.currentTimeMillis() - time;
-
-        System.out.println("Regular expression compilation complete for " + getTime(time));
-        return automate;
+        return parseRegex(regex, false);
     }
 
     public static Automate parseRegex(String regex, boolean debug) {
@@ -28,7 +23,7 @@ public class RegexParser {
         Automate automate = parseRegex0(regex, debug);
         time = System.currentTimeMillis() - time;
 
-        System.out.println("Regular expression compilation complete for " + getTime(time));
+        log(debug, "Regular expression compilation complete for %s", getTime(time));
         return automate;
     }
 

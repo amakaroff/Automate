@@ -16,6 +16,14 @@ public class AutomateReflection<T> {
         automate.init();
     }
 
+    public void setName(String newName) {
+        setFieldValue("name", newName);
+    }
+
+    public void setPriority(int newPriority) {
+        setFieldValue("name", newPriority);
+    }
+
     public String getAlwaysSymbol() {
         return getFieldValue("alwaysSymbol").toString();
     }
