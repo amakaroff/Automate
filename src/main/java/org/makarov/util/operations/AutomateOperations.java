@@ -8,9 +8,9 @@ import org.makarov.automate.reader.TransformNonDeterministicAutomateReader;
 public class AutomateOperations {
 
     public static Automate concat(Automate first, Automate second) {
-       first = getCorrectFirstAutomate(first, second);
-       second = getCorrectSecondAutomate(first, second);
-       AutomateRenamer.renameStates(first, second);
+        first = getCorrectFirstAutomate(first, second);
+        second = getCorrectSecondAutomate(first, second);
+        AutomateRenamer.renameStates(first, second);
 
 
         return null;

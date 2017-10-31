@@ -1,26 +1,17 @@
 {
   "name": "",
-
   "priority": 0,
-
   "translator": "",
-
   "alphabet": [
-
   ],
-
   "beginState": "",
-
   "endStates": [
-
   ],
-
   "table": [
-      {
-        "rowName": "",
-        "transitions": [
-
-        ]
-      }
-    ]
+    {
+      "rowName": "",
+      "transitions": [
+      ]
+    }
+  ]
 }

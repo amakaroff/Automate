@@ -1,19 +1,19 @@
 {
-    "name": "Int",
-    "priority": 5,
-    "alphabet": ["+", "-", "\\d"],
-    "beginState": "A",
-    "endStates": ["C"],
-    "table": [
-        {
-            "rowName": "A",
-            "transitions": ["B", "B", "C"]
-        }, {
-            "rowName": "B",
-            "transitions": [null, null, "C"]
-        }, {
-            "rowName": "C",
-            "transitions": [null, null, "C"]
-        }
-    ]
+  "name": "Int",
+  "priority": 5,
+  "alphabet": ["+", "-", "\\d"],
+  "beginState": "A",
+  "endStates": ["C"],
+  "table": [
+    {
+      "rowName": "A",
+      "transitions": ["B", "B", "C"]
+    }, {
+      "rowName": "B",
+      "transitions": [null, null, "C"]
+    }, {
+      "rowName": "C",
+      "transitions": [null, null, "C"]
+    }
+  ]
 }

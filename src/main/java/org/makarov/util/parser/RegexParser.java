@@ -117,7 +117,6 @@ public class RegexParser {
                 int startIndex = currentIndex + 1;
                 int endIndex = index - 1;
 
-
                 String innerRegex = regex.substring(startIndex, endIndex);
                 log(debug, "Find inner regular expression: {%s}. Start position: {%s}, End position {%s}",
                         innerRegex, startIndex, endIndex);
@@ -219,5 +218,4 @@ public class RegexParser {
             return new DeterministicAutomate(new OneSignalAutomateGenerateReader(oneChar));
         }
     }
-
 }

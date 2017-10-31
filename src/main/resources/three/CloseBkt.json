@@ -1,24 +1,24 @@
 {
-    "name": "CloseBkt",
-    "priority": 6,
-    "alphabet": [
-        ")"
-    ],
-    "beginState": "A",
-    "endStates": [
+  "name": "CloseBkt",
+  "priority": 6,
+  "alphabet": [
+    ")"
+  ],
+  "beginState": "A",
+  "endStates": [
+    "B"
+  ],
+  "table": [
+    {
+      "rowName": "A",
+      "transitions": [
         "B"
-    ],
-    "table": [
-        {
-            "rowName": "A",
-            "transitions": [
-                "B"
-            ]
-        }, {
-            "rowName": "B",
-            "transitions": [
-                null
-            ]
-        }
-    ]
+      ]
+    }, {
+      "rowName": "B",
+      "transitions": [
+        null
+      ]
+    }
+  ]
 }

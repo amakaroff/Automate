@@ -1,109 +1,109 @@
 {
-    "name": "KeyWord",
-    "priority": 7,
-    "alphabet": [
-        "d", "e", "f", "i", "n", "c", "o", "l", "a", "m", "b"
-    ],
-    "beginState": "A",
-    "endStates": [
-        "G", "N", "R", "S"
-    ],
-    "table": [
-        {
-            "rowName": "A",
-            "transitions": [
-                "B", null, null, "C", null, "D", null, "E", null, null, null
-            ]
-        }, {
-            "rowName": "B",
-            "transitions": [
-                null, "F", null, null, null, null, null, null, null, null, null
-            ]
-        }, {
-            "rowName": "C",
-            "transitions": [
-                null, null, "G", null, null, null, null, null, null, null, null
-            ]
-        }, {
-            "rowName": "D",
-            "transitions": [
-                null, null, null, null, null, null, "H", null, null, null, null
-            ]
-        }, {
-            "rowName": "E",
-            "transitions": [
-                null, null, null, null, null, null, null, null, "I", null, null
-            ]
-        }, {
-            "rowName": "F",
-            "transitions": [
-                null, null, "J", null, null, null, null, null, null, null, null
-            ]
-        }, {
-            "rowName": "G",
-            "transitions": [
-                null, null, null, null, null, null, null, null, null, null, null
-            ]
-        }, {
-            "rowName": "H",
-            "transitions": [
-                null, null, null, null, "K", null, null, null, null, null, null
-            ]
-        }, {
-            "rowName": "I",
-            "transitions": [
-                null, null, null, null, null, null, null, null, null, "L", null
-            ]
-        }, {
-            "rowName": "J",
-            "transitions": [
-                null, null, null, "M", null, null, null, null, null, null, null
-            ]
-        }, {
-            "rowName": "K",
-            "transitions": [
-                "N", null, null, null, null, null, null, null, null, null, null
-            ]
-        }, {
-            "rowName": "L",
-            "transitions": [
-                null, null, null, null, null, null, null, null, null, null, "O"
-            ]
-        }, {
-            "rowName": "M",
-            "transitions": [
-                null, null, null, null, "P", null, null, null, null, null, null
-            ]
-        }, {
-            "rowName": "N",
-            "transitions": [
-                null, null, null, null, null, null, null, null, null, null, null
-            ]
-        }, {
-            "rowName": "O",
-            "transitions": [
-                "Q", null, null, null, null, null, null, null, null, null, null
-            ]
-        }, {
-            "rowName": "P",
-            "transitions": [
-                null, "R", null, null, null, null, null, null, null, null, null
-            ]
-        }, {
-            "rowName": "Q",
-            "transitions": [
-                null, null, null, null, null, null, null, null, "S", null, null
-            ]
-        }, {
-            "rowName": "R",
-            "transitions": [
-                null, null, null, null, null, null, null, null, null, null, null
-            ]
-        }, {
-            "rowName": "S",
-            "transitions": [
-                null, null, null, null, null, null, null, null, null, null, null
-            ]
-        }
-    ]
+  "name": "KeyWord",
+  "priority": 7,
+  "alphabet": [
+    "d", "e", "f", "i", "n", "c", "o", "l", "a", "m", "b"
+  ],
+  "beginState": "A",
+  "endStates": [
+    "G", "N", "R", "S"
+  ],
+  "table": [
+    {
+      "rowName": "A",
+      "transitions": [
+        "B", null, null, "C", null, "D", null, "E", null, null, null
+      ]
+    }, {
+      "rowName": "B",
+      "transitions": [
+        null, "F", null, null, null, null, null, null, null, null, null
+      ]
+    }, {
+      "rowName": "C",
+      "transitions": [
+        null, null, "G", null, null, null, null, null, null, null, null
+      ]
+    }, {
+      "rowName": "D",
+      "transitions": [
+        null, null, null, null, null, null, "H", null, null, null, null
+      ]
+    }, {
+      "rowName": "E",
+      "transitions": [
+        null, null, null, null, null, null, null, null, "I", null, null
+      ]
+    }, {
+      "rowName": "F",
+      "transitions": [
+        null, null, "J", null, null, null, null, null, null, null, null
+      ]
+    }, {
+      "rowName": "G",
+      "transitions": [
+        null, null, null, null, null, null, null, null, null, null, null
+      ]
+    }, {
+      "rowName": "H",
+      "transitions": [
+        null, null, null, null, "K", null, null, null, null, null, null
+      ]
+    }, {
+      "rowName": "I",
+      "transitions": [
+        null, null, null, null, null, null, null, null, null, "L", null
+      ]
+    }, {
+      "rowName": "J",
+      "transitions": [
+        null, null, null, "M", null, null, null, null, null, null, null
+      ]
+    }, {
+      "rowName": "K",
+      "transitions": [
+        "N", null, null, null, null, null, null, null, null, null, null
+      ]
+    }, {
+      "rowName": "L",
+      "transitions": [
+        null, null, null, null, null, null, null, null, null, null, "O"
+      ]
+    }, {
+      "rowName": "M",
+      "transitions": [
+        null, null, null, null, "P", null, null, null, null, null, null
+      ]
+    }, {
+      "rowName": "N",
+      "transitions": [
+        null, null, null, null, null, null, null, null, null, null, null
+      ]
+    }, {
+      "rowName": "O",
+      "transitions": [
+        "Q", null, null, null, null, null, null, null, null, null, null
+      ]
+    }, {
+      "rowName": "P",
+      "transitions": [
+        null, "R", null, null, null, null, null, null, null, null, null
+      ]
+    }, {
+      "rowName": "Q",
+      "transitions": [
+        null, null, null, null, null, null, null, null, "S", null, null
+      ]
+    }, {
+      "rowName": "R",
+      "transitions": [
+        null, null, null, null, null, null, null, null, null, null, null
+      ]
+    }, {
+      "rowName": "S",
+      "transitions": [
+        null, null, null, null, null, null, null, null, null, null, null
+      ]
+    }
+  ]
 }

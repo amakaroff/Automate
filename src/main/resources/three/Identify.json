@@ -1,46 +1,44 @@
 {
-    "name": "Identify",
-    "priority": 0,
-    "alphabet": [
-        "|", "\\", "\\.", "\\w", "+", "-", "*", "/", "%", "!", "_", "\\d"
-    ],
-
-    "beginState": "A",
-    "endStates": [
-        "B", "C", "E"
-    ],
-
-    "table": [
-        {
-            "rowName": "A",
-            "transitions": [
-                "D", "F", null, "B", "B", "B", "B","B", "B", "B", "B", "B"
-            ]
-        }, {
-            "rowName": "B",
-            "transitions": [
-                null, "F", null, "B", "B", "B", "B", "B", "B", "B", "B", "B"
-            ]
-        }, {
-            "rowName": "C",
-            "transitions": [
-                null, null, null, null, null, null, null, null, null, null, null, null
-            ]
-        }, {
-            "rowName": "D",
-            "transitions": [
-                "E", null, "D", null, null, null, null, null, null, null, null, null
-            ]
-        }, {
-            "rowName": "E",
-            "transitions": [
-                null, null, null, null, null, null, null, null, null, null, null, null
-            ]
-        }, {
-        "rowName": "F",
-        "transitions": [
-          "B", "B", null, null, null, null, null, null, null, null, null, null
-        ]
-      }
-    ]
+  "name": "Identify",
+  "priority": 0,
+  "alphabet": [
+    "|", "\\", "\\.", "\\w", "+", "-", "*", "/", "%", "!", "_", "\\d"
+  ],
+  "beginState": "A",
+  "endStates": [
+    "B", "C", "E"
+  ],
+  "table": [
+    {
+      "rowName": "A",
+      "transitions": [
+        "D", "F", null, "B", "B", "B", "B", "B", "B", "B", "B", "B"
+      ]
+    }, {
+      "rowName": "B",
+      "transitions": [
+        null, "F", null, "B", "B", "B", "B", "B", "B", "B", "B", "B"
+      ]
+    }, {
+      "rowName": "C",
+      "transitions": [
+        null, null, null, null, null, null, null, null, null, null, null, null
+      ]
+    }, {
+      "rowName": "D",
+      "transitions": [
+        "E", null, "D", null, null, null, null, null, null, null, null, null
+      ]
+    }, {
+      "rowName": "E",
+      "transitions": [
+        null, null, null, null, null, null, null, null, null, null, null, null
+      ]
+    }, {
+      "rowName": "F",
+      "transitions": [
+        "B", "B", null, null, null, null, null, null, null, null, null, null
+      ]
+    }
+  ]
 }

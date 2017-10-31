@@ -14,26 +14,22 @@
       "transitions": [
         "2", "3", "4", "3", "3"
       ]
-    },
-    {
+    }, {
       "rowName": "2",
       "transitions": [
         "2", "3", "4", "3", "5"
       ]
-    },
-    {
+    }, {
       "rowName": "3",
       "transitions": [
         null, null, null, null, null
       ]
-    },
-    {
+    }, {
       "rowName": "4",
       "transitions": [
         "2", "2", "2", "2", "2"
       ]
-    },
-    {
+    }, {
       "rowName": "5",
       "transitions": [
         "2", "3", "4", "3", "5"

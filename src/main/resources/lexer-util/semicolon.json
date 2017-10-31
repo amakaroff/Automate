@@ -1,5 +1,5 @@
 {
-  "name": "cotchie",
+  "name": "semicolon",
   "priority": 20,
   "alphabet": [
     ";"
@@ -14,8 +14,7 @@
       "transitions": [
         "2"
       ]
-    },
-    {
+    }, {
       "rowName": "2",
       "transitions": [
         null

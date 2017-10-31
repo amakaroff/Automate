@@ -2,8 +2,7 @@
   "name": "Automate one",
   "priority": 5,
   "alphabet": [
-    "0",
-    "1"
+    "0", "1"
   ],
   "beginState": "A",
   "endStates": [
@@ -13,29 +12,22 @@
     {
       "rowName": "A",
       "transitions": [
-        "B",
-        "C"
+        "B", "C"
       ]
-    },
-    {
+    }, {
       "rowName": "B",
       "transitions": [
-        "A",
-        "D"
+        "A", "D"
       ]
-    },
-    {
+    }, {
       "rowName": "C",
       "transitions": [
-        "D",
-        "A"
+        "D", "A"
       ]
-    },
-    {
+    }, {
       "rowName": "D",
       "transitions": [
-        "C",
-        "B"
+        "C", "B"
       ]
     }
   ]

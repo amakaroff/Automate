@@ -1,11 +1,7 @@
 package org.makarov;
 
-import org.makarov.task.TaskTree;
-import org.makarov.util.FileUtils;
-import org.makarov.util.Pair;
+import org.makarov.automate.Automate;
 import org.makarov.util.parser.RegexParser;
-
-import java.util.Collection;
 
 public class Main {
 
@@ -20,6 +16,7 @@ public class Main {
         automate.init();
         System.out.println(TaskTwo.findAllNumbers(automate, "5выф-5.в+.5e+5.5e.7cda-.3ee-5.e-3502e.3e-3eв3.E3.3."));*/
 
-        RegexParser.parseRegex("str | str |", true);
+        Automate automate = RegexParser.parseRegex("str | str");
+        System.out.println(automate);
     }
 }

@@ -22,7 +22,7 @@ public class LexerParser {
 
     private static final String PRIORITY = "priority";
 
-    private static final String COTCHIE = "cotchie";
+    private static final String SEMICOLON = "semicolon";
 
     private static final String SPACE = "space";
 
@@ -33,7 +33,7 @@ public class LexerParser {
     }
 
     public static Collection<Automate> getAutomates(String filePath, boolean debug) {
-        String context = FileUtils.readFile(filePath);
+        String content = FileUtils.readFile(filePath);
 
         List<Automate> automates = new ArrayList<>();
         automates.add(new DeterministicAutomate(new JSONDeterministicAutomateReader("lexer-util/name")));
@@ -44,7 +44,7 @@ public class LexerParser {
         automates.add(new DeterministicAutomate(new JSONDeterministicAutomateReader("lexer-util/regex")));
         automates.add(new DeterministicAutomate(new JSONDeterministicAutomateReader("lexer-util/cotchie")));
 
-        return parseText(Functions.getLexemes(automates, context, debug));
+        return parseText(Functions.getLexemes(automates, content, debug));
     }
 
     private static Collection<Automate> parseText(Collection<Pair<String, String>> oldTokens) {
@@ -59,7 +59,7 @@ public class LexerParser {
             String priority = getTokenValue(iterator, PRIORITY);
             getTokenValue(iterator, COLON);
             String regex = getTokenValue(iterator, REGEX);
-            getTokenValue(iterator, COTCHIE);
+            getTokenValue(iterator, SEMICOLON);
             automates.add(AutomateGenerator.generate(name, priority, regex));
         }
 

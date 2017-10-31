@@ -1,55 +1,54 @@
 {
-    "name": "Real",
-    "debug": true,
-    "priority": 4,
-    "alphabet": [
-        "+", "-", "\\d", ".", "e", "E"
-    ],
-    "beginState": "A",
-    "endStates": [
-        "C", "E", "G"
-    ],
-    "table": [
-        {
-            "rowName": "A",
-            "transitions": [
-                "B", "B", "C", "D", null, null
-            ]
-        }, {
-            "rowName": "B",
-            "transitions": [
-                null, null, "C", "D", null, null
-            ]
-        }, {
-            "rowName": "C",
-            "transitions": [
-                null, null, "C", "E", "F", "F"
-            ]
-        }, {
-            "rowName": "D",
-            "transitions": [
-                null, null, "E", null, null, null
-            ]
-        }, {
-            "rowName": "E",
-            "transitions": [
-                null, null, "E", null, "F", "F"
-            ]
-        }, {
-            "rowName": "F",
-            "transitions": [
-                "H", "H", "G", null, null, null
-            ]
-        }, {
-            "rowName": "G",
-            "transitions": [
-                null, null, "G", null, null, null
-            ]
-        }, {
-            "rowName": "H",
-            "transitions": [
-                null, null, "G", null, null, null
-            ]
-        }
-    ]
+  "name": "Real",
+  "priority": 4,
+  "alphabet": [
+    "+", "-", "\\d", ".", "e", "E"
+  ],
+  "beginState": "A",
+  "endStates": [
+    "C", "E", "G"
+  ],
+  "table": [
+    {
+      "rowName": "A",
+      "transitions": [
+        "B", "B", "C", "D", null, null
+      ]
+    }, {
+      "rowName": "B",
+      "transitions": [
+        null, null, "C", "D", null, null
+      ]
+    }, {
+      "rowName": "C",
+      "transitions": [
+        null, null, "C", "E", "F", "F"
+      ]
+    }, {
+      "rowName": "D",
+      "transitions": [
+        null, null, "E", null, null, null
+      ]
+    }, {
+      "rowName": "E",
+      "transitions": [
+        null, null, "E", null, "F", "F"
+      ]
+    }, {
+      "rowName": "F",
+      "transitions": [
+        "H", "H", "G", null, null, null
+      ]
+    }, {
+      "rowName": "G",
+      "transitions": [
+        null, null, "G", null, null, null
+      ]
+    }, {
+      "rowName": "H",
+      "transitions": [
+        null, null, "G", null, null, null
+      ]
+    }
+  ]
 }

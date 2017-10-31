@@ -1,31 +1,19 @@
 {
   "name": "",
-
   "priority": 0,
-
   "translator": "",
-
   "alphabet": [
-
   ],
-
   "beginStates": [
-
   ],
-
   "endStates": [
-
   ],
-
   "table": {
     "columns": [
-
     ],
-
     "rows": [
       {
         "rowName": "",
-
         "transitions": [
           []
         ]
