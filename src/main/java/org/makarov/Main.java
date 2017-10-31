@@ -2,23 +2,20 @@ package org.makarov;
 
 import org.makarov.automate.Automate;
 import org.makarov.automate.DeterministicAutomate;
-import org.makarov.automate.reader.GenerateAutomateReader;
-import org.makarov.automate.serialize.AutomateSerializer;
-import org.makarov.automate.serialize.AutomateToJSONSerializer;
+import org.makarov.automate.reader.EmptyAutomateGenerateReader;
 import org.makarov.task.TaskTree;
-import org.makarov.task.TaskTwo;
 import org.makarov.util.FileUtils;
 import org.makarov.util.Functions;
-import org.makarov.util.Pair;
-import org.makarov.util.operations.AutomateRenamer;
-
-import java.util.stream.Stream;
+import org.makarov.util.parser.LexerParser;
 
 public class Main {
 
     public static void main(String[] args) {
-        //System.out.println(LexerParser.getAutomates("lexic/lexer.lex", false));
-        TaskTree.getLexems(FileUtils.readFile("code.txt"));
+        /*Automate generate = new DeterministicAutomate(new EmptyAutomateGenerateReader());
+        generate.init(true);
+        System.out.println(Functions.function(generate, "", 0, true));*/
+        System.out.println(LexerParser.getAutomates("lexic/lexer.lex", true));
+        //TaskTree.getLexems(FileUtils.readFile("code.txt"));
         /*Automate automate = new DeterministicAutomate("three/Identify");
         automate.init();
         AutomateRenamer.renameAutomate(automate);

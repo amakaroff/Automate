@@ -74,7 +74,7 @@ public class Functions {
 
         while (index < line.length()) {
             try {
-                Pair<String, String> lexeme = getLexeme(automates, line, index);
+                Pair<String, String> lexeme = getLexeme(automates, line, index, debug);
                 if (debug) {
                     System.out.println("Find lexeme: " + lexeme);
                 }
@@ -96,9 +96,13 @@ public class Functions {
     }
 
     public static Pair<String, String> getLexeme(Collection<Automate> automates, String line, int index) {
+        return getLexeme(automates, line, index, false);
+    }
+
+    public static Pair<String, String> getLexeme(Collection<Automate> automates, String line, int index, boolean debug) {
         Map<Automate, Pair<Boolean, Integer>> results = new HashMap<>();
         for (Automate automate : automates) {
-            results.put(automate, function(automate, line, index));
+            results.put(automate, function(automate, line, index, debug));
             allRefresh(automates);
         }
 

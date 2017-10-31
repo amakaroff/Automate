@@ -25,26 +25,6 @@ public class DefaultRegexTranslator implements Translator {
         spaces.add("\r");
         spaces.add("\n");
         translators.put("\\s", spaces);
-
-        List<String> openBracket = new ArrayList<>();
-        openBracket.add("(");
-        translators.put("\\(", openBracket);
-
-        List<String> closeBracket = new ArrayList<>();
-        closeBracket.add(")");
-        translators.put("\\)", closeBracket);
-
-        List<String> verticalStick = new ArrayList<>();
-        verticalStick.add("|");
-        translators.put("\\|", verticalStick);
-
-        List<String> star = new ArrayList<>();
-        star.add("*");
-        translators.put("\\*", star);
-
-        List<String> slash = new ArrayList<>();
-        slash.add("\\");
-        translators.put("\\\\", slash);
     }
 
     @Override

@@ -18,18 +18,18 @@ public class DeterministicAutomate extends Automate<String> {
     public void nextState(char signal) throws AutomateException {
         String currentSignal = String.valueOf(signal);
         if (debug) {
-            System.out.println("Input signal: " + currentSignal);
+            System.out.println("Input signal: {" + currentSignal + "}");
         }
         checkNext(currentSignal);
 
         String newState = table.get(currentState).get(currentSignal);
         if (debug && newState != null) {
-            System.out.println("New state: " + newState);
+            System.out.println("New state: {" + newState + "}");
         }
         if (newState == null) {
             newState = table.get(currentState).get(alwaysSymbol);
             if (debug && newState != null) {
-                System.out.println("New state: " + newState);
+                System.out.println("New state: {" + newState + "}");
             }
 
             if (newState == null) {

@@ -2,7 +2,8 @@ package org.makarov.util.generator;
 
 import org.makarov.automate.Automate;
 import org.makarov.automate.DeterministicAutomate;
-import org.makarov.automate.reader.GenerateAutomateReader;
+import org.makarov.automate.reader.EmptyAutomateGenerateReader;
+import org.makarov.automate.reader.OneSignalAutomateGenerateReader;
 
 public class AutomateGenerator {
 
@@ -17,6 +18,10 @@ public class AutomateGenerator {
     }
 
     private static Automate generateOneAutomate(String oneChar) {
-        return new DeterministicAutomate(new GenerateAutomateReader(oneChar));
+        if (oneChar.isEmpty()) {
+            return new DeterministicAutomate(new EmptyAutomateGenerateReader());
+        } else {
+            return new DeterministicAutomate(new OneSignalAutomateGenerateReader(oneChar));
+        }
     }
 }

@@ -21,7 +21,7 @@ public class NonDeterministicAutomate extends Automate<Set<String>> {
     public void nextState(char signal) throws AutomateException {
         String currentSignal = String.valueOf(signal);
         if (debug) {
-            System.out.println("Input signal: " + currentSignal);
+            System.out.println("Input signal: {" + currentSignal + "}");
         }
         checkNext(currentSignal);
 
@@ -32,12 +32,12 @@ public class NonDeterministicAutomate extends Automate<Set<String>> {
             if (newState == null || newState.isEmpty()) {
                 newState = table.get(state).get(alwaysSymbol);
                 if (debug && newState != null && !newState.isEmpty()) {
-                    System.out.println("New state for authomate is not found! Current State: " + currentState);
+                    System.out.println("New state for authomate is not found! Current State: {" + currentState + "}");
                 }
             }
 
             if (newState != null && !newState.isEmpty()) {
-                System.out.println("New state: " + newState);
+                System.out.println("New state: {" + newState + "}");
                 newStates.addAll(newState);
             }
         }

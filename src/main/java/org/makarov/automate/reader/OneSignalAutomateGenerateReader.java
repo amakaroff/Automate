@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GenerateAutomateReader implements AutomateReader<String> {
+public class OneSignalAutomateGenerateReader implements AutomateReader<String> {
 
     private static final String BEGIN_POSITION = "1";
 
@@ -13,7 +13,7 @@ public class GenerateAutomateReader implements AutomateReader<String> {
 
     private String oneChar;
 
-    public GenerateAutomateReader(String oneChar) {
+    public OneSignalAutomateGenerateReader(String oneChar) {
         this.oneChar = oneChar;
     }
 
