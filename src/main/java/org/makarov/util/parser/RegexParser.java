@@ -1,8 +1,10 @@
 package org.makarov.util.parser;
 
 import org.makarov.automate.Automate;
+import org.makarov.automate.DeterministicAutomate;
 import org.makarov.automate.exception.AutomateException;
-import org.makarov.util.generator.AutomateGenerator;
+import org.makarov.automate.reader.EmptyAutomateGenerateReader;
+import org.makarov.automate.reader.OneSignalAutomateGenerateReader;
 import org.makarov.util.operations.AutomateOperations;
 
 import java.util.ArrayDeque;
@@ -80,8 +82,11 @@ public class RegexParser {
                 index++;
             } else if (character == '|') {
                 log(debug, "End of expression. Concat %s", expression);
+                if (expression.isEmpty() && forConcat.isEmpty()) {
+                    throw new AutomateException("Wrong symbol | on position: " + index);
+                }
                 if (expression.size() != 0) {
-                    expressions.add(generateConcatAutomate(forConcat, expression));
+                    expressions.add(generateConcatAutomate(forConcat, expression, debug));
                     expression = new ArrayList<>();
                 }
 
@@ -94,9 +99,9 @@ public class RegexParser {
                 log(debug, "Start find close bracket expression! Current position: " + index);
                 log(debug, "In brackets character: {%s}", '(');
                 while (!queue.isEmpty()) {
-                    if (index > regex.length()) {
+                    if (index >= regex.length()) {
                         log(debug, "Wrong open bracket. Position: %s", currentIndex);
-                        throw new AutomateException("Wrong open bracket. Position: " + index);
+                        throw new AutomateException("Wrong open bracket. Position: " + currentIndex);
                     }
                     character = regex.charAt(index);
                     log(debug, "In brackets character: {%s}", character);
@@ -116,20 +121,21 @@ public class RegexParser {
                 String innerRegex = regex.substring(startIndex, endIndex);
                 log(debug, "Find inner regular expression: {%s}. Start position: {%s}, End position {%s}",
                         innerRegex, startIndex, endIndex);
-                expressions.add(parseRegex(innerRegex, debug));
+                forConcat.add(parseRegex(innerRegex, debug));
             } else if (character == '*') {
                 if (!expression.isEmpty()) {
                     log(debug, "End of expression. Repeat {%s}", expression);
-                    expressions.add(AutomateOperations.repeat(generateConcatAutomate(forConcat, expression)));
+                    forConcat.add(AutomateOperations.repeat(generateConcatAutomate(forConcat, expression, debug)));
                 } else {
                     Automate automate = forConcat.get(expressions.size() - 1);
                     log(debug, "End of expression. Repeat automate {%s}", automate);
-                    expressions.add(AutomateOperations.repeat(automate));
+                    forConcat.add(AutomateOperations.repeat(automate));
                 }
-
 
                 expression = new ArrayList<>();
                 index++;
+            } else if (character == ')') {
+                throw new AutomateException("Wrong symbol " + character + " on position: " + index);
             } else {
                 log(debug, "Simple character: {%s}", character);
                 expression.add(String.valueOf(character));
@@ -138,37 +144,40 @@ public class RegexParser {
         }
 
         log(debug, "Generate concat by expression: {%s}", expression);
-        expressions.add(generateConcatAutomate(forConcat, expression));
+        expressions.add(generateConcatAutomate(forConcat, expression, debug));
 
-        log(debug, "Join automates: {%s}", expressions);
+        log(debug, "Join automates: {%s}\n", expressions);
         return generateUnionAutomate(expressions);
     }
 
-    private static Automate generateConcatAutomate(List<Automate> automates, List<String> expression) {
+    private static Automate generateConcatAutomate(List<Automate> automates, List<String> expression, boolean debug) {
         int index = 0;
         Automate automateResult;
-
+        log(debug, "Concat operations %s and %s", automates, expression);
         if (automates.isEmpty()) {
-            if (expression.size() == 0) {
-                return AutomateGenerator.generateOneAutomate("");
+            if (expression.isEmpty()) {
+                throw new AutomateException("Generation of concatenation is unreal! Automates and expression is empty!");
             }
 
-            automateResult = AutomateGenerator.generateOneAutomate(expression.get(index));
+            automateResult = generateOneAutomate(expression.get(index));
+            automateResult.init();
         } else {
             int innerIndex = 0;
 
             automateResult = automates.get(innerIndex);
-
-            while (index < expression.size()) {
+            innerIndex++;
+            while (innerIndex < automates.size()) {
                 Automate automate = automates.get(innerIndex);
                 automateResult = AutomateOperations.concat(automateResult, automate);
                 innerIndex++;
             }
+            automates.clear();
         }
 
         index++;
         while (index < expression.size()) {
-            Automate automate = AutomateGenerator.generateOneAutomate(expression.get(index));
+            Automate automate = generateOneAutomate(expression.get(index));
+            automate.init();
             automateResult = AutomateOperations.concat(automateResult, automate);
             index++;
         }
@@ -178,7 +187,9 @@ public class RegexParser {
 
     private static Automate generateUnionAutomate(List<Automate> automates) {
         if (automates.size() == 0) {
-            return AutomateGenerator.generateOneAutomate("");
+            Automate automate = generateOneAutomate("");
+            automate.init();
+            return automate;
         } else if (automates.size() == 1) {
             return automates.get(0);
         }
@@ -200,4 +211,13 @@ public class RegexParser {
             System.out.println(String.format(message, objects));
         }
     }
+
+    private static Automate generateOneAutomate(String oneChar) {
+        if (oneChar == null || oneChar.isEmpty() || "\\?".equals(oneChar)) {
+            return new DeterministicAutomate(new EmptyAutomateGenerateReader());
+        } else {
+            return new DeterministicAutomate(new OneSignalAutomateGenerateReader(oneChar));
+        }
+    }
+
 }

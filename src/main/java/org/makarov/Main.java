@@ -19,6 +19,7 @@ public class Main {
         Automate automate = new DeterministicAutomate("three/Real1");
         automate.init();
         System.out.println(TaskTwo.findAllNumbers(automate, "5выф-5.в+.5e+5.5e.7cda-.3ee-5.e-3502e.3e-3eв3.E3.3."));*/
-        RegexParser.parseRegex("(str)sd", true);
+
+        RegexParser.parseRegex("str | str |", true);
     }
 }

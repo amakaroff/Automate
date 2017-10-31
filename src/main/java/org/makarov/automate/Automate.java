@@ -168,4 +168,9 @@ public abstract class Automate<T> {
             System.out.println(String.format(message, params));
         }
     }
+
+    @Override
+    public String toString() {
+        return "Name: {" + name + "}, alphabet: " + alphabet;
+    }
 }
