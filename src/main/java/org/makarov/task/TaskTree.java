@@ -22,6 +22,6 @@ public class TaskTree {
         automates.add(new DeterministicAutomate(new JSONDeterministicAutomateReader("three/Space.json")));
         automates.add(new DeterministicAutomate(new JSONDeterministicAutomateReader("three/Identify.json")));
 
-        return Functions.getLexemes(automates, line, true);
+        return Functions.getLexemes(automates, line);
     }
 }

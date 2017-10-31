@@ -6,20 +6,21 @@ import org.makarov.automate.NonDeterministicAutomate;
 import org.makarov.automate.reader.TransformAutomateReader;
 import org.makarov.automate.serialize.AutomateSerializer;
 import org.makarov.automate.serialize.AutomateToJSONSerializer;
+import org.makarov.task.TaskTree;
+import org.makarov.util.FileUtils;
+import org.makarov.util.Functions;
+import org.makarov.util.Pair;
+
+import java.util.Collection;
 
 public class Main {
 
     public static void main(String[] args) {
-        DeterministicAutomate automate = new DeterministicAutomate("three/Real1");
-        automate.init();
-        Automate newAutomate = new NonDeterministicAutomate(new TransformAutomateReader(automate));
-        AutomateSerializer serializer = new AutomateToJSONSerializer();
-        System.out.println(serializer.serialize(newAutomate));
-        /*Automate generate = new DeterministicAutomate(new EmptyAutomateGenerateReader());
-        generate.init(true);
-        System.out.println(Functions.function(generate, "", 0, true));
-        System.out.println(LexerParser.getAutomates("lexic/lexer.lex"));
-        TaskTree.getLexems(FileUtils.readFile("code.txt"));
+        Collection<Pair<String, String>> lexems = TaskTree.getLexems(FileUtils.readFile("code.txt"));
+        for (Pair<String, String> lexem : lexems) {
+            System.out.println(lexem);
+        }
+        /*
         Automate automate = new DeterministicAutomate("three/Identify");
         automate.init();
         AutomateRenamer.renameAutomate(automate);

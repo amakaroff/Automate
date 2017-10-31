@@ -1,5 +1,6 @@
 lambda
 
-    |string1|
- (cond
-    123      193.3)
+    |stri
+      ng 1 #@|
+ (cond 193e3
+    123	 condlambda 193a3)

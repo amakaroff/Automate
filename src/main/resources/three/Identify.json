@@ -2,40 +2,45 @@
     "name": "Identify",
     "priority": 0,
     "alphabet": [
-        "\\|", "\\.", "\\w", "_"
+        "|", "\\", "\\.", "\\w", "+", "-", "*", "/", "%", "!", "_", "\\d"
     ],
 
     "beginState": "A",
     "endStates": [
-        "C", "E"
+        "B", "C", "E"
     ],
 
     "table": [
         {
             "rowName": "A",
             "transitions": [
-                "D", null, "B", "B"
+                "D", "F", null, "B", "B", "B", "B","B", "B", "B", "B", "B"
             ]
         }, {
             "rowName": "B",
             "transitions": [
-                null, null, "B", "B"
+                null, "F", null, "B", "B", "B", "B", "B", "B", "B", "B", "B"
             ]
         }, {
             "rowName": "C",
             "transitions": [
-                null, null, null, null
+                null, null, null, null, null, null, null, null, null, null, null, null
             ]
         }, {
             "rowName": "D",
             "transitions": [
-                "E", "D", null, null
+                "E", null, "D", null, null, null, null, null, null, null, null, null
             ]
         }, {
             "rowName": "E",
             "transitions": [
-                null, null, null, null
+                null, null, null, null, null, null, null, null, null, null, null, null
             ]
-        }
+        }, {
+        "rowName": "F",
+        "transitions": [
+          "B", "B", null, null, null, null, null, null, null, null, null, null
+        ]
+      }
     ]
 }
