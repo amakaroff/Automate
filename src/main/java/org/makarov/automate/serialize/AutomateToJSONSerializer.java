@@ -8,26 +8,31 @@ import org.makarov.automate.translators.Translator;
 import org.makarov.constants.RegexConstants;
 import org.makarov.util.AutomateReflection;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class AutomateToJSONSerializer implements AutomateSerializer {
 
-    private static void addBeginState(JSONObject object, Object element) {
+    private static boolean addBeginState(JSONObject object, Object element) {
         if (element instanceof Collection) {
             object.put(AutomateReader.BEGIN_STATES, ((Collection) element).toArray());
+            return false;
         } else {
             object.put(AutomateReader.BEGIN_STATE, element);
+            return true;
         }
     }
 
-    private static Object getObjectToJsonValue(Object object) { //Бага блять :(
-        if (object instanceof Collection) {
-            return ((Collection) object).toArray();
-        } else {
+    private static Object getObjectToJsonValue(Object object, boolean isDeterminate) {
+        if (isDeterminate) {
             return object;
+        } else {
+            if (object == null) {
+                List<Object> arrayList = new ArrayList<>();
+                arrayList.add(null);
+                return arrayList.toArray();
+            } else {
+                return ((Collection) object).toArray();
+            }
         }
     }
 
@@ -58,7 +63,7 @@ public class AutomateToJSONSerializer implements AutomateSerializer {
         object.put(AutomateReader.ALPHABET, alphabet.toArray());
         object.put(AutomateReader.END_STATES, endStates.toArray());
 
-        addBeginState(object, automateReflection.getBeginState());
+        boolean isDeterminate = addBeginState(object, automateReflection.getBeginState());
 
         Map<String, Map<String, Object>> table = (Map<String, Map<String, Object>>) automateReflection.getTransitions();
 
@@ -69,7 +74,7 @@ public class AutomateToJSONSerializer implements AutomateSerializer {
 
             List<Object> values = new ArrayList<>();
             for (String signal : alphabet) {
-                values.add(getObjectToJsonValue(table.get(transition).get(signal)));
+                values.add(getObjectToJsonValue(table.get(transition).get(signal), isDeterminate));
             }
 
             row.put(AutomateReader.TRANSITIONS, values.toArray());

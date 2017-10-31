@@ -25,7 +25,7 @@ public class Main {
         Automate automate = new DeterministicAutomate("three/Real1");
         automate.init();
         System.out.println(TaskTwo.findAllNumbers(automate, "5выф-5.в+.5e+5.5e.7cda-.3ee-5.e-3502e.3e-3eв3.E3.3."));*/
-       /* AutomateSerializer serializer = new AutomateToJSONSerializer();
+        AutomateSerializer serializer = new AutomateToJSONSerializer();
 
         Automate automate = new DeterministicAutomate(new OneSignalAutomateGenerateReader("\\w"));
         System.out.println(Functions.function(automate, "a", 0));
@@ -40,6 +40,6 @@ public class Main {
         System.out.println(serializer.serialize(union));
 
         System.out.println(Functions.function(union, "1", 0));
-        System.out.println(Functions.function(union, "b", 0));*/
+        System.out.println(Functions.function(union, "b", 0));
     }
 }
