@@ -14,10 +14,40 @@ import java.util.List;
 public class RegexParser {
 
     public static Automate parseRegex(String regex) {
-        return parseRegex(regex, false);
+        long time = System.currentTimeMillis();
+        Automate automate = parseRegex0(regex);
+        time = System.currentTimeMillis() - time;
+
+        System.out.println("Regular expression compilation complete for " + getTime(time));
+        return automate;
     }
 
     public static Automate parseRegex(String regex, boolean debug) {
+        long time = System.currentTimeMillis();
+        Automate automate = parseRegex0(regex, debug);
+        time = System.currentTimeMillis() - time;
+
+        System.out.println("Regular expression compilation complete for " + getTime(time));
+        return automate;
+    }
+
+    public static String getTime(long time) {
+        if (time / 1000 == 0) {
+            return time + " milliseconds";
+        }
+
+        if (time / 60000 == 0) {
+            return time / 1000 + " seconds, " + time % 1000 + " milliseconds";
+        }
+
+        return "";
+    }
+
+    private static Automate parseRegex0(String regex) {
+        return parseRegex0(regex, false);
+    }
+
+    private static Automate parseRegex0(String regex, boolean debug) {
         int index = 0;
         List<Automate> expressions = new ArrayList<>();
         List<Automate> forConcat = new ArrayList<>();
@@ -120,13 +150,13 @@ public class RegexParser {
                 String innerRegex = regex.substring(startIndex, endIndex);
                 log(debug, "Find inner regular expression: {%s}. Start position: {%s}, End position {%s}",
                         innerRegex, startIndex, endIndex);
-                forConcat.add(parseRegex(innerRegex, debug));
+                forConcat.add(parseRegex0(innerRegex, debug));
             } else if (character == '*') {
                 if (!expression.isEmpty()) {
                     log(debug, "End of expression. Repeat {%s}", expression);
                     forConcat.add(AutomateOperations.repeat(generateConcatAutomate(forConcat, expression, debug)));
                 } else {
-                    Automate automate = forConcat.get(expressions.size() - 1);
+                    Automate automate = forConcat.get(forConcat.size() - 1);
                     log(debug, "End of expression. Repeat automate {%s}", automate);
                     forConcat.add(AutomateOperations.repeat(automate));
                 }
