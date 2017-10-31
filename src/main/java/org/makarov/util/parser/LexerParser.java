@@ -70,10 +70,9 @@ public class LexerParser {
         Pair<String, String> token = tokens.next();
         if (SPACE.equals(token.getKey())) {
             token = tokens.next();
-            if (token.getKey().equals(tokenName)) {
-                return token.getValue();
-            }
-        } else if (token.getKey().equals(tokenName)) {
+        }
+
+        if (token.getKey().equals(tokenName)) {
             return token.getValue();
         }
 

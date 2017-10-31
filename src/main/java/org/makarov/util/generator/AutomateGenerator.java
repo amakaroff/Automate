@@ -17,8 +17,8 @@ public class AutomateGenerator {
         return null;
     }
 
-    private static Automate generateOneAutomate(String oneChar) {
-        if (oneChar.isEmpty()) {
+    public static Automate generateOneAutomate(String oneChar) {
+        if (oneChar == null || oneChar.isEmpty() || "\\?".equals(oneChar)) {
             return new DeterministicAutomate(new EmptyAutomateGenerateReader());
         } else {
             return new DeterministicAutomate(new OneSignalAutomateGenerateReader(oneChar));

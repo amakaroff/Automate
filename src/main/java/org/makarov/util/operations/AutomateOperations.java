@@ -8,11 +8,19 @@ import org.makarov.automate.reader.TransformNonDeterministicAutomateReader;
 public class AutomateOperations {
 
     public static Automate concat(Automate first, Automate second) {
+       first = getCorrectFirstAutomate(first, second);
+       second = getCorrectSecondAutomate(first, second);
+       AutomateRenamer.renameStates(first, second);
+
 
         return null;
     }
 
     public static Automate union(Automate first, Automate second) {
+        first = getCorrectFirstAutomate(first, second);
+        second = getCorrectSecondAutomate(first, second);
+        AutomateRenamer.renameStates(first, second);
+
 
         return null;
     }
@@ -23,7 +31,23 @@ public class AutomateOperations {
         return null;
     }
 
-    public NonDeterministicAutomate toNonDeterministicAutomate(DeterministicAutomate automate) {
+    private static Automate getCorrectFirstAutomate(Automate first, Automate second) {
+        if (first instanceof DeterministicAutomate && second instanceof NonDeterministicAutomate) {
+            return toNonDeterministicAutomate((DeterministicAutomate) first);
+        } else {
+            return first;
+        }
+    }
+
+    private static Automate getCorrectSecondAutomate(Automate first, Automate second) {
+        if (first instanceof NonDeterministicAutomate && second instanceof DeterministicAutomate) {
+            return toNonDeterministicAutomate((DeterministicAutomate) second);
+        } else {
+            return first;
+        }
+    }
+
+    private static NonDeterministicAutomate toNonDeterministicAutomate(DeterministicAutomate automate) {
         return new NonDeterministicAutomate(new TransformNonDeterministicAutomateReader(automate));
     }
 }

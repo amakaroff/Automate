@@ -15,6 +15,10 @@ public class AutomateRenamer {
 
     @SuppressWarnings("unchecked")
     public static void renameStates(Automate first, Automate second) {
+        if (first == null || second == null) {
+            return;
+        }
+
         AutomateReflection firstReflection = new AutomateReflection(first);
         AutomateReflection secondReflection = new AutomateReflection(second);
 
@@ -30,6 +34,9 @@ public class AutomateRenamer {
 
     @SuppressWarnings("unchecked")
     public static void renameAutomate(Automate automate) {
+        if (automate == null) {
+            return;
+        }
         automate.init();
         AutomateReflection reflection = new AutomateReflection(automate);
         int index = 1;

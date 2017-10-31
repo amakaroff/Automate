@@ -22,46 +22,33 @@ public class Functions {
         int allCount = 0;
         int tempCount = 0;
 
-        if (debug) {
-            System.out.println("Functions is initialized!");
-        }
+        log(debug, "Functions is initialized!");
 
         if (automate.isEnd() && line.length() == 0) {
             Pair<Boolean, Integer> pair = new Pair<>(true, allCount);
-            if (debug) {
-                System.out.println("Automate has finished with result: " + pair + "\n");
-            }
+            log(debug, "Automate has finished with result: %s\n", pair);
             return pair;
         }
 
         for (int i = index; i < line.length(); i++) {
             try {
-                if (debug) {
-                    System.out.println("Signal: {" + line.charAt(i) + "}. Try to next state!");
-                }
+                log(debug, "Signal: {%s}. Try to next state!", line.charAt(i));
                 automate.nextState(line.charAt(i));
                 tempCount++;
                 if (automate.isEnd()) {
-                    if (debug) {
-                        System.out.println("Signal: {" + line.charAt(i) + "}. Data flush to line!");
-                    }
+                    log(debug, "Signal: {%s}. Data flush to line!", line.charAt(i));
                     allCount += tempCount;
                     tempCount = 0;
                     isEnd = true;
                 }
             } catch (AutomateException exception) {
-                if (debug) {
-                    System.out.println("Signal: {" + line.charAt(i) + "}. Automate has finished hes worked!");
-                }
+                log(debug, "Signal: {%s}. Automate has finished hes worked!", line.charAt(i));
                 break;
             }
         }
 
         Pair<Boolean, Integer> pair = new Pair<>(isEnd, allCount);
-
-        if (debug) {
-            System.out.println("Automate has finished hes worked correctly! " + pair + "\n");
-        }
+        log(debug, "Automate has finished hes worked correctly! %s\n", pair);
 
         return pair;
     }
@@ -79,13 +66,11 @@ public class Functions {
         while (index < line.length()) {
             try {
                 Pair<String, String> lexeme = getLexeme(automates, line, index, debug);
-                if (debug) {
-                    System.out.println("Find lexeme: " + lexeme);
-                }
+                log(debug, "Find lexeme: %s", lexeme);
                 lexemes.add(lexeme);
                 index += lexeme.getValue().length();
             } catch (AutomateException exception) {
-                errors.add("Position " + index + " has some error : " + exception.getMessage() + "\n");
+                errors.add("Position: {" + index + "} has some error : " + exception.getMessage() + "\n");
                 index++;
             }
         }
@@ -173,6 +158,12 @@ public class Functions {
     private static void allRefresh(Collection<Automate> automates) {
         for (Automate automate : automates) {
             automate.refresh();
+        }
+    }
+
+    private static void log(boolean debug, String message, Object... objects) {
+        if (debug) {
+            System.out.println(String.format(message, objects));
         }
     }
 }

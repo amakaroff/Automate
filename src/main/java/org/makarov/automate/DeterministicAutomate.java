@@ -17,25 +17,21 @@ public class DeterministicAutomate extends Automate<String> {
     @Override
     public void nextState(char signal) throws AutomateException {
         String currentSignal = String.valueOf(signal);
-        if (debug) {
-            System.out.println("Input signal: {" + currentSignal + "}");
-        }
+        log("Input signal: {%s}", currentSignal);
         checkNext(currentSignal);
 
         String newState = table.get(currentState).get(currentSignal);
-        if (debug && newState != null) {
-            System.out.println("New state: {" + newState + "}");
+        if (newState != null) {
+            log("New state: {%s}", newState);
         }
         if (newState == null) {
             newState = table.get(currentState).get(alwaysSymbol);
-            if (debug && newState != null) {
-                System.out.println("New state: {" + newState + "}");
+            if (newState != null) {
+                log("New state: {%s}", newState);
             }
 
             if (newState == null) {
-                if (debug) {
-                    System.out.println("New state for authomate is not found! Current State: " + currentState);
-                }
+                log("New state for automate is not found! Current State: %s", currentState);
                 throw new AutomateException();
             }
         }

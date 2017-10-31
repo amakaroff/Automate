@@ -12,7 +12,7 @@ import java.util.Collection;
 
 public class TaskTree {
 
-    public static Collection<Pair<String, String>> getLexems(String line) {
+    public static Collection<Pair<String, String>> getLexemes(String line) {
         Collection<Automate> automates = new ArrayList<>();
         automates.add(new DeterministicAutomate(new JSONDeterministicAutomateReader("three/CloseBkt.json")));
         automates.add(new DeterministicAutomate(new JSONDeterministicAutomateReader("three/OpenBkt.json")));
