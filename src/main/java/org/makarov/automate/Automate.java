@@ -6,6 +6,7 @@ import org.makarov.automate.translators.DefaultRegexTranslator;
 import org.makarov.automate.translators.Translator;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -127,8 +128,9 @@ public abstract class Automate<T> {
         return priority;
     }
 
+    @SuppressWarnings("suspicious")
     protected void checkNext(String currentSignal) {
-        if ((!alphabet.contains(currentSignal) && !alphabet.contains(alwaysSymbol)) || table.get(currentState) == null) {
+        if ((!alphabet.contains(currentSignal) && !alphabet.contains(alwaysSymbol)) || (!(currentState instanceof Collection) && table.get(currentState) == null)) {
             log("Signal: {%s} is can't complete next", currentSignal);
             throw new AutomateException();
         }

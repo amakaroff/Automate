@@ -32,7 +32,7 @@ public class RegexParser {
         return automate;
     }
 
-    public static String getTime(long time) {
+    private static String getTime(long time) {
         if (time / 1000 == 0) {
             return time + " milliseconds";
         }

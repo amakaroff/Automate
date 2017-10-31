@@ -1,8 +1,5 @@
 package org.makarov.constants;
 
-/**
- * Created by Aleksei Makarov on 31.10.2017.
- */
 public interface RegexConstants {
 
     String ALWAYS_SYMBOL = "\\.";
