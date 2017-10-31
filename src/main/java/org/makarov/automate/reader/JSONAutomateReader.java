@@ -2,6 +2,7 @@ package org.makarov.automate.reader;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.makarov.constants.RegexConstants;
 import org.makarov.automate.translators.Translator;
 import org.makarov.util.FileUtils;
 
@@ -24,7 +25,7 @@ public abstract class JSONAutomateReader<T> implements AutomateReader<T> {
 
     public String getAlwaysSymbol() {
         if (json.isNull(ALWAYS_SYMBOL)) {
-            return "\\.";
+            return RegexConstants.ALWAYS_SYMBOL;
         } else {
             return json.getString(ALWAYS_SYMBOL);
         }

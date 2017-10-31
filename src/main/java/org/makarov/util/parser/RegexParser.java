@@ -2,6 +2,7 @@ package org.makarov.util.parser;
 
 import org.makarov.automate.Automate;
 import org.makarov.automate.DeterministicAutomate;
+import org.makarov.constants.RegexConstants;
 import org.makarov.automate.exception.AutomateException;
 import org.makarov.automate.reader.EmptyAutomateGenerateReader;
 import org.makarov.automate.reader.OneSignalAutomateGenerateReader;
@@ -69,19 +70,19 @@ public class RegexParser {
                         expression.add("\\");
                         break;
                     case 's':
-                        expression.add("\\s");
+                        expression.add(RegexConstants.SPACE_SYMBOL);
                         break;
                     case 'w':
-                        expression.add("\\w");
+                        expression.add(RegexConstants.LETTER_SYMBOL);
                         break;
                     case 'd':
-                        expression.add("\\d");
+                        expression.add(RegexConstants.NUMBER_SYMBOL);
                         break;
                     case '|':
                         expression.add("|");
                         break;
                     case '?':
-                        expression.add("\\?");
+                        expression.add(RegexConstants.EMPTY_SYMBOL);
                         break;
                     case '*':
                         expression.add("*");
@@ -216,7 +217,7 @@ public class RegexParser {
 
     private static Automate generateUnionAutomate(List<Automate> automates) {
         if (automates.size() == 0) {
-            Automate automate = generateOneAutomate("");
+            Automate automate = generateOneAutomate(RegexConstants.EMPTY_SYMBOL);
             automate.init();
             return automate;
         } else if (automates.size() == 1) {
@@ -242,7 +243,7 @@ public class RegexParser {
     }
 
     private static Automate generateOneAutomate(String oneChar) {
-        if (oneChar == null || oneChar.isEmpty() || "\\?".equals(oneChar)) {
+        if (oneChar == null || oneChar.isEmpty() || RegexConstants.EMPTY_SYMBOL.equals(oneChar)) {
             return new DeterministicAutomate(new EmptyAutomateGenerateReader());
         } else {
             return new DeterministicAutomate(new OneSignalAutomateGenerateReader(oneChar));
