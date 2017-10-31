@@ -10,12 +10,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class TransformAutomateReader implements AutomateReader<Set<String>> {
+public class TransformNonDeterministicAutomateReader implements AutomateReader<Set<String>> {
 
     private AutomateReflection<String> automateReflection;
 
     @SuppressWarnings("unchecked")
-    public TransformAutomateReader(DeterministicAutomate automate) {
+    public TransformNonDeterministicAutomateReader(DeterministicAutomate automate) {
         this.automateReflection = new AutomateReflection(automate);
     }
 

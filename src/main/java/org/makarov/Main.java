@@ -1,14 +1,7 @@
 package org.makarov;
 
-import org.makarov.automate.Automate;
-import org.makarov.automate.DeterministicAutomate;
-import org.makarov.automate.NonDeterministicAutomate;
-import org.makarov.automate.reader.TransformAutomateReader;
-import org.makarov.automate.serialize.AutomateSerializer;
-import org.makarov.automate.serialize.AutomateToJSONSerializer;
 import org.makarov.task.TaskTree;
 import org.makarov.util.FileUtils;
-import org.makarov.util.Functions;
 import org.makarov.util.Pair;
 
 import java.util.Collection;
