@@ -3,6 +3,7 @@ package org.makarov.automate.serialize;
 import org.json.JSONObject;
 import org.makarov.automate.Automate;
 import org.makarov.automate.reader.AutomateReader;
+import org.makarov.automate.translators.Translator;
 import org.makarov.util.AutomateReflection;
 
 import java.util.ArrayList;
@@ -36,12 +37,17 @@ public class AutomateToJSONSerializer implements AutomateSerializer {
 
         String name = automate.getName();
         int priority = automate.getPriority();
+        String alwaysSymbol = automateReflection.getAlwaysSymbol();
+        Translator translator = automateReflection.getTranslator();
         List<String> alphabet = automateReflection.getAlphabet();
         List<String> endStates = automateReflection.getEndStates();
 
         JSONObject object = new JSONObject();
 
         object.put(AutomateReader.NAME, name);
+        object.put(AutomateReader.PRIORITY, priority);
+        object.put(AutomateReader.ALWAYS_SYMBOL, alwaysSymbol);
+        object.put(AutomateReader.TRANSLATOR, translator.getClass().getName());
         object.put(AutomateReader.PRIORITY, priority);
         object.put(AutomateReader.ALPHABET, alphabet.toArray());
         object.put(AutomateReader.END_STATES, endStates.toArray());
