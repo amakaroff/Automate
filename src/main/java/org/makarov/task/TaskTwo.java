@@ -18,7 +18,7 @@ public class TaskTwo {
             if (currentIndex == 0) {
                 index++;
             } else {
-                numbers.add(line.substring(index, index+currentIndex));
+                numbers.add(line.substring(index, index + currentIndex));
                 index += currentIndex;
             }
         }

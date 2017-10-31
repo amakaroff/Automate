@@ -3,7 +3,11 @@ package org.makarov.automate.reader;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class JSONNonDeterministicAutomateReader extends JSONAutomateReader<Set<String>> {
 

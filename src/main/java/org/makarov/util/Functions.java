@@ -3,7 +3,11 @@ package org.makarov.util;
 import org.makarov.automate.Automate;
 import org.makarov.automate.exception.AutomateException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Functions {
 
@@ -120,7 +124,7 @@ public class Functions {
         }
 
         Map<Automate, Pair<Boolean, Integer>> newResults = new HashMap<>();
-        final int FIRST = 0;
+        int first = 0;
         int maxCount = 0;
 
         for (Pair<Boolean, Integer> pair : results.values()) {
@@ -153,7 +157,7 @@ public class Functions {
             throw new AutomateException("Two or more automates is correct for this case!");
         }
 
-        return finalResult.get(FIRST);
+        return finalResult.get(first);
     }
 
     private static boolean isCorrectResults(Collection<Pair<Boolean, Integer>> results) {

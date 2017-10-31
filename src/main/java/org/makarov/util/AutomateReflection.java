@@ -1,6 +1,7 @@
 package org.makarov.util;
 
 import org.makarov.automate.Automate;
+import org.makarov.automate.translators.Translator;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -12,6 +13,19 @@ public class AutomateReflection<T> {
 
     public AutomateReflection(Automate<T> automate) {
         this.automate = automate;
+        automate.init();
+    }
+
+    public String getAlwaysSymbol() {
+        return getFieldValue("alwaysSymbol").toString();
+    }
+
+    public void setAlwaysSymbol(String value) {
+        setFieldValue("alwaysSymbol", value);
+    }
+
+    public Translator getTranslator() {
+        return (Translator) getFieldValue("translator");
     }
 
     public Automate<T> getAutomate() {

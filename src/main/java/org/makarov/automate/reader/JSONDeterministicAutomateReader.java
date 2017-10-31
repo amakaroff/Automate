@@ -4,13 +4,12 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class JSONDeterminateAutomateReader extends JSONAutomateReader<String> {
+public class JSONDeterministicAutomateReader extends JSONAutomateReader<String> {
 
-    public JSONDeterminateAutomateReader(String fileName) {
+    public JSONDeterministicAutomateReader(String fileName) {
         super(fileName);
     }
 

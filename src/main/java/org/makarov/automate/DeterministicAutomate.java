@@ -2,12 +2,12 @@ package org.makarov.automate;
 
 import org.makarov.automate.exception.AutomateException;
 import org.makarov.automate.reader.AutomateReader;
-import org.makarov.automate.reader.JSONDeterminateAutomateReader;
+import org.makarov.automate.reader.JSONDeterministicAutomateReader;
 
 public class DeterministicAutomate extends Automate<String> {
 
     public DeterministicAutomate(String filePath) {
-        super(new JSONDeterminateAutomateReader(filePath));
+        super(new JSONDeterministicAutomateReader(filePath));
     }
 
     public DeterministicAutomate(AutomateReader<String> reader) {

@@ -1,8 +1,8 @@
 package org.makarov.task;
 
-import org.makarov.automate.exception.AutomateException;
 import org.makarov.automate.DeterministicAutomate;
 import org.makarov.automate.NonDeterministicAutomate;
+import org.makarov.automate.exception.AutomateException;
 import org.makarov.util.Pair;
 
 import java.util.HashSet;
@@ -43,7 +43,7 @@ public class TaskOne {
         if (automate.isEnd()) {
             return new Pair<>(true, lastState);
         } else {
-           return new Pair<>(false, lastState);
+            return new Pair<>(false, lastState);
         }
     }
 }
