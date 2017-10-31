@@ -4,6 +4,7 @@ import org.makarov.automate.Automate;
 import org.makarov.automate.DeterministicAutomate;
 import org.makarov.automate.NonDeterministicAutomate;
 import org.makarov.automate.reader.TransformNonDeterministicAutomateReader;
+import org.makarov.automate.reader.UnionAutomateReader;
 
 public class AutomateOperations {
 
@@ -19,10 +20,8 @@ public class AutomateOperations {
     public static Automate union(Automate first, Automate second) {
         first = getCorrectFirstAutomate(first, second);
         second = getCorrectSecondAutomate(first, second);
-        AutomateRenamer.renameStates(first, second);
 
-
-        return null;
+        return new NonDeterministicAutomate(new UnionAutomateReader(first, second));
     }
 
     public static Automate repeat(Automate automate) {
@@ -43,7 +42,7 @@ public class AutomateOperations {
         if (first instanceof NonDeterministicAutomate && second instanceof DeterministicAutomate) {
             return toNonDeterministicAutomate((DeterministicAutomate) second);
         } else {
-            return first;
+            return second;
         }
     }
 

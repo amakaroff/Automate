@@ -3,7 +3,9 @@ package org.makarov.automate.serialize;
 import org.json.JSONObject;
 import org.makarov.automate.Automate;
 import org.makarov.automate.reader.AutomateReader;
+import org.makarov.automate.translators.DefaultRegexTranslator;
 import org.makarov.automate.translators.Translator;
+import org.makarov.constants.RegexConstants;
 import org.makarov.util.AutomateReflection;
 
 import java.util.ArrayList;
@@ -21,7 +23,7 @@ public class AutomateToJSONSerializer implements AutomateSerializer {
         }
     }
 
-    private static Object getObjectToJsonValue(Object object) {
+    private static Object getObjectToJsonValue(Object object) { //Бага блять :(
         if (object instanceof Collection) {
             return ((Collection) object).toArray();
         } else {
@@ -46,8 +48,12 @@ public class AutomateToJSONSerializer implements AutomateSerializer {
 
         object.put(AutomateReader.NAME, name);
         object.put(AutomateReader.PRIORITY, priority);
-        object.put(AutomateReader.ALWAYS_SYMBOL, alwaysSymbol);
-        object.put(AutomateReader.TRANSLATOR, translator.getClass().getName());
+        if (!RegexConstants.ALWAYS_SYMBOL.equals(alwaysSymbol)) {
+            object.put(AutomateReader.ALWAYS_SYMBOL, alwaysSymbol);
+        }
+        if (!(translator instanceof DefaultRegexTranslator)) {
+            object.put(AutomateReader.TRANSLATOR, translator.getClass().getName());
+        }
         object.put(AutomateReader.PRIORITY, priority);
         object.put(AutomateReader.ALPHABET, alphabet.toArray());
         object.put(AutomateReader.END_STATES, endStates.toArray());

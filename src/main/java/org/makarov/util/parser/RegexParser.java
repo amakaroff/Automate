@@ -27,6 +27,14 @@ public class RegexParser {
         return automate;
     }
 
+    public static Automate generateOneAutomate(String oneChar) {
+        if (oneChar == null || oneChar.isEmpty() || RegexConstants.EMPTY_SYMBOL.equals(oneChar)) {
+            return new DeterministicAutomate(new EmptyAutomateGenerateReader());
+        } else {
+            return new DeterministicAutomate(new OneSignalAutomateGenerateReader(oneChar));
+        }
+    }
+
     private static String getTime(long time) {
         if (time / 1000 == 0) {
             return time + " milliseconds";
@@ -111,7 +119,7 @@ public class RegexParser {
                 if (expression.isEmpty() && forConcat.isEmpty()) {
                     throw new AutomateException("Wrong symbol | on position: " + index);
                 }
-                if (expression.size() != 0) {
+                if (!expression.isEmpty()) {
                     expressions.add(generateConcatAutomate(forConcat, expression, debug));
                     expression = new ArrayList<>();
                 }
@@ -234,14 +242,6 @@ public class RegexParser {
     private static void log(boolean debug, String message, Object... objects) {
         if (debug) {
             System.out.println(String.format(message, objects));
-        }
-    }
-
-    private static Automate generateOneAutomate(String oneChar) {
-        if (oneChar == null || oneChar.isEmpty() || RegexConstants.EMPTY_SYMBOL.equals(oneChar)) {
-            return new DeterministicAutomate(new EmptyAutomateGenerateReader());
-        } else {
-            return new DeterministicAutomate(new OneSignalAutomateGenerateReader(oneChar));
         }
     }
 }
