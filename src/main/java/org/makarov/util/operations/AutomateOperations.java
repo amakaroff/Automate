@@ -3,18 +3,20 @@ package org.makarov.util.operations;
 import org.makarov.automate.Automate;
 import org.makarov.automate.DeterministicAutomate;
 import org.makarov.automate.NonDeterministicAutomate;
+import org.makarov.automate.reader.ConcatAutomateReader;
+import org.makarov.automate.reader.RepeatAutomateReader;
 import org.makarov.automate.reader.TransformNonDeterministicAutomateReader;
 import org.makarov.automate.reader.UnionAutomateReader;
 
 public class AutomateOperations {
 
+    public static final String GENERATE_NAME = "Generate automate";
+
     public static Automate concat(Automate first, Automate second) {
         first = getNonDeterminateAutomate(first);
         second = getNonDeterminateAutomate(second);
-        AutomateRenamer.renameStates(first, second);
 
-
-        return null;
+        return new NonDeterministicAutomate(new ConcatAutomateReader(first, second));
     }
 
     public static Automate union(Automate first, Automate second) {
@@ -25,9 +27,9 @@ public class AutomateOperations {
     }
 
     public static Automate repeat(Automate automate) {
-        AutomateRenamer.renameAutomate(automate);
+        automate = getNonDeterminateAutomate(automate);
 
-        return null;
+        return new NonDeterministicAutomate(new RepeatAutomateReader(automate));
     }
 
     private static Automate getNonDeterminateAutomate(Automate first) {

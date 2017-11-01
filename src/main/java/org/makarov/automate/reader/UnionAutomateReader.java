@@ -2,6 +2,7 @@ package org.makarov.automate.reader;
 
 import org.makarov.automate.Automate;
 import org.makarov.util.AutomateReflection;
+import org.makarov.util.operations.AutomateOperations;
 import org.makarov.util.operations.AutomateRenamer;
 
 import java.util.ArrayList;
@@ -12,8 +13,6 @@ import java.util.Map;
 import java.util.Set;
 
 public class UnionAutomateReader implements AutomateReader<Set<String>> {
-
-    private static final String GENERATE_NAME = "Generate automate";
 
     AutomateReflection<Set<String>> first;
 
@@ -71,12 +70,12 @@ public class UnionAutomateReader implements AutomateReader<Set<String>> {
             Set<String> newState = new HashSet<>();
 
             Set<String> tempFirstState = getState(first.get(signal));
-            if (tempFirstState.size() != 1 || !tempFirstState.contains(null)) {
+            if (tempFirstState.size() > 1 || !tempFirstState.contains(null)) {
                 newState.addAll(tempFirstState);
             }
 
             Set<String> tempSecondState = getState(second.get(signal));
-            if (tempSecondState.size() != 1 || !tempSecondState.contains(null)) {
+            if (tempSecondState.size() > 1 || !tempSecondState.contains(null)) {
                 newState.addAll(tempSecondState);
             }
 
@@ -115,7 +114,7 @@ public class UnionAutomateReader implements AutomateReader<Set<String>> {
 
     @Override
     public String getName() {
-        return GENERATE_NAME;
+        return AutomateOperations.GENERATE_NAME;
     }
 
     @Override
