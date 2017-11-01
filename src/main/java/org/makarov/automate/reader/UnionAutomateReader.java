@@ -3,6 +3,7 @@ package org.makarov.automate.reader;
 import org.makarov.automate.Automate;
 import org.makarov.util.AutomateReflection;
 import org.makarov.util.operations.AutomateOperations;
+import org.makarov.util.operations.AutomateOperationsUtil;
 import org.makarov.util.operations.AutomateRenamer;
 
 import java.util.ArrayList;
@@ -49,50 +50,12 @@ public class UnionAutomateReader implements AutomateReader<Set<String>> {
         Map<String, Map<String, Set<String>>> secondTable = second.getTransitions();
 
         for (String state : transitions) {
-            Map<String, Set<String>> newState = joinMap(firstTable.get(state), secondTable.get(state));
+            Map<String, Set<String>> newState = AutomateOperationsUtil.joinMap(firstTable.get(state),
+                    secondTable.get(state), getAlphabet());
             table.put(state, newState);
         }
 
         return table;
-    }
-
-    private Map<String, Set<String>> joinMap(Map<String, Set<String>> first, Map<String, Set<String>> second) {
-        if (first == null) {
-            first = new HashMap<>();
-        }
-
-        if (second == null) {
-            second = new HashMap<>();
-        }
-
-        Map<String, Set<String>> joinedMap = new HashMap<>();
-        for (String signal : getAlphabet()) {
-            Set<String> newState = new HashSet<>();
-
-            Set<String> tempFirstState = getState(first.get(signal));
-            if (tempFirstState.size() > 1 || !tempFirstState.contains(null)) {
-                newState.addAll(tempFirstState);
-            }
-
-            Set<String> tempSecondState = getState(second.get(signal));
-            if (tempSecondState.size() > 1 || !tempSecondState.contains(null)) {
-                newState.addAll(tempSecondState);
-            }
-
-            joinedMap.put(signal, newState);
-        }
-
-        return joinedMap;
-    }
-
-    private Set<String> getState(Set<String> set) {
-        if (set == null) {
-            Set<String> newState = new HashSet<>();
-            newState.add(null);
-            return newState;
-        } else {
-            return set;
-        }
     }
 
 

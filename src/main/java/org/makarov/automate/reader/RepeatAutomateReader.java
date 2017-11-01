@@ -3,6 +3,7 @@ package org.makarov.automate.reader;
 import org.makarov.automate.Automate;
 import org.makarov.util.AutomateReflection;
 import org.makarov.util.operations.AutomateOperations;
+import org.makarov.util.operations.AutomateOperationsUtil;
 import org.makarov.util.operations.AutomateRenamer;
 
 import java.util.ArrayList;
@@ -25,20 +26,7 @@ public class RepeatAutomateReader implements AutomateReader<Set<String>> {
         AutomateRenamer.renameAutomate(automate);
 
         this.automate = new AutomateReflection(automate);
-        emptyState = getEmptyState(this.automate);
-    }
-
-    private String getEmptyState(AutomateReflection<Set<String>> automate) {
-        Set<String> strings = automate.getTransitions().keySet();
-        int maxValue = 0;
-        for (String state : strings) {
-            int numberState = Integer.valueOf(state);
-            if (numberState > maxValue) {
-                maxValue = numberState;
-            }
-        }
-
-        return String.valueOf(maxValue + 1);
+        emptyState = AutomateOperationsUtil.getNextState(this.automate);
     }
 
     @Override
@@ -52,20 +40,7 @@ public class RepeatAutomateReader implements AutomateReader<Set<String>> {
         Set<String> beginStates = automate.getBeginState();
         List<String> endStates = automate.getEndStates();
 
-        for (String endState : endStates) {
-            Map<String, Set<String>> stringSetMap = table.get(endState);
-            for (String letter : getAlphabet()) {
-                Set<String> transitions = stringSetMap.get(letter);
-                if (transitions == null) {
-                    transitions = new HashSet<>();
-                }
-                for (String beginState : beginStates) {
-                    Set<String> beginTransitions = table.get(beginState).get(letter);
-                    transitions.addAll(beginTransitions);
-                }
-                stringSetMap.put(letter, transitions);
-            }
-        }
+        AutomateOperationsUtil.repeatTransitionOperation(table, beginStates, endStates, getAlphabet());
 
         for (String letter : getAlphabet()) {
             HashMap<String, Set<String>> transitions = new HashMap<>();
