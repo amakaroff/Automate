@@ -27,12 +27,13 @@ public class Main {
         System.out.println(Functions.function(automate, "1", 0));
 
         Automate automate2 = new DeterministicAutomate(new OneSignalAutomateGenerateReader("\\d"));
-        System.out.println(Functions.function(automate2, "b", 0));
+        System.out.println(Functions.function(automate2, "c", 0));
 
         System.out.println(Functions.function(automate2, "1", 0));
 
         Automate union = AutomateOperations.union(automate, automate2);
-        //System.out.println(serializer.serialize(union));
+        union.init();
+        System.out.println(serializer.serialize(union));
 
         System.out.println(Functions.function(union, "1", 0));
         System.out.println(Functions.function(union, "b", 0));

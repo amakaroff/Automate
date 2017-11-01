@@ -32,10 +32,10 @@ public class UnionAutomateReader implements AutomateReader<Set<String>> {
 
     @Override
     public List<String> getAlphabet() {
-        List<String> alphabet = new ArrayList<>();
+        Set<String> alphabet = new HashSet<>();
         alphabet.addAll(first.getAlphabet());
         alphabet.addAll(second.getAlphabet());
-        return alphabet;
+        return new ArrayList<>(alphabet);
     }
 
     @Override
@@ -69,8 +69,17 @@ public class UnionAutomateReader implements AutomateReader<Set<String>> {
         Map<String, Set<String>> joinedMap = new HashMap<>();
         for (String signal : getAlphabet()) {
             Set<String> newState = new HashSet<>();
-            newState.addAll(getState(first.get(signal)));
-            newState.addAll(getState(second.get(signal)));
+
+            Set<String> tempFirstState = getState(first.get(signal));
+            if (tempFirstState.size() != 1 || !tempFirstState.contains(null)) {
+                newState.addAll(tempFirstState);
+            }
+
+            Set<String> tempSecondState = getState(second.get(signal));
+            if (tempSecondState.size() != 1 || !tempSecondState.contains(null)) {
+                newState.addAll(tempSecondState);
+            }
+
             joinedMap.put(signal, newState);
         }
 
