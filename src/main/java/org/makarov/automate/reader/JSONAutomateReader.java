@@ -2,8 +2,8 @@ package org.makarov.automate.reader;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.makarov.constants.RegexConstants;
 import org.makarov.automate.translators.Translator;
+import org.makarov.constants.RegexConstants;
 import org.makarov.util.FileUtils;
 
 import java.util.ArrayList;

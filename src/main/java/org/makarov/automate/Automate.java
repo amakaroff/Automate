@@ -6,7 +6,6 @@ import org.makarov.automate.translators.DefaultRegexTranslator;
 import org.makarov.automate.translators.Translator;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 

@@ -9,8 +9,8 @@ import org.makarov.automate.reader.UnionAutomateReader;
 public class AutomateOperations {
 
     public static Automate concat(Automate first, Automate second) {
-        first = getCorrectFirstAutomate(first, second);
-        second = getCorrectSecondAutomate(first, second);
+        first = getNonDeterminateAutomate(first);
+        second = getNonDeterminateAutomate(second);
         AutomateRenamer.renameStates(first, second);
 
 
@@ -18,8 +18,8 @@ public class AutomateOperations {
     }
 
     public static Automate union(Automate first, Automate second) {
-        first = getCorrectFirstAutomate(first, second);
-        second = getCorrectSecondAutomate(first, second);
+        first = getNonDeterminateAutomate(first);
+        second = getNonDeterminateAutomate(second);
 
         return new NonDeterministicAutomate(new UnionAutomateReader(first, second));
     }
@@ -30,19 +30,11 @@ public class AutomateOperations {
         return null;
     }
 
-    private static Automate getCorrectFirstAutomate(Automate first, Automate second) {
-        if (first instanceof DeterministicAutomate && second instanceof NonDeterministicAutomate) {
+    private static Automate getNonDeterminateAutomate(Automate first) {
+        if (first instanceof DeterministicAutomate) {
             return toNonDeterministicAutomate((DeterministicAutomate) first);
         } else {
             return first;
-        }
-    }
-
-    private static Automate getCorrectSecondAutomate(Automate first, Automate second) {
-        if (first instanceof NonDeterministicAutomate && second instanceof DeterministicAutomate) {
-            return toNonDeterministicAutomate((DeterministicAutomate) second);
-        } else {
-            return second;
         }
     }
 

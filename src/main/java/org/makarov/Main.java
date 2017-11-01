@@ -2,16 +2,11 @@ package org.makarov;
 
 import org.makarov.automate.Automate;
 import org.makarov.automate.DeterministicAutomate;
-import org.makarov.automate.NonDeterministicAutomate;
 import org.makarov.automate.reader.OneSignalAutomateGenerateReader;
 import org.makarov.automate.serialize.AutomateSerializer;
 import org.makarov.automate.serialize.AutomateToJSONSerializer;
 import org.makarov.util.Functions;
 import org.makarov.util.operations.AutomateOperations;
-import org.makarov.util.operations.AutomateRenamer;
-import org.makarov.util.parser.RegexParser;
-
-import java.util.Collection;
 
 public class Main {
 
@@ -37,7 +32,7 @@ public class Main {
         System.out.println(Functions.function(automate2, "1", 0));
 
         Automate union = AutomateOperations.union(automate, automate2);
-        System.out.println(serializer.serialize(union));
+        //System.out.println(serializer.serialize(union));
 
         System.out.println(Functions.function(union, "1", 0));
         System.out.println(Functions.function(union, "b", 0));

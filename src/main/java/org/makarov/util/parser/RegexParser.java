@@ -2,10 +2,10 @@ package org.makarov.util.parser;
 
 import org.makarov.automate.Automate;
 import org.makarov.automate.DeterministicAutomate;
-import org.makarov.constants.RegexConstants;
 import org.makarov.automate.exception.AutomateException;
 import org.makarov.automate.reader.EmptyAutomateGenerateReader;
 import org.makarov.automate.reader.OneSignalAutomateGenerateReader;
+import org.makarov.constants.RegexConstants;
 import org.makarov.util.operations.AutomateOperations;
 
 import java.util.ArrayDeque;
