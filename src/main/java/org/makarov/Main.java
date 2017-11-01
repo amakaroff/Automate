@@ -15,9 +15,8 @@ public class Main {
 
     public static void main(String[] args) {
         AutomateSerializer serializer = new AutomateToJSONSerializer();
-        Automate automate = RegexParser.parseRegex("12", true);
-
+        Automate automate = RegexParser.parseRegex("10*1", true);
         System.out.println(serializer.serialize(automate));
-        System.out.println(Functions.function(automate, "12", 0));
+        System.out.println(Functions.function(automate, "10001", 0));
     }
 }

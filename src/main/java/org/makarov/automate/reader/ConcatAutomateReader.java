@@ -27,9 +27,6 @@ public class ConcatAutomateReader implements AutomateReader<Set<String>> {
         second.init();
 
         AutomateRenamer.renameStates(first, second);
-        AutomateSerializer serializer = new AutomateToJSONSerializer();
-        System.out.println(serializer.serialize(first));
-        System.out.println(serializer.serialize(second));
 
         this.first = new AutomateReflection(first);
         this.second = new AutomateReflection(second);

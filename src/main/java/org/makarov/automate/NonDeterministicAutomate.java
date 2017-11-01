@@ -5,6 +5,7 @@ import org.makarov.automate.reader.AutomateReader;
 import org.makarov.automate.reader.JSONNonDeterministicAutomateReader;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class NonDeterministicAutomate extends Automate<Set<String>> {
@@ -18,18 +19,31 @@ public class NonDeterministicAutomate extends Automate<Set<String>> {
     }
 
     @Override
+    public void init() {
+        super.init();
+        for (Map<String, Set<String>> map : table.values()) {
+            for (Map.Entry<String, Set<String>> entry : map.entrySet()) {
+                if (entry.getValue().contains(null)) {
+                    entry.getValue().remove(null);
+                }
+            }
+        }
+    }
+
+    @Override
     public void nextState(char signal) throws AutomateException {
         String currentSignal = String.valueOf(signal);
         log("Input signal: {%s}", currentSignal);
         checkNext(currentSignal);
 
         Set<String> newStates = new HashSet<>();
+        log("Current state is : {%s}", currentState);
         for (String state : currentState) {
             Set<String> newState = table.get(state).get(currentSignal);
             if (newState == null || newState.isEmpty()) {
                 newState = table.get(state).get(alwaysSymbol);
                 if (newState != null && !newState.isEmpty()) {
-                    log("New state for automate is not found! Current State: {%s}", currentState);
+                    log("New state for automate is not found!");
                 }
             }
 
