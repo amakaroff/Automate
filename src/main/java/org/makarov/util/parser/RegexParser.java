@@ -117,14 +117,14 @@ public class RegexParser {
                         break;
                     default:
                         log(debug, "Error at shielding symbol. Wrong character is %s", character);
-                        throw new AutomateException("Error at shielding symbol. Wrong character is " + character);
+                        throw new AutomateException(createMessage("Error at shielding symbol. Wrong character is " + character, index, regex));
                 }
 
                 index++;
             } else if (character == '|') {
                 log(debug, "End of expression. Concat %s", forConcat);
                 if (forConcat.isEmpty()) {
-                    throw new AutomateException("Wrong symbol | on position: " + index);
+                    throw new AutomateException(createMessage("Wrong symbol | on position: " + index, index, regex));
                 }
 
                 expressions.add(generateConcatAutomate(forConcat, debug));
@@ -140,7 +140,7 @@ public class RegexParser {
                 while (!queue.isEmpty()) {
                     if (index >= regex.length()) {
                         log(debug, "Wrong open bracket. Position: %s", currentIndex);
-                        throw new AutomateException("Wrong open bracket. Position: " + currentIndex);
+                        throw new AutomateException(createMessage("Wrong open bracket. Position: " + currentIndex , currentIndex, regex));
                     }
                     character = regex.charAt(index);
                     log(debug, "In brackets character: {%s}", character);
@@ -172,7 +172,7 @@ public class RegexParser {
 
                 index++;
             } else if (character == ')') {
-                throw new AutomateException("Wrong symbol " + character + " on position: " + index);
+                throw new AutomateException(createMessage("Wrong symbol " + character + " on position: " + index, index, regex));
             } else {
                 log(debug, "Simple character: {%s}", character);
                 forConcat.add(generateOneAutomate(String.valueOf(character)));
@@ -231,6 +231,7 @@ public class RegexParser {
         return symbol == ' ' || symbol == '\n' || symbol == '\t' || symbol == '\r';
     }
 
+    @SuppressWarnings("unchecked")
     private static void log(boolean debug, String message, Object... objects) {
         if (debug) {
             if (objects.length == 1 && (objects[0] instanceof Collection)) {
@@ -241,5 +242,14 @@ public class RegexParser {
             }
             System.out.println(String.format(message, objects));
         }
+    }
+
+    private static String createMessage(String message, int position, String line) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < position; i++) {
+            stringBuilder.append(" ");
+        }
+
+        return "\n" + line + "\n" + stringBuilder.toString() + "^ " + message;
     }
 }

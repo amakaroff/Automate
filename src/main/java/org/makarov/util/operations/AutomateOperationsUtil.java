@@ -62,35 +62,4 @@ public class AutomateOperationsUtil {
             return set;
         }
     }
-
-    public static void repeatTransitionOperation(Map<String, Map<String, Set<String>>> table,
-                                                 Collection<String> beginStates,
-                                                 Collection<String> endStates,
-                                                 Collection<String> alphabet) {
-        for (String endState : endStates) {
-            Map<String, Set<String>> stringSetMap = table.get(endState);
-            for (String letter : alphabet) {
-                Set<String> innerTransitions = stringSetMap.get(letter);
-                if (innerTransitions == null) {
-                    innerTransitions = new HashSet<>();
-                }
-                for (String beginState : beginStates) {
-                    Set<String> beginTransitions = table.get(beginState).get(letter);
-                    innerTransitions.addAll(beginTransitions);
-                }
-                stringSetMap.put(letter, innerTransitions);
-            }
-        }
-    }
-
-    public static String getEmptyState(AutomateReflection<Set<String>> automate) {
-        List<String> endStates = automate.getEndStates();
-        for (String state : automate.getBeginState()) {
-            if (endStates.contains(state)) {
-                return state;
-            }
-        }
-
-        return null;
-    }
 }

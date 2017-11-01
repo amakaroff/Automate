@@ -1,8 +1,6 @@
 package org.makarov.automate.reader;
 
 import org.makarov.automate.Automate;
-import org.makarov.automate.serialize.AutomateSerializer;
-import org.makarov.automate.serialize.AutomateToJSONSerializer;
 import org.makarov.util.AutomateReflection;
 import org.makarov.util.operations.AutomateOperations;
 import org.makarov.util.operations.AutomateOperationsUtil;
@@ -28,10 +26,6 @@ public class ConcatAutomateReader implements AutomateReader<Set<String>> {
 
         AutomateRenamer.renameStates(first, second);
 
-        AutomateSerializer serializer = new AutomateToJSONSerializer();
-        System.out.println(serializer.serialize(first));
-        System.out.println(serializer.serialize(second));
-
         this.first = new AutomateReflection(first);
         this.second = new AutomateReflection(second);
     }
@@ -55,7 +49,7 @@ public class ConcatAutomateReader implements AutomateReader<Set<String>> {
         transitions.addAll(first.getTransitions().keySet());
         transitions.addAll(second.getTransitions().keySet());
 
-        String emptyState = AutomateOperationsUtil.getEmptyState(second);
+        String emptyState = getEmptyState(second);
 
         for (String state : transitions) {
             Map<String, Set<String>> newState = AutomateOperationsUtil.joinMap(firstTable.get(state),
@@ -92,7 +86,7 @@ public class ConcatAutomateReader implements AutomateReader<Set<String>> {
     @Override
     public List<String> getEndStates() {
         List<String> endState = new ArrayList<>(second.getEndStates());
-        String emptyState = AutomateOperationsUtil.getEmptyState(second);
+        String emptyState = getEmptyState(second);
         if (emptyState != null) {
             endState.remove(emptyState);
             endState.addAll(first.getEndStates());
@@ -100,7 +94,6 @@ public class ConcatAutomateReader implements AutomateReader<Set<String>> {
 
         return endState;
     }
-
 
     @Override
     public String getName() {
@@ -110,5 +103,16 @@ public class ConcatAutomateReader implements AutomateReader<Set<String>> {
     @Override
     public int getPriority() {
         return 0;
+    }
+
+    private String getEmptyState(AutomateReflection<Set<String>> automate) {
+        List<String> endStates = automate.getEndStates();
+        for (String state : automate.getBeginState()) {
+            if (endStates.contains(state)) {
+                return state;
+            }
+        }
+
+        return null;
     }
 }

@@ -40,7 +40,20 @@ public class RepeatAutomateReader implements AutomateReader<Set<String>> {
         Set<String> beginStates = automate.getBeginState();
         List<String> endStates = automate.getEndStates();
 
-        AutomateOperationsUtil.repeatTransitionOperation(table, beginStates, endStates, getAlphabet());
+        for (String endState : endStates) {
+            Map<String, Set<String>> stringSetMap = table.get(endState);
+            for (String letter : getAlphabet()) {
+                Set<String> innerTransitions = stringSetMap.get(letter);
+                if (innerTransitions == null) {
+                    innerTransitions = new HashSet<>();
+                }
+                for (String beginState : beginStates) {
+                    Set<String> beginTransitions = table.get(beginState).get(letter);
+                    innerTransitions.addAll(beginTransitions);
+                }
+                stringSetMap.put(letter, innerTransitions);
+            }
+        }
 
         for (String letter : getAlphabet()) {
             HashMap<String, Set<String>> transitions = new HashMap<>();
