@@ -13,9 +13,9 @@ public class Main {
 
     public static void main(String[] args) {
         AutomateSerializer serializer = new AutomateToJSONSerializer();
-        Automate automate = RegexParser.parseRegex("((3)* | (4)*)", true);
+        Automate automate = RegexParser.parseRegex("(\\.* | 3)*", true);
         automate.init();
         System.out.println(serializer.serialize(automate));
-        System.out.println(Functions.function(automate, "333", 0));
+        System.out.println(Functions.function(automate, "12123", 0));
     }
 }

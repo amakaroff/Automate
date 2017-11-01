@@ -111,6 +111,9 @@ public class RegexParser {
                     case 'n':
                         forConcat.add(generateOneAutomate("\n"));
                         break;
+                    case '.':
+                        forConcat.add(generateOneAutomate("\\."));
+                        break;
                     default:
                         log(debug, "Error at shielding symbol. Wrong character is %s", character);
                         throw new AutomateException("Error at shielding symbol. Wrong character is " + character);

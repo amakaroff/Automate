@@ -22,7 +22,6 @@ public class RepeatAutomateReader implements AutomateReader<Set<String>> {
     @SuppressWarnings("unchecked")
     public RepeatAutomateReader(Automate automate) {
         automate.init();
-
         AutomateRenamer.renameAutomate(automate);
 
         this.automate = new AutomateReflection(automate);
