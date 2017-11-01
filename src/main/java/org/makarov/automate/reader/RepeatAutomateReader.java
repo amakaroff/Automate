@@ -26,7 +26,7 @@ public class RepeatAutomateReader implements AutomateReader<Set<String>> {
         AutomateRenamer.renameAutomate(automate);
 
         this.automate = new AutomateReflection(automate);
-        emptyState = AutomateOperationsUtil.getNextState(this.automate);
+        emptyState = getNextState(this.automate);
     }
 
     @Override
@@ -86,5 +86,18 @@ public class RepeatAutomateReader implements AutomateReader<Set<String>> {
     @Override
     public int getPriority() {
         return 0;
+    }
+
+    private String getNextState(AutomateReflection<Set<String>> automate) {
+        Set<String> strings = automate.getTransitions().keySet();
+        int maxValue = 0;
+        for (String state : strings) {
+            int numberState = Integer.valueOf(state);
+            if (numberState > maxValue) {
+                maxValue = numberState;
+            }
+        }
+
+        return String.valueOf(maxValue + 1);
     }
 }

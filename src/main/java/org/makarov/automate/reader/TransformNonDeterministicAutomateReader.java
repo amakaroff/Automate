@@ -32,7 +32,9 @@ public class TransformNonDeterministicAutomateReader implements AutomateReader<S
             Map<String, Set<String>> transitionsMap = new HashMap<>();
             for (Map.Entry<String, String> innerEntry : entry.getValue().entrySet()) {
                 Set<String> transitions = new HashSet<>();
-                transitions.add(innerEntry.getValue());
+                if (innerEntry.getValue() != null) {
+                    transitions.add(innerEntry.getValue());
+                }
                 transitionsMap.put(innerEntry.getKey(), transitions);
             }
             table.put(entry.getKey(), transitionsMap);

@@ -11,7 +11,8 @@ public class Main {
     public static void main(String[] args) {
         AutomateSerializer serializer = new AutomateToJSONSerializer();
         Automate intRegex = RegexParser.parseRegex("(+|-|\\?)(\\s(\\d)*)");
-        System.out.println(serializer.serialize(intRegex));
+        intRegex.init(true);
+        //System.out.println(serializer.serialize(intRegex));
         System.out.println(Functions.function(intRegex, "-5345", 0));
     }
 
