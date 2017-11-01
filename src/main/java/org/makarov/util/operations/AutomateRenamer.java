@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class AutomateRenamer {
@@ -102,7 +103,7 @@ public class AutomateRenamer {
         @SuppressWarnings("unchecked")
         Map<String, Map<String, Object>> transitions = reflection.getTransitions();
         Map<String, Object> map = transitions.get(oldState);
-        if (!oldState.equals(newState)) {
+        if (!Objects.equals(newState, oldState)) {
             transitions.remove(oldState);
             transitions.put(newState, map);
         }
@@ -136,6 +137,9 @@ public class AutomateRenamer {
 
     private static void renameInMap(Map<String, Object> map, String oldState, String newState) {
         List<String> changeKeyList = new ArrayList<>();
+        if (map == null) {
+            map = new HashMap<>();
+        }
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             if (entry.getValue() instanceof Collection) {
                 renameInCollection(entry.getValue(), oldState, newState);

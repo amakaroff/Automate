@@ -7,7 +7,6 @@ import org.makarov.automate.reader.EmptyAutomateGenerateReader;
 import org.makarov.automate.reader.OneSignalAutomateGenerateReader;
 import org.makarov.constants.RegexConstants;
 import org.makarov.util.operations.AutomateOperations;
-import org.makarov.util.operations.AutomateRenamer;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -26,7 +25,6 @@ public class RegexParser {
         time = System.currentTimeMillis() - time;
 
         log(debug, "Regular expression compilation complete for %s", getTime(time));
-        AutomateRenamer.renameAutomate(automate);
         return automate;
     }
 
@@ -186,7 +184,7 @@ public class RegexParser {
         expressions.add(generateConcatAutomate(forConcat, debug));
 
         log(debug, "Join automates: {%s}\n", expressions);
-        return generateUnionAutomate(expressions);
+        return generateUnionAutomate(expressions, debug);
     }
 
     private static Automate generateConcatAutomate(List<Automate> automates, boolean debug) {
@@ -213,7 +211,7 @@ public class RegexParser {
         return automateResult;
     }
 
-    private static Automate generateUnionAutomate(List<Automate> automates) {
+    private static Automate generateUnionAutomate(List<Automate> automates, boolean debug) {
         if (automates.size() == 0) {
             throw new AutomateException("Generation of union is unreal! Automates is empty!");
         } else if (automates.size() == 1) {

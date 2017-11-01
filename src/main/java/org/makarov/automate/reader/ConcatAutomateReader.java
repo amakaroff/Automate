@@ -28,6 +28,10 @@ public class ConcatAutomateReader implements AutomateReader<Set<String>> {
 
         AutomateRenamer.renameStates(first, second);
 
+        AutomateSerializer serializer = new AutomateToJSONSerializer();
+        System.out.println(serializer.serialize(first));
+        System.out.println(serializer.serialize(second));
+
         this.first = new AutomateReflection(first);
         this.second = new AutomateReflection(second);
     }
@@ -52,9 +56,6 @@ public class ConcatAutomateReader implements AutomateReader<Set<String>> {
         transitions.addAll(second.getTransitions().keySet());
 
         String emptyState = AutomateOperationsUtil.getEmptyState(second);
-        if (emptyState != null) {
-            secondTable.remove(emptyState);
-        }
 
         for (String state : transitions) {
             Map<String, Set<String>> newState = AutomateOperationsUtil.joinMap(firstTable.get(state),
@@ -99,7 +100,6 @@ public class ConcatAutomateReader implements AutomateReader<Set<String>> {
 
         return endState;
     }
-
 
 
     @Override

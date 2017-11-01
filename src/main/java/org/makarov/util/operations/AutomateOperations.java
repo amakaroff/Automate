@@ -7,14 +7,6 @@ import org.makarov.automate.reader.ConcatAutomateReader;
 import org.makarov.automate.reader.RepeatAutomateReader;
 import org.makarov.automate.reader.TransformNonDeterministicAutomateReader;
 import org.makarov.automate.reader.UnionAutomateReader;
-import org.makarov.util.AutomateReflection;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class AutomateOperations {
 
@@ -39,7 +31,6 @@ public class AutomateOperations {
 
         return new NonDeterministicAutomate(new RepeatAutomateReader(automate));
     }
-
 
 
     private static Automate getNonDeterminateAutomate(Automate first) {

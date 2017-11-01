@@ -33,6 +33,7 @@ public class Functions {
         for (int i = index; i < line.length(); i++) {
             try {
                 log(debug, "Signal: {%s}. Try to next state!", line.charAt(i));
+                log(debug, "Current state is {%s}", automate.getCurrentState());
                 automate.nextState(line.charAt(i));
                 tempCount++;
                 if (automate.isEnd()) {

@@ -1,7 +1,7 @@
 package org.makarov.automate.reader;
 
-import org.makarov.constants.RegexConstants;
 import org.makarov.automate.translators.Translator;
+import org.makarov.constants.RegexConstants;
 
 import java.util.List;
 import java.util.Map;

@@ -20,11 +20,16 @@ public class NonDeterministicAutomate extends Automate<Set<String>> {
 
     @Override
     public void init() {
-        super.init();
-        for (Map<String, Set<String>> map : table.values()) {
-            for (Map.Entry<String, Set<String>> entry : map.entrySet()) {
-                if (entry.getValue().contains(null)) {
-                    entry.getValue().remove(null);
+        if (!isInit) {
+            super.init();
+            for (String key : table.keySet()) {
+                Map<String, Set<String>> map = table.get(key);
+                for (String signal : alphabet) {
+                    Set<String> transitions = map.computeIfAbsent(signal, k -> new HashSet<>());
+                    if (transitions.contains(null)) {
+                        transitions.remove(null);
+                    }
+
                 }
             }
         }

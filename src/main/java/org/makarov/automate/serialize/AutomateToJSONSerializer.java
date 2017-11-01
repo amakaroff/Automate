@@ -15,6 +15,30 @@ import java.util.Map;
 
 public class AutomateToJSONSerializer implements AutomateSerializer {
 
+    private static boolean addBeginState(JSONObject object, Object element) {
+        if (element instanceof Collection) {
+            object.put(AutomateReader.BEGIN_STATES, ((Collection) element).toArray());
+            return false;
+        } else {
+            object.put(AutomateReader.BEGIN_STATE, element);
+            return true;
+        }
+    }
+
+    private static Object getObjectToJsonValue(Object object, boolean isDeterminate) {
+        if (isDeterminate) {
+            return object;
+        } else {
+            if (object == null) {
+                List<Object> arrayList = new ArrayList<>();
+                arrayList.add(null);
+                return arrayList.toArray();
+            } else {
+                return ((Collection) object).toArray();
+            }
+        }
+    }
+
     @Override
     @SuppressWarnings("unchecked")
     public String serialize(Automate automate) {
@@ -63,29 +87,5 @@ public class AutomateToJSONSerializer implements AutomateSerializer {
         object.put(AutomateReader.TABLE, rows.toArray());
 
         return object.toString();
-    }
-
-    private static boolean addBeginState(JSONObject object, Object element) {
-        if (element instanceof Collection) {
-            object.put(AutomateReader.BEGIN_STATES, ((Collection) element).toArray());
-            return false;
-        } else {
-            object.put(AutomateReader.BEGIN_STATE, element);
-            return true;
-        }
-    }
-
-    private static Object getObjectToJsonValue(Object object, boolean isDeterminate) {
-        if (isDeterminate) {
-            return object;
-        } else {
-            if (object == null) {
-                List<Object> arrayList = new ArrayList<>();
-                arrayList.add(null);
-                return arrayList.toArray();
-            } else {
-                return ((Collection) object).toArray();
-            }
-        }
     }
 }
