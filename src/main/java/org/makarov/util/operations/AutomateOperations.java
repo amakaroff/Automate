@@ -32,6 +32,8 @@ public class AutomateOperations {
         return new NonDeterministicAutomate(new RepeatAutomateReader(automate));
     }
 
+
+
     private static Automate getNonDeterminateAutomate(Automate first) {
         if (first instanceof DeterministicAutomate) {
             return toNonDeterministicAutomate((DeterministicAutomate) first);

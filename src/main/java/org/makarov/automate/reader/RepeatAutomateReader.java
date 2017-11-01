@@ -5,7 +5,9 @@ import org.makarov.util.AutomateReflection;
 import org.makarov.util.operations.AutomateOperations;
 import org.makarov.util.operations.AutomateRenamer;
 
-
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -13,34 +15,80 @@ import java.util.Set;
 
 public class RepeatAutomateReader implements AutomateReader<Set<String>> {
 
-    AutomateReflection<Set<String>> automate;
+    private AutomateReflection<Set<String>> automate;
+
+    private String emptyState;
 
     @SuppressWarnings("unchecked")
     public RepeatAutomateReader(Automate automate) {
         automate.init();
+
         AutomateRenamer.renameAutomate(automate);
 
         this.automate = new AutomateReflection(automate);
+        emptyState = getEmptyState(this.automate);
+    }
+
+    private String getEmptyState(AutomateReflection<Set<String>> automate) {
+        Set<String> strings = automate.getTransitions().keySet();
+        int maxValue = 0;
+        for (String state : strings) {
+            int numberState = Integer.valueOf(state);
+            if (numberState > maxValue) {
+                maxValue = numberState;
+            }
+        }
+
+        return String.valueOf(maxValue + 1);
     }
 
     @Override
     public List<String> getAlphabet() {
-        return null;
+        return new ArrayList<>(automate.getAlphabet());
     }
 
     @Override
     public Map<String, Map<String, Set<String>>> getTable() {
-       return null;
+        Map<String, Map<String, Set<String>>> table = new HashMap<>(automate.getTransitions());
+        Set<String> beginStates = automate.getBeginState();
+        List<String> endStates = automate.getEndStates();
+
+        for (String endState : endStates) {
+            Map<String, Set<String>> stringSetMap = table.get(endState);
+            for (String letter : getAlphabet()) {
+                Set<String> transitions = stringSetMap.get(letter);
+                if (transitions == null) {
+                    transitions = new HashSet<>();
+                }
+                for (String beginState : beginStates) {
+                    Set<String> beginTransitions = table.get(beginState).get(letter);
+                    transitions.addAll(beginTransitions);
+                }
+                stringSetMap.put(letter, transitions);
+            }
+        }
+
+        for (String letter : getAlphabet()) {
+            HashMap<String, Set<String>> transitions = new HashMap<>();
+            transitions.put(letter, new HashSet<>());
+            table.put(emptyState, transitions);
+        }
+
+        return table;
     }
 
     @Override
     public Set<String> getBeginState() {
-        return null;
+        Set<String> beginState = automate.getBeginState();
+        beginState.add(emptyState);
+        return new HashSet<>(beginState);
     }
 
     @Override
     public List<String> getEndStates() {
-        return null;
+        List<String> endStates = automate.getEndStates();
+        endStates.add(emptyState);
+        return new ArrayList<>(endStates);
     }
 
     @Override

@@ -42,7 +42,7 @@ public class LexerParser {
         automates.add(new DeterministicAutomate(new JSONDeterministicAutomateReader("lexer-util/colon")));
         automates.add(new DeterministicAutomate(new JSONDeterministicAutomateReader("lexer-util/space")));
         automates.add(new DeterministicAutomate(new JSONDeterministicAutomateReader("lexer-util/regex")));
-        automates.add(new DeterministicAutomate(new JSONDeterministicAutomateReader("lexer-util/cotchie")));
+        automates.add(new DeterministicAutomate(new JSONDeterministicAutomateReader("lexer-util/semicolon")));
 
         return parseText(Functions.getLexemes(automates, content, debug));
     }

@@ -15,7 +15,7 @@ import java.util.List;
 public class RegexParser {
 
     public static Automate parseRegex(String regex) {
-        return parseRegex(regex, false);
+        return parseRegex0(regex);
     }
 
     public static Automate parseRegex(String regex, boolean debug) {
@@ -29,9 +29,13 @@ public class RegexParser {
 
     public static Automate generateOneAutomate(String oneChar) {
         if (oneChar == null || oneChar.isEmpty() || RegexConstants.EMPTY_SYMBOL.equals(oneChar)) {
-            return new DeterministicAutomate(new EmptyAutomateGenerateReader());
+            Automate automate = new DeterministicAutomate(new EmptyAutomateGenerateReader());
+            automate.init();
+            return automate;
         } else {
-            return new DeterministicAutomate(new OneSignalAutomateGenerateReader(oneChar));
+            Automate automate = new DeterministicAutomate(new OneSignalAutomateGenerateReader(oneChar));
+            automate.init();
+            return automate;
         }
     }
 
@@ -55,7 +59,6 @@ public class RegexParser {
         int index = 0;
         List<Automate> expressions = new ArrayList<>();
         List<Automate> forConcat = new ArrayList<>();
-        List<String> expression = new ArrayList<>();
 
         log(debug, "\nRegex is initialized!");
 
@@ -70,43 +73,43 @@ public class RegexParser {
                 log(debug, "Shielding symbol of %s", character);
                 switch (character) {
                     case '\\':
-                        expression.add("\\");
+                        forConcat.add(generateOneAutomate("\\"));
                         break;
                     case 's':
-                        expression.add(RegexConstants.SPACE_SYMBOL);
+                        forConcat.add(generateOneAutomate(RegexConstants.SPACE_SYMBOL));
                         break;
                     case 'w':
-                        expression.add(RegexConstants.LETTER_SYMBOL);
+                        forConcat.add(generateOneAutomate(RegexConstants.LETTER_SYMBOL));
                         break;
                     case 'd':
-                        expression.add(RegexConstants.NUMBER_SYMBOL);
+                        forConcat.add(generateOneAutomate(RegexConstants.NUMBER_SYMBOL));
                         break;
                     case '|':
-                        expression.add("|");
+                        forConcat.add(generateOneAutomate("|"));
                         break;
                     case '?':
-                        expression.add(RegexConstants.EMPTY_SYMBOL);
+                        forConcat.add(generateOneAutomate(RegexConstants.EMPTY_SYMBOL));
                         break;
                     case '*':
-                        expression.add("*");
+                        forConcat.add(generateOneAutomate("*"));
                         break;
                     case '(':
-                        expression.add("(");
+                        forConcat.add(generateOneAutomate("("));
                         break;
                     case ')':
-                        expression.add(")");
+                        forConcat.add(generateOneAutomate(")"));
                         break;
                     case ' ':
-                        expression.add(" ");
+                        forConcat.add(generateOneAutomate(" "));
                         break;
                     case 't':
-                        expression.add("\t");
+                        forConcat.add(generateOneAutomate("\t"));
                         break;
                     case 'r':
-                        expression.add("\r");
+                        forConcat.add(generateOneAutomate("\r"));
                         break;
                     case 'n':
-                        expression.add("\n");
+                        forConcat.add(generateOneAutomate("\n"));
                         break;
                     default:
                         log(debug, "Error at shielding symbol. Wrong character is %s", character);
@@ -115,14 +118,12 @@ public class RegexParser {
 
                 index++;
             } else if (character == '|') {
-                log(debug, "End of expression. Concat %s", expression);
-                if (expression.isEmpty() && forConcat.isEmpty()) {
+                log(debug, "End of expression. Concat %s", forConcat);
+                if (forConcat.isEmpty()) {
                     throw new AutomateException("Wrong symbol | on position: " + index);
                 }
-                if (!expression.isEmpty()) {
-                    expressions.add(generateConcatAutomate(forConcat, expression, debug));
-                    expression = new ArrayList<>();
-                }
+
+                expressions.add(generateConcatAutomate(forConcat, debug));
 
                 index++;
             } else if (character == '(') {
@@ -156,73 +157,59 @@ public class RegexParser {
                         innerRegex, startIndex, endIndex);
                 forConcat.add(parseRegex0(innerRegex, debug));
             } else if (character == '*') {
-                if (!expression.isEmpty()) {
-                    log(debug, "End of expression. Repeat {%s}", expression);
-                    forConcat.add(AutomateOperations.repeat(generateConcatAutomate(forConcat, expression, debug)));
-                } else {
+                if (!forConcat.isEmpty()) {
                     Automate automate = forConcat.get(forConcat.size() - 1);
+                    forConcat.remove(forConcat.size() - 1);
                     log(debug, "End of expression. Repeat automate {%s}", automate);
                     forConcat.add(AutomateOperations.repeat(automate));
+                } else {
+                    throw new AutomateException("Automates for repeat is not found!");
                 }
 
-                expression = new ArrayList<>();
                 index++;
             } else if (character == ')') {
                 throw new AutomateException("Wrong symbol " + character + " on position: " + index);
             } else {
                 log(debug, "Simple character: {%s}", character);
-                expression.add(String.valueOf(character));
+                forConcat.add(generateOneAutomate(String.valueOf(character)));
                 index++;
             }
         }
 
-        log(debug, "Generate concat by expression: {%s}", expression);
-        expressions.add(generateConcatAutomate(forConcat, expression, debug));
+        log(debug, "Generate concat by automates: {%s}", forConcat);
+        expressions.add(generateConcatAutomate(forConcat, debug));
 
         log(debug, "Join automates: {%s}\n", expressions);
         return generateUnionAutomate(expressions);
     }
 
-    private static Automate generateConcatAutomate(List<Automate> automates, List<String> expression, boolean debug) {
+    private static Automate generateConcatAutomate(List<Automate> automates, boolean debug) {
         int index = 0;
         Automate automateResult;
-        log(debug, "Concat operations %s and %s", automates, expression);
+        log(debug, "Concat operations %s", automates);
         if (automates.isEmpty()) {
-            if (expression.isEmpty()) {
-                throw new AutomateException("Generation of concatenation is unreal! Automates and expression is empty!");
-            }
-
-            automateResult = generateOneAutomate(expression.get(index));
-            automateResult.init();
-        } else {
-            int innerIndex = 0;
-
-            automateResult = automates.get(innerIndex);
-            innerIndex++;
-            while (innerIndex < automates.size()) {
-                Automate automate = automates.get(innerIndex);
-                automateResult = AutomateOperations.concat(automateResult, automate);
-                innerIndex++;
-            }
+            throw new AutomateException("Generation of concatenation is unreal! Automates is empty!");
+        } else if (automates.size() == 1) {
+            Automate automate = automates.get(index);
             automates.clear();
+            return automate;
         }
 
+        automateResult = automates.get(index);
         index++;
-        while (index < expression.size()) {
-            Automate automate = generateOneAutomate(expression.get(index));
-            automate.init();
+        while (index < automates.size()) {
+            Automate automate = automates.get(index);
             automateResult = AutomateOperations.concat(automateResult, automate);
             index++;
         }
+        automates.clear();
 
         return automateResult;
     }
 
     private static Automate generateUnionAutomate(List<Automate> automates) {
         if (automates.size() == 0) {
-            Automate automate = generateOneAutomate(RegexConstants.EMPTY_SYMBOL);
-            automate.init();
-            return automate;
+            throw new AutomateException("Generation of union is unreal! Automates is empty!");
         } else if (automates.size() == 1) {
             return automates.get(0);
         }
@@ -231,6 +218,7 @@ public class RegexParser {
         for (int i = 2; i < automates.size(); i++) {
             automateResult = AutomateOperations.union(automateResult, automates.get(i));
         }
+        automateResult.init();
 
         return automateResult;
     }
