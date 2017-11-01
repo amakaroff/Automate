@@ -174,4 +174,8 @@ public abstract class Automate<T> {
     public String toString() {
         return "Name: {" + name + "}, alphabet: " + alphabet;
     }
+
+    public boolean isInit() {
+        return isInit;
+    }
 }

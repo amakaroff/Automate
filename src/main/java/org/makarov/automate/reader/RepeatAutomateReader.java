@@ -3,7 +3,6 @@ package org.makarov.automate.reader;
 import org.makarov.automate.Automate;
 import org.makarov.util.AutomateReflection;
 import org.makarov.util.operations.AutomateOperations;
-import org.makarov.util.operations.AutomateOperationsUtil;
 import org.makarov.util.operations.AutomateRenamer;
 
 import java.util.ArrayList;

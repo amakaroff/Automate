@@ -3,14 +3,14 @@ package org.makarov.automate;
 import org.makarov.automate.exception.AutomateException;
 import org.makarov.automate.reader.AutomateReader;
 import org.makarov.automate.reader.JSONNonDeterministicAutomateReader;
-import org.makarov.automate.serialize.AutomateSerializer;
-import org.makarov.automate.serialize.AutomateToJSONSerializer;
 
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 public class NonDeterministicAutomate extends Automate<Set<String>> {
+
+    private boolean isNullCleaning = false;
 
     public NonDeterministicAutomate(String filePath) {
         super(new JSONNonDeterministicAutomateReader(filePath));
@@ -24,16 +24,19 @@ public class NonDeterministicAutomate extends Automate<Set<String>> {
     public void init() {
         if (!isInit) {
             super.init();
-            for (String key : table.keySet()) {
-                System.out.println(key);
-                Map<String, Set<String>> map = table.get(key);
-                for (String signal : alphabet) {
-                    Set<String> transitions = map.computeIfAbsent(signal, k -> new HashSet<>());
-                    System.out.print(transitions + " ");
-                    if (transitions.contains(null)) {
-                        transitions.remove(null);
-                    }
-                    System.out.print(transitions + " \n");
+            if (!isNullCleaning) {
+                removeNullStates();
+            }
+        }
+    }
+
+    private void removeNullStates() {
+        for (String key : table.keySet()) {
+            Map<String, Set<String>> map = table.get(key);
+            for (String signal : alphabet) {
+                Set<String> transitions = map.computeIfAbsent(signal, k -> new HashSet<>());
+                if (transitions.contains(null)) {
+                    transitions.remove(null);
                 }
             }
         }
@@ -41,6 +44,9 @@ public class NonDeterministicAutomate extends Automate<Set<String>> {
 
     @Override
     public void nextState(char signal) throws AutomateException {
+        if (!isNullCleaning) {
+            removeNullStates();
+        }
         String currentSignal = String.valueOf(signal);
         log("Input signal: {%s}", currentSignal);
         checkNext(currentSignal);

@@ -16,7 +16,7 @@ import java.util.List;
 public class RegexParser {
 
     public static Automate parseRegex(String regex) {
-        return parseRegex0(regex);
+        return parseRegex(regex, false);
     }
 
     public static Automate parseRegex(String regex, boolean debug) {
@@ -24,7 +24,7 @@ public class RegexParser {
         Automate automate = parseRegex0(regex, debug);
         time = System.currentTimeMillis() - time;
 
-        log(debug, "Regular expression compilation complete for %s", getTime(time));
+        log(true, "Regular expression compilation complete for %s", getTime(time));
         return automate;
     }
 
@@ -140,7 +140,7 @@ public class RegexParser {
                 while (!queue.isEmpty()) {
                     if (index >= regex.length()) {
                         log(debug, "Wrong open bracket. Position: %s", currentIndex);
-                        throw new AutomateException(createMessage("Wrong open bracket. Position: " + currentIndex , currentIndex, regex));
+                        throw new AutomateException(createMessage("Wrong open bracket. Position: " + currentIndex, currentIndex, regex));
                     }
                     character = regex.charAt(index);
                     log(debug, "In brackets character: {%s}", character);
