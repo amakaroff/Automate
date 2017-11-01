@@ -7,9 +7,11 @@ import org.makarov.automate.reader.EmptyAutomateGenerateReader;
 import org.makarov.automate.reader.OneSignalAutomateGenerateReader;
 import org.makarov.constants.RegexConstants;
 import org.makarov.util.operations.AutomateOperations;
+import org.makarov.util.operations.AutomateRenamer;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class RegexParser {
@@ -24,6 +26,7 @@ public class RegexParser {
         time = System.currentTimeMillis() - time;
 
         log(debug, "Regular expression compilation complete for %s", getTime(time));
+        AutomateRenamer.renameAutomate(automate);
         return automate;
     }
 
@@ -232,6 +235,12 @@ public class RegexParser {
 
     private static void log(boolean debug, String message, Object... objects) {
         if (debug) {
+            if (objects.length == 1 && (objects[0] instanceof Collection)) {
+                Collection<Automate> automates = (Collection<Automate>) objects[0];
+                for (Automate automate : automates) {
+                    automate.init();
+                }
+            }
             System.out.println(String.format(message, objects));
         }
     }

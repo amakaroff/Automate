@@ -9,14 +9,15 @@ import org.makarov.automate.serialize.AutomateSerializer;
 import org.makarov.automate.serialize.AutomateToJSONSerializer;
 import org.makarov.util.Functions;
 import org.makarov.util.operations.AutomateOperations;
+import org.makarov.util.operations.AutomateRenamer;
 import org.makarov.util.parser.RegexParser;
 
 public class Main {
 
     public static void main(String[] args) {
         AutomateSerializer serializer = new AutomateToJSONSerializer();
-        Automate automate = RegexParser.parseRegex("10*1", true);
+        Automate automate = RegexParser.parseRegex("((+ | -)\\d(\\d*)) | (\\d(\\d*))", false);
         System.out.println(serializer.serialize(automate));
-        System.out.println(Functions.function(automate, "10001", 0));
+        System.out.println(Functions.function(automate, "+345", 0));
     }
 }
