@@ -3,7 +3,7 @@ package org.makarov.task;
 
 import org.makarov.automate.Automate;
 import org.makarov.automate.DeterministicAutomate;
-import org.makarov.automate.reader.JSONDeterministicAutomateReader;
+import org.makarov.automate.reader.json.JSONDeterministicAutomateReader;
 import org.makarov.util.Functions;
 import org.makarov.util.Pair;
 

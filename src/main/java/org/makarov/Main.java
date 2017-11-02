@@ -2,7 +2,6 @@ package org.makarov;
 
 
 import org.makarov.automate.Automate;
-import org.makarov.automate.NonDeterministicAutomate;
 import org.makarov.automate.serialize.AutomateSerializer;
 import org.makarov.automate.serialize.AutomateToJSONSerializer;
 import org.makarov.util.Functions;

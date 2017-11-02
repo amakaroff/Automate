@@ -3,7 +3,7 @@ package org.makarov.util.parser;
 import org.makarov.automate.Automate;
 import org.makarov.automate.DeterministicAutomate;
 import org.makarov.automate.exception.AutomateException;
-import org.makarov.automate.reader.JSONDeterministicAutomateReader;
+import org.makarov.automate.reader.json.JSONDeterministicAutomateReader;
 import org.makarov.util.AutomateReflection;
 import org.makarov.util.FileUtils;
 import org.makarov.util.Functions;

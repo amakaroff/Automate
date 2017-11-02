@@ -8,8 +8,6 @@ import java.util.Map;
 
 public interface AutomateReader<T> {
 
-    String DEBUG = "debug";
-
     String EMPTY_NAME = "Empty name";
 
     String TYPE = ".json";

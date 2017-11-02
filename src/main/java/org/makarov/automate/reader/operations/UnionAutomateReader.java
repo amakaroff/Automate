@@ -1,9 +1,10 @@
-package org.makarov.automate.reader;
+package org.makarov.automate.reader.operations;
 
 import org.makarov.automate.Automate;
+import org.makarov.automate.reader.AutomateReader;
 import org.makarov.util.AutomateReflection;
 import org.makarov.util.operations.AutomateOperations;
-import org.makarov.util.operations.AutomateOperationsUtil;
+import org.makarov.util.operations.AutomateOperationsUtils;
 import org.makarov.util.operations.AutomateRenamer;
 
 import java.util.ArrayList;
@@ -15,9 +16,9 @@ import java.util.Set;
 
 public class UnionAutomateReader implements AutomateReader<Set<String>> {
 
-    AutomateReflection<Set<String>> first;
+    private AutomateReflection<Set<String>> first;
 
-    AutomateReflection<Set<String>> second;
+    private AutomateReflection<Set<String>> second;
 
     @SuppressWarnings("unchecked")
     public UnionAutomateReader(Automate first, Automate second) {
@@ -50,7 +51,7 @@ public class UnionAutomateReader implements AutomateReader<Set<String>> {
         Map<String, Map<String, Set<String>>> secondTable = second.getTransitions();
 
         for (String state : transitions) {
-            Map<String, Set<String>> newState = AutomateOperationsUtil.joinMap(firstTable.get(state),
+            Map<String, Set<String>> newState = AutomateOperationsUtils.joinMap(firstTable.get(state),
                     secondTable.get(state), getAlphabet());
             table.put(state, newState);
         }

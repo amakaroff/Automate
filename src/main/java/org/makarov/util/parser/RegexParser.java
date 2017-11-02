@@ -3,8 +3,8 @@ package org.makarov.util.parser;
 import org.makarov.automate.Automate;
 import org.makarov.automate.DeterministicAutomate;
 import org.makarov.automate.exception.AutomateException;
-import org.makarov.automate.reader.EmptyAutomateGenerateReader;
-import org.makarov.automate.reader.OneSignalAutomateGenerateReader;
+import org.makarov.automate.reader.generate.EmptyAutomateGenerateReader;
+import org.makarov.automate.reader.generate.OneSignalAutomateGenerateReader;
 import org.makarov.constants.RegexConstants;
 import org.makarov.util.operations.AutomateOperations;
 
@@ -212,7 +212,7 @@ public class RegexParser {
     }
 
     private static Automate generateUnionAutomate(List<Automate> automates, boolean debug) {
-        if (automates.size() == 0) {
+        if (automates.isEmpty()) {
             throw new AutomateException("Generation of union is unreal! Automates is empty!");
         } else if (automates.size() == 1) {
             return automates.get(0);
@@ -237,7 +237,7 @@ public class RegexParser {
             if (objects.length == 1 && (objects[0] instanceof Collection)) {
                 Collection<Automate> automates = (Collection<Automate>) objects[0];
                 for (Automate automate : automates) {
-                    automate.init();
+                    automate.init(debug);
                 }
             }
             System.out.println(String.format(message, objects));

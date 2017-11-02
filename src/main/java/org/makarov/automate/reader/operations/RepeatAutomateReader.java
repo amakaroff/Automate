@@ -1,6 +1,7 @@
-package org.makarov.automate.reader;
+package org.makarov.automate.reader.operations;
 
 import org.makarov.automate.Automate;
+import org.makarov.automate.reader.AutomateReader;
 import org.makarov.util.AutomateReflection;
 import org.makarov.util.operations.AutomateOperations;
 import org.makarov.util.operations.AutomateRenamer;

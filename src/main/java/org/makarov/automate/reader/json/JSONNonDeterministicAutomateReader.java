@@ -1,4 +1,4 @@
-package org.makarov.automate.reader;
+package org.makarov.automate.reader.json;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

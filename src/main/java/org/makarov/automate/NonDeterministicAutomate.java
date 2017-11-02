@@ -2,7 +2,7 @@ package org.makarov.automate;
 
 import org.makarov.automate.exception.AutomateException;
 import org.makarov.automate.reader.AutomateReader;
-import org.makarov.automate.reader.JSONNonDeterministicAutomateReader;
+import org.makarov.automate.reader.json.JSONNonDeterministicAutomateReader;
 
 import java.util.HashSet;
 import java.util.Map;

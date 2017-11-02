@@ -1,7 +1,8 @@
-package org.makarov.automate.reader;
+package org.makarov.automate.reader.json;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.makarov.automate.reader.AutomateReader;
 import org.makarov.automate.translators.Translator;
 import org.makarov.constants.RegexConstants;
 import org.makarov.util.FileUtils;

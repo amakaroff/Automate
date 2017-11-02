@@ -1,4 +1,6 @@
-package org.makarov.automate.reader;
+package org.makarov.automate.reader.generate;
+
+import org.makarov.automate.reader.AutomateReader;
 
 import java.util.ArrayList;
 import java.util.HashMap;

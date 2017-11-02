@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class AutomateOperationsUtil {
+public class AutomateOperationsUtils {
 
     public static Map<String, Set<String>> joinMap(Map<String, Set<String>> first, Map<String, Set<String>> second, Collection<String> alphabet) {
         if (first == null) {
@@ -39,9 +39,7 @@ public class AutomateOperationsUtil {
 
     public static Set<String> getState(Set<String> set) {
         if (set == null) {
-            Set<String> newState = new HashSet<>();
-            newState.add(null);
-            return newState;
+            return new HashSet<>();
         } else {
             return set;
         }

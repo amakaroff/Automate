@@ -51,37 +51,20 @@ public abstract class Automate<T> {
                 log("\nInitializating of Automate is started!");
 
                 name = reader.getName();
-                log("Automate name: %s", name);
-
                 table = reader.getTable();
-                log("Automate transitions: %s", table);
-
                 priority = reader.getPriority();
-                log("Automate priority: %s", priority);
-
                 beginState = reader.getBeginState();
-                log("Automate begin state: %s", beginState);
-
                 endState = reader.getEndStates();
-                log("Automate end state: %s", endState);
-
                 alphabet = reader.getAlphabet();
-                log("Automate alphabet: %s", alphabet);
-
                 alwaysSymbol = reader.getAlwaysSymbol();
-                log("Automate always symbol: %s", alwaysSymbol);
-
                 translator = reader.getTranslator();
-                log("Translator for Automate: %s", (translator == null ? null : translator.getClass().getName()));
                 if (translator == null) {
                     translator = new DefaultRegexTranslator();
-                    log("Translator for Automate is degault: %s", translator.getClass().getName());
                 }
                 currentState = beginState;
                 isInit = true;
                 parseAlphabet();
                 log("Initializating of Automate: %s complete!\n", name);
-                log("Current state is %s", currentState);
             } catch (Exception exception) {
                 throw new AutomateException("Problem at reading automate: " + name, exception);
             }
@@ -117,7 +100,6 @@ public abstract class Automate<T> {
     public void refresh() {
         log("Automate %s has been refreshed!\n", this.name);
         currentState = beginState;
-        log("Current state is %s", currentState);
     }
 
     public String getName() {
@@ -139,10 +121,10 @@ public abstract class Automate<T> {
         log("Parsing alphabet is started!");
         List<String> tempAlphabet = new ArrayList<>(alphabet);
         for (String letter : tempAlphabet) {
-            log("Parsing of letter: %s", letter);
             List<String> translations = translator.getTranslateElements(letter);
-            log("Maps of letters:  %s", translations);
             if (translations != null) {
+                log("Parsing of letter: %s", letter);
+                log("Maps of letters:  %s", translations);
                 int index = alphabet.indexOf(letter);
                 alphabet.remove(index);
                 for (String translation : translations) {

@@ -1,6 +1,7 @@
-package org.makarov.automate.reader;
+package org.makarov.automate.reader.transform;
 
 import org.makarov.automate.DeterministicAutomate;
+import org.makarov.automate.reader.AutomateReader;
 import org.makarov.automate.translators.Translator;
 import org.makarov.util.AutomateReflection;
 

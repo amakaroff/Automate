@@ -56,12 +56,15 @@ public class AutomateToJSONSerializer implements AutomateSerializer {
 
         object.put(AutomateReader.NAME, name);
         object.put(AutomateReader.PRIORITY, priority);
+
         if (!RegexConstants.ALWAYS_SYMBOL.equals(alwaysSymbol)) {
             object.put(AutomateReader.ALWAYS_SYMBOL, alwaysSymbol);
         }
+
         if (!(translator instanceof DefaultRegexTranslator)) {
             object.put(AutomateReader.TRANSLATOR, translator.getClass().getName());
         }
+
         object.put(AutomateReader.PRIORITY, priority);
         object.put(AutomateReader.ALPHABET, alphabet.toArray());
         object.put(AutomateReader.END_STATES, endStates.toArray());
