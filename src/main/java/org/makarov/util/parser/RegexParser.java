@@ -5,7 +5,7 @@ import org.makarov.automate.DeterministicAutomate;
 import org.makarov.automate.exception.AutomateException;
 import org.makarov.automate.reader.generate.EmptyAutomateGenerateReader;
 import org.makarov.automate.reader.generate.OneSignalAutomateGenerateReader;
-import org.makarov.constants.RegexConstants;
+import org.makarov.automate.translators.constants.RegexConstants;
 import org.makarov.util.MessageUtils;
 import org.makarov.util.operations.AutomateOperations;
 import org.makarov.util.optimization.AutomateOptimizationUtils;
@@ -13,6 +13,7 @@ import org.makarov.util.optimization.AutomateOptimizationUtils;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Deque;
 import java.util.List;
 
 public class RegexParser {
@@ -135,7 +136,7 @@ public class RegexParser {
                 unionCount++;
                 index++;
             } else if (character == '(') {
-                ArrayDeque<Character> queue = new ArrayDeque<>();
+                Deque<Character> queue = new ArrayDeque<>();
                 queue.push('(');
                 int currentIndex = index;
                 index++;
@@ -143,7 +144,7 @@ public class RegexParser {
                 log(debug, "In brackets character: {%s}", '(');
                 while (!queue.isEmpty()) {
                     if (index >= regex.length()) {
-                        log(debug, "Wrong open bracket. Position: %s", currentIndex);
+                        log(debug, "Not closed open bracket. Position: %s", currentIndex);
                         throw new AutomateException(MessageUtils.createMessage("Wrong open bracket. Position: " + currentIndex, currentIndex, regex));
                     }
                     character = regex.charAt(index);
@@ -176,7 +177,7 @@ public class RegexParser {
 
                 index++;
             } else if (character == ')') {
-                throw new AutomateException(MessageUtils.createMessage("Wrong symbol " + character + " on position: " + index, index, regex));
+                throw new AutomateException(MessageUtils.createMessage("Not opened close bracket on position: " + index, index, regex));
             } else {
                 log(debug, "Simple character: {%s}", character);
                 forConcat.add(generateOneAutomate(String.valueOf(character)));
@@ -201,7 +202,7 @@ public class RegexParser {
     private static Automate generateConcatAutomate(List<Automate> automates, boolean debug) {
         int index = 0;
         Automate automateResult;
-        log(debug, "Concat operations %s", automates);
+        log(debug, "Concat operations above %s", automates);
         if (automates.isEmpty()) {
             throw new AutomateException("Generation of concatenation is unreal! Automates is empty!");
         } else if (automates.size() == 1) {
@@ -229,6 +230,8 @@ public class RegexParser {
             return automates.get(0);
         }
 
+        log(debug, "Union operations above %s", automates);
+
         Automate automateResult = AutomateOperations.union(automates.get(0), automates.get(1));
         for (int i = 2; i < automates.size(); i++) {
             automateResult = AutomateOperations.union(automateResult, automates.get(i));
@@ -248,7 +251,7 @@ public class RegexParser {
             if (objects.length == 1 && (objects[0] instanceof Collection)) {
                 Collection<Automate> automates = (Collection<Automate>) objects[0];
                 for (Automate automate : automates) {
-                    automate.init(debug);
+                    automate.init(true);
                 }
             }
             System.out.println(String.format(message, objects));

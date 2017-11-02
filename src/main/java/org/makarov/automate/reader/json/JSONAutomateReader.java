@@ -5,7 +5,7 @@ import org.json.JSONObject;
 import org.makarov.automate.reader.AutomateReader;
 import org.makarov.automate.translators.JSONTranslator;
 import org.makarov.automate.translators.Translator;
-import org.makarov.constants.RegexConstants;
+import org.makarov.automate.translators.constants.RegexConstants;
 import org.makarov.util.FileUtils;
 
 import java.lang.reflect.Constructor;

@@ -5,6 +5,7 @@ import org.makarov.automate.reader.AutomateReader;
 import org.makarov.automate.translators.Translator;
 import org.makarov.util.AutomateReflection;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -22,7 +23,7 @@ public class TransformNonDeterministicAutomateReader implements AutomateReader<S
 
     @Override
     public List<String> getAlphabet() {
-        return automateReflection.getAlphabet();
+        return new ArrayList<>(automateReflection.getAlphabet());
     }
 
     @Override
@@ -54,7 +55,7 @@ public class TransformNonDeterministicAutomateReader implements AutomateReader<S
 
     @Override
     public List<String> getEndStates() {
-        return automateReflection.getEndStates();
+        return new ArrayList<>(automateReflection.getEndStates());
     }
 
     @Override

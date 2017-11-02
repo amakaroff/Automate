@@ -19,4 +19,9 @@ public class JSONUtils {
 
         return result;
     }
+
+    public static JSONArray toJSONArray(List<String> list) {
+        JSONArray array = new JSONArray();
+        return array.put(list);
+    }
 }

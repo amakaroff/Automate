@@ -1,4 +1,4 @@
-package org.makarov.constants;
+package org.makarov.automate.translators.constants;
 
 public interface RegexConstants {
 

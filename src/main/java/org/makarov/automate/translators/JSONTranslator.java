@@ -2,7 +2,7 @@ package org.makarov.automate.translators;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.makarov.constants.RegexConstants;
+import org.makarov.automate.translators.constants.RegexConstants;
 import org.makarov.util.json.JSONUtils;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ public class JSONTranslator implements Translator {
 
     private static Map<String, List<String>> translators = new HashMap<>();
 
-    private static final String SYBMOL = "symbol";
+    private static final String SYMBOL = "symbol";
 
     private static final String TRANSLATION = "translation";
 
@@ -22,7 +22,7 @@ public class JSONTranslator implements Translator {
         this();
         List<JSONObject> translations = JSONUtils.toList(array, JSONObject.class);
         for (JSONObject translation : translations) {
-            String symbol = translation.getString(SYBMOL);
+            String symbol = translation.getString(SYMBOL);
             List<String> translationSymbols = JSONUtils.toList(translation.getJSONArray(TRANSLATION), String.class);
             if (!translators.containsKey(symbol)) {
                 translators.put(symbol, translationSymbols);
