@@ -6,6 +6,7 @@ import org.makarov.automate.exception.AutomateException;
 import org.makarov.automate.reader.generate.EmptyAutomateGenerateReader;
 import org.makarov.automate.reader.generate.OneSignalAutomateGenerateReader;
 import org.makarov.constants.RegexConstants;
+import org.makarov.util.MessageUtils;
 import org.makarov.util.operations.AutomateOperations;
 
 import java.util.ArrayDeque;
@@ -117,14 +118,14 @@ public class RegexParser {
                         break;
                     default:
                         log(debug, "Error at shielding symbol. Wrong character is %s", character);
-                        throw new AutomateException(createMessage("Error at shielding symbol. Wrong character is " + character, index, regex));
+                        throw new AutomateException(MessageUtils.createMessage("Error at shielding symbol. Wrong character is " + character, index, regex));
                 }
 
                 index++;
             } else if (character == '|') {
                 log(debug, "End of expression. Concat %s", forConcat);
                 if (forConcat.isEmpty()) {
-                    throw new AutomateException(createMessage("Wrong symbol | on position: " + index, index, regex));
+                    throw new AutomateException(MessageUtils.createMessage("Wrong symbol | on position: " + index, index, regex));
                 }
 
                 expressions.add(generateConcatAutomate(forConcat, debug));
@@ -140,7 +141,7 @@ public class RegexParser {
                 while (!queue.isEmpty()) {
                     if (index >= regex.length()) {
                         log(debug, "Wrong open bracket. Position: %s", currentIndex);
-                        throw new AutomateException(createMessage("Wrong open bracket. Position: " + currentIndex, currentIndex, regex));
+                        throw new AutomateException(MessageUtils.createMessage("Wrong open bracket. Position: " + currentIndex, currentIndex, regex));
                     }
                     character = regex.charAt(index);
                     log(debug, "In brackets character: {%s}", character);
@@ -172,7 +173,7 @@ public class RegexParser {
 
                 index++;
             } else if (character == ')') {
-                throw new AutomateException(createMessage("Wrong symbol " + character + " on position: " + index, index, regex));
+                throw new AutomateException(MessageUtils.createMessage("Wrong symbol " + character + " on position: " + index, index, regex));
             } else {
                 log(debug, "Simple character: {%s}", character);
                 forConcat.add(generateOneAutomate(String.valueOf(character)));
@@ -242,14 +243,5 @@ public class RegexParser {
             }
             System.out.println(String.format(message, objects));
         }
-    }
-
-    private static String createMessage(String message, int position, String line) {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < position; i++) {
-            stringBuilder.append(" ");
-        }
-
-        return "\n" + line + "\n" + stringBuilder.toString() + "^ " + message;
     }
 }

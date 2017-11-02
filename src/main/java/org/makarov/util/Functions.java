@@ -60,7 +60,7 @@ public class Functions {
 
     public static Collection<Pair<String, String>> getLexemes(Collection<Automate> automates, String line, boolean debug) {
         List<Pair<String, String>> lexemes = new ArrayList<>();
-        List<String> errors = new ArrayList<>();
+        List<Pair<Integer, String>> errors = new ArrayList<>();
 
         int index = 0;
 
@@ -71,14 +71,14 @@ public class Functions {
                 lexemes.add(lexeme);
                 index += lexeme.getValue().length();
             } catch (AutomateException exception) {
-                errors.add("Position: {" + index + "} has some error : " + exception.getMessage() + "\n");
+                errors.add(new Pair<>(index, "Position: {" + index + "} has some error : " + exception.getMessage() + "\n"));
                 index++;
             }
         }
 
         if (debug) {
-            for (String error : errors) {
-                System.out.println(error);
+            for (Pair<Integer, String> error : errors) {
+                System.out.println(MessageUtils.createMessage(error.getValue(), error.getKey(), line));
             }
         }
 
