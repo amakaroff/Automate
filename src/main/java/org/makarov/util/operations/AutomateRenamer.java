@@ -140,6 +140,7 @@ public class AutomateRenamer {
         if (map == null) {
             map = new HashMap<>();
         }
+
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             if (entry.getValue() instanceof Collection) {
                 renameInCollection(entry.getValue(), oldState, newState);

@@ -2,6 +2,7 @@ package org.makarov.util.optimization;
 
 import org.makarov.automate.Automate;
 import org.makarov.util.AutomateReflection;
+import org.makarov.util.operations.AutomateRenamer;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -51,8 +52,11 @@ public class AutomateOptimizationUtils {
                             (!endStates.contains(removeState) && !endStates.contains(removeState))) {
                         if (beginState instanceof Collection) {
                             Collection<String> beginStates = (Collection<String>) beginState;
-                            if (beginStates.contains(removeState) && !beginStates.contains(currentState)) {
-                                beginStates.add(currentState);
+                            if (beginStates.contains(removeState)) {
+                                beginStates.remove(removeState);
+                                if (!beginStates.contains(currentState)) {
+                                    beginStates.add(currentState);
+                                }
                             }
                         } else {
                             if (beginState.equals(removeState)) {
@@ -60,10 +64,56 @@ public class AutomateOptimizationUtils {
                             }
                         }
                         removeState(removeState, currentState, transitions);
+                        endStates.remove(removeState);
+                    }
+                }
+
+                removeStates.clear();
+            }
+        }
+
+        List<String> unattainableStates = new ArrayList<>();
+        for (String state : transitions.keySet()) {
+            if (isUnattainableState(state, transitions)) {
+                unattainableStates.add(state);
+            }
+        }
+
+        for (String unattainableState : unattainableStates) {
+            if (beginState instanceof Collection) {
+                Collection<String> states = (Collection<String>) beginState;
+                if (!states.contains(unattainableState)) {
+                    transitions.remove(unattainableState);
+                }
+            } else {
+                if (!beginState.equals(unattainableState)) {
+                    transitions.remove(unattainableState);
+                }
+            }
+        }
+
+        //AutomateRenamer.renameAutomate(automate);
+    }
+
+    private static boolean isUnattainableState(String state, Map<String, Map<String, Object>> transitions) {
+        for (Map.Entry<String, Map<String, Object>> entry : transitions.entrySet()) {
+            if (!entry.getKey().equals(state)) {
+                for (Object value : entry.getValue().values()) {
+                    if (value instanceof Collection) {
+                        Collection<String> states = (Collection<String>) value;
+                        if (states.contains(state)) {
+                            return false;
+                        }
+                    } else {
+                        if (value.equals(state)) {
+                            return false;
+                        }
                     }
                 }
             }
         }
+
+        return true;
     }
 
 
@@ -94,6 +144,11 @@ public class AutomateOptimizationUtils {
     }
 
     private static boolean containsMap(Map<String, Object> first, Map<String, Object> second) {
+        if (first == null || second == null ||
+                (first.size() != second.size())) {
+            return false;
+        }
+
         List<Object> firstValues = new ArrayList<>(first.values());
         List<Object> secondValues = new ArrayList<>(second.values());
 

@@ -44,7 +44,6 @@ public class AutomateToJSONSerializer implements AutomateSerializer {
     @SuppressWarnings("unchecked")
     public String serialize(Automate automate) {
         automate.init();
-        AutomateOptimizationUtils.fullOptimization(automate);
         AutomateReflection automateReflection = new AutomateReflection(automate);
 
         String name = automate.getName();
