@@ -14,9 +14,9 @@ public interface AutomateReader<T> {
 
     String ALPHABET = "alphabet";
 
-    String ALWAYS_SYMBOL = "alwaysSymbol";
+    String ALWAYS_SYMBOL = "always-symbol";
 
-    String END_STATES = "endStates";
+    String END_STATES = "end-states";
 
     String NAME = "name";
 
@@ -24,15 +24,19 @@ public interface AutomateReader<T> {
 
     String TABLE = "table";
 
-    String ROW_NAME = "rowName";
+    String ROW_NAME = "row-name";
 
     String TRANSITIONS = "transitions";
 
-    String BEGIN_STATE = "beginState";
+    String BEGIN_STATE = "begin-state";
 
-    String BEGIN_STATES = "beginStates";
+    String BEGIN_STATES = "begin-states";
 
     String TRANSLATOR = "translator";
+
+    String TRANSLATOR_CLASS_NAME = "class-name";
+
+    String TRANSLATOR_TRANSLATION_ARRAY = "translators";
 
     List<String> getAlphabet();
 

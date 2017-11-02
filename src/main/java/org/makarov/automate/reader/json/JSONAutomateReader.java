@@ -3,10 +3,13 @@ package org.makarov.automate.reader.json;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.makarov.automate.reader.AutomateReader;
+import org.makarov.automate.translators.JSONTranslator;
 import org.makarov.automate.translators.Translator;
 import org.makarov.constants.RegexConstants;
 import org.makarov.util.FileUtils;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,13 +73,20 @@ public abstract class JSONAutomateReader<T> implements AutomateReader<T> {
     @Override
     public Translator getTranslator() {
         if (!json.isNull(TRANSLATOR)) {
-            String translator = json.getString(TRANSLATOR);
+            JSONObject translator = json.getJSONObject(TRANSLATOR);
+            String className = translator.getString(TRANSLATOR_CLASS_NAME);
+            JSONArray translations = translator.getJSONArray(TRANSLATOR_TRANSLATION_ARRAY);
+
             try {
-                Class<?> clazz = Class.forName(translator);
-                if (Translator.class.isAssignableFrom(clazz)) {
-                    return Translator.class.cast(clazz.newInstance());
+                Class<?> clazz = Class.forName(className);
+                if (JSONTranslator.class.isInstance(clazz)) {
+                    if (Translator.class.isAssignableFrom(clazz)) {
+                        Constructor<?> constructor = clazz.getConstructor(JSONArray.class);
+                        return Translator.class.cast(constructor.newInstance(translations));
+                    }
                 }
-            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException ignore) {
+            } catch (ClassNotFoundException | IllegalAccessException |
+                    InstantiationException | NoSuchMethodException  | InvocationTargetException ignore) {
                 return null;
             }
         }

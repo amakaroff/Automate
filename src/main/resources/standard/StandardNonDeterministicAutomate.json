@@ -4,16 +4,16 @@
   "translator": "",
   "alphabet": [
   ],
-  "beginStates": [
+  "begin-states": [
   ],
-  "endStates": [
+  "end-states": [
   ],
   "table": {
     "columns": [
     ],
     "rows": [
       {
-        "rowName": "",
+        "row-name": "",
         "transitions": [
           []
         ]

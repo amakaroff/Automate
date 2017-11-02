@@ -3,7 +3,7 @@ package org.makarov.automate.serialize;
 import org.json.JSONObject;
 import org.makarov.automate.Automate;
 import org.makarov.automate.reader.AutomateReader;
-import org.makarov.automate.translators.DefaultRegexTranslator;
+import org.makarov.automate.translators.JSONTranslator;
 import org.makarov.automate.translators.Translator;
 import org.makarov.constants.RegexConstants;
 import org.makarov.util.AutomateReflection;
@@ -61,7 +61,7 @@ public class AutomateToJSONSerializer implements AutomateSerializer {
             object.put(AutomateReader.ALWAYS_SYMBOL, alwaysSymbol);
         }
 
-        if (!(translator instanceof DefaultRegexTranslator)) {
+        if (!(translator instanceof JSONTranslator)) {
             object.put(AutomateReader.TRANSLATOR, translator.getClass().getName());
         }
 

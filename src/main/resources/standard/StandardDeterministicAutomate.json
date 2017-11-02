@@ -1,15 +1,23 @@
 {
   "name": "",
   "priority": 0,
-  "translator": "",
+  "translator": {
+    "class-name": "",
+    "translators" : [
+      {
+        "symbol": "",
+        "translation" : []
+      }
+    ]
+  },
   "alphabet": [
   ],
-  "beginState": "",
-  "endStates": [
+  "begin-state": "",
+  "end-states": [
   ],
   "table": [
     {
-      "rowName": "",
+      "row-name": "",
       "transitions": [
       ]
     }

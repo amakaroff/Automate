@@ -2,7 +2,7 @@ package org.makarov.automate;
 
 import org.makarov.automate.exception.AutomateException;
 import org.makarov.automate.reader.AutomateReader;
-import org.makarov.automate.translators.DefaultRegexTranslator;
+import org.makarov.automate.translators.JSONTranslator;
 import org.makarov.automate.translators.Translator;
 
 import java.util.ArrayList;
@@ -59,7 +59,7 @@ public abstract class Automate<T> {
                 alwaysSymbol = reader.getAlwaysSymbol();
                 translator = reader.getTranslator();
                 if (translator == null) {
-                    translator = new DefaultRegexTranslator();
+                    translator = new JSONTranslator();
                 }
                 currentState = beginState;
                 isInit = true;
