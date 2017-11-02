@@ -1,5 +1,7 @@
 package org.makarov;
 
+
+import org.makarov.automate.Automate;
 import org.makarov.automate.NonDeterministicAutomate;
 import org.makarov.automate.serialize.AutomateSerializer;
 import org.makarov.automate.serialize.AutomateToJSONSerializer;
@@ -10,10 +12,9 @@ public class Main {
 
     public static void main(String[] args) {
         AutomateSerializer serializer = new AutomateToJSONSerializer();
-        NonDeterministicAutomate intRegex = (NonDeterministicAutomate) RegexParser.parseRegex("(+|-|\\?)(\\d(\\d)*)");
-        intRegex.init(false);
-        System.out.println(serializer.serialize(intRegex));
-        System.out.println(Functions.function(intRegex, "5345", 0));
+        Automate automate = RegexParser.parseRegex("(+|-|\\?)(.\\d(\\d)*((e|E)(+|-|\\?)\\d(\\d)*|\\?))|(\\d(\\d)*.\\d(\\d)*((e|E)(+|-|\\?)\\d(\\d)*|\\?))|(\\d(\\d)*((e|E)(+|-|\\?)\\d(\\d)*|\\?))|(\\d(\\d)*.)((e|E)(+|-|\\?)\\d(\\d)*|\\?)");
+        System.out.println(serializer.serialize(automate));
+        System.out.println(Functions.function(automate, "-.53e-3", 0));
     }
 
     //Regular helpers
