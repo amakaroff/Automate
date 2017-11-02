@@ -7,6 +7,7 @@ import org.makarov.automate.translators.JSONTranslator;
 import org.makarov.automate.translators.Translator;
 import org.makarov.constants.RegexConstants;
 import org.makarov.util.AutomateReflection;
+import org.makarov.util.optimization.AutomateOptimizationUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,6 +44,7 @@ public class AutomateToJSONSerializer implements AutomateSerializer {
     @SuppressWarnings("unchecked")
     public String serialize(Automate automate) {
         automate.init();
+        AutomateOptimizationUtils.verticalOptimization(automate);
         AutomateReflection automateReflection = new AutomateReflection(automate);
 
         String name = automate.getName();

@@ -8,6 +8,7 @@ import org.makarov.automate.reader.generate.OneSignalAutomateGenerateReader;
 import org.makarov.constants.RegexConstants;
 import org.makarov.util.MessageUtils;
 import org.makarov.util.operations.AutomateOperations;
+import org.makarov.util.optimization.AutomateOptimizationUtils;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class RegexParser {
     public static Automate parseRegex(String regex, boolean debug) {
         long time = System.currentTimeMillis();
         Automate automate = parseRegex0(regex, debug);
+        AutomateOptimizationUtils.verticalOptimization(automate);
         time = System.currentTimeMillis() - time;
 
         log(true, "Regular expression compilation complete for %s", getTime(time));
@@ -61,6 +63,7 @@ public class RegexParser {
         int index = 0;
         List<Automate> expressions = new ArrayList<>();
         List<Automate> forConcat = new ArrayList<>();
+        int unionCount = 0;
 
         log(debug, "\nRegex is initialized!");
 
@@ -129,7 +132,7 @@ public class RegexParser {
                 }
 
                 expressions.add(generateConcatAutomate(forConcat, debug));
-
+                unionCount++;
                 index++;
             } else if (character == '(') {
                 ArrayDeque<Character> queue = new ArrayDeque<>();
@@ -182,7 +185,14 @@ public class RegexParser {
         }
 
         log(debug, "Generate concat by automates: {%s}", forConcat);
-        expressions.add(generateConcatAutomate(forConcat, debug));
+        if (!forConcat.isEmpty()) {
+            expressions.add(generateConcatAutomate(forConcat, debug));
+        }
+
+        if (expressions.size() <= unionCount) {
+            int errorIndex = regex.lastIndexOf('|');
+            throw new AutomateException(MessageUtils.createMessage("Wrong symbol | on position: " + errorIndex, errorIndex, regex));
+        }
 
         log(debug, "Join automates: {%s}\n", expressions);
         return generateUnionAutomate(expressions, debug);

@@ -11,9 +11,9 @@ public class Main {
 
     public static void main(String[] args) {
         AutomateSerializer serializer = new AutomateToJSONSerializer();
-        Automate automate = RegexParser.parseRegex("(+|-|\\?)(.\\d(\\d)*((e|E)(+|-|\\?)\\d(\\d)*|\\?))|(\\d(\\d)*.\\d(\\d)*((e|E)(+|-|\\?)\\d(\\d)*|\\?))|(\\d(\\d)*((e|E)(+|-|\\?)\\d(\\d)*|\\?))|(\\d(\\d)*.)((e|E)(+|-|\\?)\\d(\\d)*|\\?)");
+        Automate automate = RegexParser.parseRegex("(A | B|)b");
         System.out.println(serializer.serialize(automate));
-        System.out.println(Functions.function(automate, "-.53e-3", 0));
+        System.out.println(Functions.function(automate, "A", 0));
     }
 
     //Regular helpers
