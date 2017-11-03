@@ -165,7 +165,6 @@ public class AutomateOptimizationUtils {
     }
 
     public static void horizontalOptimization(Automate automate) {
-
-
+        //TODO: added if needed
     }
 }

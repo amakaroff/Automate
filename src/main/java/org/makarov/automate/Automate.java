@@ -7,8 +7,10 @@ import org.makarov.automate.translators.Translator;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 public abstract class Automate<T> {
@@ -65,9 +67,28 @@ public abstract class Automate<T> {
                 currentState = beginState;
                 isInit = true;
                 parseAlphabet();
+                removeNullStates();
                 log("Initializating of Automate: %s complete!\n", name);
             } catch (Exception exception) {
                 throw new AutomateException("Problem at reading automate: " + name, exception);
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void removeNullStates() {
+        if (this instanceof NonDeterministicAutomate) {
+            for (String key : table.keySet()) {
+                Map<String, T> map = table.get(key);
+                for (String signal : alphabet) {
+                    Set<String> transitions = (Set<String>) map.get(signal);
+                    if (transitions == null) {
+                        transitions = new HashSet<>();
+                    }
+                    if (transitions.contains(null)) {
+                        transitions.remove(null);
+                    }
+                }
             }
         }
     }

@@ -21,32 +21,7 @@ public class NonDeterministicAutomate extends Automate<Set<String>> {
     }
 
     @Override
-    public void init() {
-        if (!isInit) {
-            super.init();
-            if (!isNullCleaning) {
-                removeNullStates();
-            }
-        }
-    }
-
-    private void removeNullStates() {
-        for (String key : table.keySet()) {
-            Map<String, Set<String>> map = table.get(key);
-            for (String signal : alphabet) {
-                Set<String> transitions = map.computeIfAbsent(signal, k -> new HashSet<>());
-                if (transitions.contains(null)) {
-                    transitions.remove(null);
-                }
-            }
-        }
-    }
-
-    @Override
     public void nextState(char signal) throws AutomateException {
-        if (!isNullCleaning) {
-            removeNullStates();
-        }
         String currentSignal = String.valueOf(signal);
         log("Input signal: {%s}", currentSignal);
         checkNext(currentSignal);
