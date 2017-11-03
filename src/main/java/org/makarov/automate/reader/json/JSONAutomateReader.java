@@ -49,7 +49,9 @@ public abstract class JSONAutomateReader<T> implements AutomateReader<T> {
         if (json.isNull(NAME)) {
             int dotIndex = fileName.contains(".") ? fileName.lastIndexOf('.') : fileName.length();
             int slashIndex = fileName.contains("/") ? fileName.lastIndexOf('/') + 1 : 0;
-            return fileName.substring(slashIndex, dotIndex);
+            int reverseSlashIndex = fileName.contains("\\") ? fileName.lastIndexOf('\\') + 1 : 0;
+            int secondIndex = slashIndex > reverseSlashIndex ? slashIndex : reverseSlashIndex;
+            return fileName.substring(secondIndex, dotIndex);
         }
         String name = json.getString(NAME);
         return name == null ? EMPTY_NAME : name;

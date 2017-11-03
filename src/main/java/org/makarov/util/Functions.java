@@ -43,13 +43,13 @@ public class Functions {
                     isEnd = true;
                 }
             } catch (AutomateException exception) {
-                log(debug, "Signal: {%s}. Automate has finished hes worked!", line.charAt(i));
+                log(debug, "Signal: {%s}. Automate has finished the work with errors!", line.charAt(i));
                 break;
             }
         }
 
         Pair<Boolean, Integer> pair = new Pair<>(isEnd, allCount);
-        log(debug, "Automate has finished hes worked correctly! %s\n", pair);
+        log(debug, "Automate has finished the work correctly! %s\n", pair);
 
         return pair;
     }

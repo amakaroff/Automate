@@ -13,12 +13,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 public class AutomateToJSONSerializer implements AutomateSerializer {
 
+    @SuppressWarnings("unchecked")
     private static boolean addBeginState(JSONObject object, Object element) {
         if (element instanceof Collection) {
-            object.put(AutomateReader.BEGIN_STATES, ((Collection) element).toArray());
+            object.put(AutomateReader.BEGIN_STATES, (new TreeSet<>((Collection) element)).toArray());
             return false;
         } else {
             object.put(AutomateReader.BEGIN_STATE, element);
@@ -51,7 +55,7 @@ public class AutomateToJSONSerializer implements AutomateSerializer {
         String alwaysSymbol = automateReflection.getAlwaysSymbol();
         Translator translator = automateReflection.getTranslator();
         List<String> alphabet = automateReflection.getAlphabet();
-        List<String> endStates = automateReflection.getEndStates();
+        Set<String> endStates = new TreeSet<>(automateReflection.getEndStates());
 
         JSONObject object = new JSONObject();
 
@@ -72,7 +76,7 @@ public class AutomateToJSONSerializer implements AutomateSerializer {
 
         boolean isDeterminate = addBeginState(object, automateReflection.getBeginState());
 
-        Map<String, Map<String, Object>> table = (Map<String, Map<String, Object>>) automateReflection.getTransitions();
+        Map<String, Map<String, Object>> table = new TreeMap<>((Map<String, Map<String, Object>>) automateReflection.getTransitions());
 
         List<JSONObject> rows = new ArrayList<>();
         for (String transition : table.keySet()) {

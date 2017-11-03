@@ -2,7 +2,6 @@ package org.makarov.util.optimization;
 
 import org.makarov.automate.Automate;
 import org.makarov.util.AutomateReflection;
-import org.makarov.util.operations.AutomateRenamer;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -95,6 +94,7 @@ public class AutomateOptimizationUtils {
         //AutomateRenamer.renameAutomate(automate);
     }
 
+    @SuppressWarnings("unchecked")
     private static boolean isUnattainableState(String state, Map<String, Map<String, Object>> transitions) {
         for (Map.Entry<String, Map<String, Object>> entry : transitions.entrySet()) {
             if (!entry.getKey().equals(state)) {

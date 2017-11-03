@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -38,6 +39,7 @@ public class AutomateRenamer {
         if (automate == null) {
             return;
         }
+
         automate.init();
         AutomateReflection reflection = new AutomateReflection(automate);
         int index = 1;
@@ -45,6 +47,7 @@ public class AutomateRenamer {
         Set<String> states = reflection.getTransitions().keySet();
 
         Map<String, String> changes = new HashMap<>();
+
         Set<String> automateStates = new HashSet<>(transitions.keySet());
         for (String state : automateStates) {
             String newState = String.valueOf(index);
@@ -65,10 +68,25 @@ public class AutomateRenamer {
             index++;
         }
 
-        if (!changes.isEmpty()) {
-            String newState = String.valueOf(index - 1);
-            String string = changes.get(newState);
-            renameTransition(reflection, string, newState);
+        Map<String, String> newChanges = new HashMap<>();
+        while (!changes.isEmpty()) {
+            for (Map.Entry<String, String> entry : changes.entrySet()) {
+                String state = entry.getValue();
+                if (states.contains(entry.getKey())) {
+                    String tempState = findTempState(transitions.keySet());
+                    renameTransition(reflection, entry.getValue(), tempState);
+                    newChanges.put(entry.getValue(), tempState);
+                }
+
+                if (newChanges.containsKey(state)) {
+                    String tempState = newChanges.get(state);
+                    newChanges.remove(state);
+                    state = tempState;
+                }
+
+                renameTransition(reflection, state, entry.getKey());
+            }
+            changes = new HashMap<>(newChanges);
         }
     }
 
@@ -154,7 +172,9 @@ public class AutomateRenamer {
         }
 
         for (String key : changeKeyList) {
-            map.replace(key, newState);
+            if (map.get(key) instanceof String) {
+                map.replace(key, newState);
+            }
         }
     }
 
