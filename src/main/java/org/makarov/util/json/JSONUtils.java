@@ -9,7 +9,7 @@ public class JSONUtils {
 
     @SuppressWarnings("unchecked")
     public static <T> List<T> toList(JSONArray array, Class<T> clazz) {
-        List list =  array.toList();
+        List list = array.toList();
         List<T> result = new ArrayList<>();
         for (Object object : list) {
             if (clazz.isInstance(object)) {

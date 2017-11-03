@@ -88,7 +88,7 @@ public abstract class JSONAutomateReader<T> implements AutomateReader<T> {
                     }
                 }
             } catch (ClassNotFoundException | IllegalAccessException |
-                    InstantiationException | NoSuchMethodException  | InvocationTargetException ignore) {
+                    InstantiationException | NoSuchMethodException | InvocationTargetException ignore) {
                 return null;
             }
         }

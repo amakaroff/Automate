@@ -35,7 +35,6 @@ public class LexerParser {
     }
 
 
-
     public static Collection<Automate> getAutomates(String filePath, boolean debug) {
         String content = FileUtils.readFile(filePath);
 

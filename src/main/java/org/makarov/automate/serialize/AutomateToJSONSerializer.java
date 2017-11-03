@@ -7,14 +7,12 @@ import org.makarov.automate.translators.JSONTranslator;
 import org.makarov.automate.translators.Translator;
 import org.makarov.automate.translators.constants.RegexConstants;
 import org.makarov.util.AutomateReflection;
-import org.makarov.util.optimization.AutomateOptimizationUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 public class AutomateToJSONSerializer implements AutomateSerializer {
@@ -76,10 +74,10 @@ public class AutomateToJSONSerializer implements AutomateSerializer {
 
         boolean isDeterminate = addBeginState(object, automateReflection.getBeginState());
 
-        Map<String, Map<String, Object>> table =(Map<String, Map<String, Object>>) automateReflection.getTransitions();
+        Map<String, Map<String, Object>> table = (Map<String, Map<String, Object>>) automateReflection.getTransitions();
 
         List<JSONObject> rows = new ArrayList<>();
-        for (String transition : table.keySet()) {
+        for (String transition : new TreeSet<>(table.keySet())) {
             JSONObject row = new JSONObject();
             row.put(AutomateReader.ROW_NAME, transition);
 
