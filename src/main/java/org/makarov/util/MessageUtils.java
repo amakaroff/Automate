@@ -8,6 +8,6 @@ public class MessageUtils {
             stringBuilder.append(" ");
         }
 
-        return "\n" + line + "\n" + stringBuilder.toString() + "^ " + message;
+        return line + "\n" + stringBuilder.toString() + "^ " + message + "\n";
     }
 }

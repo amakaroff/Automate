@@ -19,16 +19,24 @@ import java.util.List;
 public class RegexParser {
 
     public static Automate parseRegex(String regex) {
-        return parseRegex0(regex);
+        return parseRegex(regex, false);
     }
 
     public static Automate parseRegex(String regex, boolean debug) {
         long time = System.currentTimeMillis();
-        Automate automate = parseRegex0(regex, debug);
+        List<String> errors = new ArrayList<>();
+        Automate automate = parseRegex0(regex, debug, errors);
         AutomateOptimizationUtils.verticalOptimization(automate);
         time = System.currentTimeMillis() - time;
 
-        log(true, "Regular expression compilation complete for %s", getTime(time));
+        if (!errors.isEmpty()) {
+            for (String error : errors) {
+                System.err.println(error);
+            }
+            throw new AutomateException("Regular expressions is compiled with errors!");
+        }
+
+        log(true, "Regular expression is compiled complete for %s", getTime(time));
         return automate;
     }
 
@@ -56,11 +64,7 @@ public class RegexParser {
         return "";
     }
 
-    private static Automate parseRegex0(String regex) {
-        return parseRegex0(regex, false);
-    }
-
-    private static Automate parseRegex0(String regex, boolean debug) {
+    private static Automate parseRegex0(String regex, boolean debug, List<String> errors) {
         int index = 0;
         List<Automate> expressions = new ArrayList<>();
         List<Automate> forConcat = new ArrayList<>();
@@ -121,15 +125,18 @@ public class RegexParser {
                         forConcat.add(generateOneAutomate("\\."));
                         break;
                     default:
-                        log(debug, "Error at shielding symbol. Wrong character is %s", character);
-                        throw new AutomateException(MessageUtils.createMessage("Error at shielding symbol. Wrong character is " + character, index, regex));
+                        errors.add(MessageUtils.createMessage("Error at shielding symbol. Wrong character is " + character, index, regex));
+                        index++;
+                        continue;
                 }
 
                 index++;
             } else if (character == '|') {
                 log(debug, "End of expression. Concat %s", forConcat);
                 if (forConcat.isEmpty()) {
-                    throw new AutomateException(MessageUtils.createMessage("Wrong symbol | on position: " + index, index, regex));
+                    errors.add(MessageUtils.createMessage("Wrong symbol | on position: " + index, index, regex));
+                    index++;
+                    continue;
                 }
 
                 expressions.add(generateConcatAutomate(forConcat, debug));
@@ -144,8 +151,8 @@ public class RegexParser {
                 log(debug, "In brackets character: {%s}", '(');
                 while (!queue.isEmpty()) {
                     if (index >= regex.length()) {
-                        log(debug, "Not closed open bracket. Position: %s", currentIndex);
-                        throw new AutomateException(MessageUtils.createMessage("Wrong open bracket. Position: " + currentIndex, currentIndex, regex));
+                        errors.add(MessageUtils.createMessage("Wrong open bracket. Position: " + currentIndex, currentIndex, regex));
+                        continue;
                     }
                     character = regex.charAt(index);
                     log(debug, "In brackets character: {%s}", character);
@@ -164,20 +171,19 @@ public class RegexParser {
                 String innerRegex = regex.substring(startIndex, endIndex);
                 log(debug, "Find inner regular expression: {%s}. Start position: {%s}, End position {%s}",
                         innerRegex, startIndex, endIndex);
-                forConcat.add(parseRegex0(innerRegex, debug));
+                forConcat.add(parseRegex0(innerRegex, debug, errors));
             } else if (character == '*') {
                 if (!forConcat.isEmpty()) {
                     Automate automate = forConcat.get(forConcat.size() - 1);
                     forConcat.remove(forConcat.size() - 1);
                     log(debug, "End of expression. Repeat automate {%s}", automate);
                     forConcat.add(AutomateOperations.repeat(automate));
-                } else {
-                    throw new AutomateException("Automates for repeat is not found!");
                 }
 
                 index++;
             } else if (character == ')') {
-                throw new AutomateException(MessageUtils.createMessage("Not opened close bracket on position: " + index, index, regex));
+                errors.add(MessageUtils.createMessage("Not opened close bracket on position: " + index, index, regex));
+                index++;
             } else {
                 log(debug, "Simple character: {%s}", character);
                 forConcat.add(generateOneAutomate(String.valueOf(character)));
@@ -192,7 +198,7 @@ public class RegexParser {
 
         if (expressions.size() <= unionCount) {
             int errorIndex = regex.lastIndexOf('|');
-            throw new AutomateException(MessageUtils.createMessage("Wrong symbol | on position: " + errorIndex, errorIndex, regex));
+            errors.add(MessageUtils.createMessage("Wrong symbol | on position: " + errorIndex, errorIndex, regex));
         }
 
         log(debug, "Join automates: {%s}\n", expressions);
