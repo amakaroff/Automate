@@ -76,7 +76,7 @@ public class AutomateToJSONSerializer implements AutomateSerializer {
 
         boolean isDeterminate = addBeginState(object, automateReflection.getBeginState());
 
-        Map<String, Map<String, Object>> table = new TreeMap<>((Map<String, Map<String, Object>>) automateReflection.getTransitions());
+        Map<String, Map<String, Object>> table =(Map<String, Map<String, Object>>) automateReflection.getTransitions();
 
         List<JSONObject> rows = new ArrayList<>();
         for (String transition : table.keySet()) {
