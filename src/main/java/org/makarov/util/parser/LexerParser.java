@@ -14,6 +14,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+@Deprecated
+//TODO: rewrite this class to line parser
 public class LexerParser {
 
     private static final String NAME = "name";
@@ -94,5 +96,32 @@ public class LexerParser {
         reflection.setPriority(Integer.valueOf(priority));
 
         return reflection.getAutomate();
+    }
+
+    private class AutomateTemplate {
+
+        private String name;
+
+        private int priority;
+
+        private String regularExpression;
+
+        public AutomateTemplate(String name, int priority, String regularExpression) {
+            this.name = name;
+            this.priority = priority;
+            this.regularExpression = regularExpression;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public int getPriority() {
+            return priority;
+        }
+
+        public String getRegularExpression() {
+            return regularExpression;
+        }
     }
 }
