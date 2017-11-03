@@ -1,21 +1,12 @@
 package org.makarov.util.parser;
 
 import org.makarov.automate.Automate;
-import org.makarov.automate.DeterministicAutomate;
 import org.makarov.automate.exception.AutomateException;
-import org.makarov.automate.reader.json.JSONDeterministicAutomateReader;
 import org.makarov.util.AutomateReflection;
 import org.makarov.util.FileUtils;
-import org.makarov.util.Functions;
-import org.makarov.util.Pair;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
-@Deprecated
-//TODO: rewrite this class to line parser
 public class LexerParser {
 
     private static final String NAME = "name";
@@ -34,72 +25,139 @@ public class LexerParser {
         return getAutomates(filePath, false);
     }
 
-
     public static Collection<Automate> getAutomates(String filePath, boolean debug) {
         String content = FileUtils.readFile(filePath);
 
-        List<Automate> automates = new ArrayList<>();
-        automates.add(new DeterministicAutomate(new JSONDeterministicAutomateReader("lexer-util/name")));
-        automates.add(new DeterministicAutomate(new JSONDeterministicAutomateReader("lexer-util/priority")));
-        automates.add(new DeterministicAutomate(new JSONDeterministicAutomateReader("lexer-util/priority")));
-        automates.add(new DeterministicAutomate(new JSONDeterministicAutomateReader("lexer-util/colon")));
-        automates.add(new DeterministicAutomate(new JSONDeterministicAutomateReader("lexer-util/space")));
-        automates.add(new DeterministicAutomate(new JSONDeterministicAutomateReader("lexer-util/regex")));
-        automates.add(new DeterministicAutomate(new JSONDeterministicAutomateReader("lexer-util/semicolon")));
-
-        return parseText(Functions.getLexemes(automates, content, debug));
+        return parseText(content);
     }
 
-    private static Collection<Automate> parseText(Collection<Pair<String, String>> oldTokens) {
-        List<Automate> automates = new ArrayList<>();
-        List<Pair<String, String>> tokens = new ArrayList<>(oldTokens);
-        removeLastSpace(tokens);
+    private static Collection<Automate> parseText(String content) {
+        int index = 0;
 
-        Iterator<Pair<String, String>> iterator = tokens.iterator();
-        while (iterator.hasNext()) {
-            String name = getTokenValue(iterator, NAME);
-            getTokenValue(iterator, COLON);
-            String priority = getTokenValue(iterator, PRIORITY);
-            getTokenValue(iterator, COLON);
-            String regex = getTokenValue(iterator, REGEX);
-            getTokenValue(iterator, SEMICOLON);
-            automates.add(generate(name, priority, regex));
+        List<AutomateTemplate> automateTemplates = new ArrayList<>();
+
+        while (index < content.length()) {
+            char character = content.charAt(index);
+            index = skipSpace(content, index);
+            character = content.charAt(index);
+
+            StringBuilder nameBuilder = new StringBuilder();
+            while (!isSpace(character) || character != ':') {
+                nameBuilder.append(character);
+                index++;
+                character = content.charAt(index);
+            }
+
+            index = skipSeparator(content, index);
+            character = content.charAt(index);
+
+            StringBuilder priorityBuilder = new StringBuilder();
+            while (Character.isDigit(character)) {
+                priorityBuilder.append(character);
+                index++;
+                character = content.charAt(index);
+            }
+
+            index = skipSeparator(content, index);
+            character = content.charAt(index);
+
+            StringBuilder regexBuilder = new StringBuilder();
+
+            while (!isSpace(character) || character != ';') {
+                regexBuilder.append(character);
+                index++;
+                character = content.charAt(index);
+            }
+
+            index = skipSpace(content, index);
+
+            if (content.charAt(index) != ';') {
+                throw new AutomateException("Separator is not fould!");
+            }
+            index++;
+
+            automateTemplates.add(new AutomateTemplate(nameBuilder.toString(),
+                    Integer.parseInt(priorityBuilder.toString()), regexBuilder.toString()));
         }
 
-        return automates;
+        LexicalEnvironment lexicalEnvironment = new LexicalEnvironment(automateTemplates);
+
+        return null;
     }
 
-    private static String getTokenValue(Iterator<Pair<String, String>> tokens, String tokenName) {
-        Pair<String, String> token = tokens.next();
-        if (SPACE.equals(token.getKey())) {
-            token = tokens.next();
-        }
+    private static int skipSeparator(String content, int index) {
+        index = skipSpace(content, index);
+        char character = content.charAt(index);
 
-        if (token.getKey().equals(tokenName)) {
-            return token.getValue();
+        if (character != ':') {
+            throw new AutomateException("Separator is not found!");
         }
+        index++;
 
-        throw new AutomateException("Token: {" + token + "} is incorrect");
+        return skipSpace(content, index);
     }
 
-    private static void removeLastSpace(List<Pair<String, String>> tokens) {
-        int lastIndex = tokens.size() - 1;
-        if (SPACE.equals(tokens.get(lastIndex).getKey())) {
-            tokens.remove(lastIndex);
+    private static int skipSpace(String line, int index) {
+        char character = line.charAt(index);
+        while (isSpace(character)) {
+            index++;
+            character = line.charAt(index);
         }
+
+        return index;
+    }
+
+
+    private static boolean isSpace(char symbol) {
+        return symbol == ' ' || symbol == '\n' || symbol == '\t' || symbol == '\r';
     }
 
     @SuppressWarnings("unchecked")
-    public static Automate generate(String name, String priority, String regex) {
-        Automate automate = RegexParser.parseRegex(regex);
+    public static Automate generate(AutomateTemplate template) {
+        Automate automate = RegexParser.parseRegex(template.getRegularExpression());
         AutomateReflection reflection = new AutomateReflection(automate);
-        reflection.setName(name);
-        reflection.setPriority(Integer.valueOf(priority));
+        reflection.setName(template.getName());
+        reflection.setPriority(Integer.valueOf(template.getPriority()));
 
         return reflection.getAutomate();
     }
 
-    private class AutomateTemplate {
+    public static class LexicalEnvironment {
+
+        Map<String, AutomateTemplate> automateTemplates;
+
+        Map<String, Automate> automates;
+
+        public LexicalEnvironment(List<AutomateTemplate> automateTemplates) {
+            this.automateTemplates = new HashMap<>();
+            for (AutomateTemplate template : automateTemplates) {
+                this.automateTemplates.put(template.getName(), template);
+            }
+            automates = new HashMap<>();
+
+            for (String key : this.automateTemplates.keySet()) {
+                automates.computeIfAbsent(key, put -> getAutomate(key));
+            }
+        }
+
+        public Automate getAutomate(String name) {
+            Automate automate = automates.get(name);
+            if (automate == null) {
+                AutomateTemplate automateTemplate = automateTemplates.get(name);
+                if (automateTemplate == null) {
+                    throw new AutomateException("Automate " + name + " is not found!");
+                } else {
+                    Automate generate = generate(automateTemplate);
+                    automates.put(name, generate);
+                    return generate;
+                }
+            } else {
+                return automate;
+            }
+        }
+    }
+
+    public static class AutomateTemplate {
 
         private String name;
 
