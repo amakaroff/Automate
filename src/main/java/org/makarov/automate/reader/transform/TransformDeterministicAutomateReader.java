@@ -8,6 +8,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -87,7 +88,7 @@ public class TransformDeterministicAutomateReader implements AutomateReader<Stri
 
     private List<String> getTransitions(List<String> states, String signal) {
         Map<String, Map<String, Set<String>>> transitions = automateReflection.getTransitions();
-        List<String> newStates = new ArrayList<>();
+        Set<String> newStates = new HashSet<>();
         for (String state : states) {
             Set<String> oldStates = transitions.get(state).get(signal);
             if (oldStates != null && !oldStates.isEmpty() && !oldStates.contains(null)) {
@@ -95,7 +96,7 @@ public class TransformDeterministicAutomateReader implements AutomateReader<Stri
             }
         }
 
-        return newStates;
+        return new ArrayList<>(newStates);
     }
 
     private boolean isEndState(List<String> list) {
