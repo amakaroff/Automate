@@ -31,6 +31,8 @@ public class AutomateRenamer {
         } else {
             renamingStates(secondReflection, firstReflection);
         }
+
+
     }
 
     @SuppressWarnings("unchecked")
@@ -51,6 +53,7 @@ public class AutomateRenamer {
         for (String state : automateStates) {
             String newState = String.valueOf(index);
             if (state.equals(newState)) {
+                index++;
                 continue;
             }
 
@@ -69,6 +72,13 @@ public class AutomateRenamer {
             renameTransition(reflection, state, newState);
             index++;
         }
+
+        if (!changes.isEmpty()) {
+            String state = String.valueOf(index - 1);
+            String oldState = changes.get(state);
+            renameTransition(reflection, oldState, state);
+        }
+
     }
 
     private static String findTempState(Set<String> states) {

@@ -2,6 +2,7 @@ package org.makarov;
 
 
 import org.makarov.automate.Automate;
+import org.makarov.automate.DeterministicAutomate;
 import org.makarov.automate.serialize.AutomateSerializer;
 import org.makarov.automate.serialize.AutomateToJSONSerializer;
 import org.makarov.util.Functions;
@@ -12,11 +13,9 @@ public class Main {
 
     public static void main(String[] args) {
         AutomateSerializer serializer = new AutomateToJSONSerializer();
-    //  Automate automate = RegexParser.parseRegex("(+|-|\\?)(\\d)(\\d)*"); //errors
-        Automate automate = RegexParser.parseRegex("+ | -"); //errors
+        Automate automate = RegexParser.parseRegex("lambda | if | cond | define");
+        //DeterministicAutomate deterministicAutomate = AutomateTransformer.toDeterministicAutomateTransform(automate);
         System.out.println(serializer.serialize(automate));
-        System.out.println(Functions.function(automate, "+", 0));
-        System.out.println(serializer.serialize(AutomateTransformer.toDeterministicAutomateTransform(automate)));
     }
 
     //Regular helpers
