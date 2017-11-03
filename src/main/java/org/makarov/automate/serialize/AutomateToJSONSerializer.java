@@ -8,12 +8,7 @@ import org.makarov.automate.translators.Translator;
 import org.makarov.automate.translators.constants.RegexConstants;
 import org.makarov.util.AutomateReflection;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public class AutomateToJSONSerializer implements AutomateSerializer {
 
@@ -77,13 +72,14 @@ public class AutomateToJSONSerializer implements AutomateSerializer {
         Map<String, Map<String, Object>> table = (Map<String, Map<String, Object>>) automateReflection.getTransitions();
 
         List<JSONObject> rows = new ArrayList<>();
-        for (String transition : new TreeSet<>(table.keySet())) {
+        for (String transition : table.keySet()) {
             JSONObject row = new JSONObject();
             row.put(AutomateReader.ROW_NAME, transition);
 
             List<Object> values = new ArrayList<>();
             for (String signal : alphabet) {
-                values.add(getObjectToJsonValue(table.get(transition).get(signal), isDeterminate));
+                Map<String, Object> map = table.get(transition);
+                values.add(getObjectToJsonValue(map.get(signal), isDeterminate));
             }
 
             row.put(AutomateReader.TRANSITIONS, values.toArray());

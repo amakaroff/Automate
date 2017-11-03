@@ -14,8 +14,10 @@ public class Main {
     public static void main(String[] args) {
         AutomateSerializer serializer = new AutomateToJSONSerializer();
         Automate automate = RegexParser.parseRegex("lambda | if | cond | define");
-        //DeterministicAutomate deterministicAutomate = AutomateTransformer.toDeterministicAutomateTransform(automate);
-        System.out.println(serializer.serialize(automate));
+        DeterministicAutomate deterministicAutomate = AutomateTransformer.toDeterministicAutomateTransform(automate);
+        System.out.println(serializer.serialize(deterministicAutomate));
+        System.out.println(Functions.function(deterministicAutomate, "lambda", 0));
+        System.out.println(Functions.function(deterministicAutomate, "if", 0));
     }
 
     //Regular helpers

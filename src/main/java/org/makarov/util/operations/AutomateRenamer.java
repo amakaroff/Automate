@@ -3,14 +3,7 @@ package org.makarov.util.operations;
 import org.makarov.automate.Automate;
 import org.makarov.util.AutomateReflection;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class AutomateRenamer {
 
@@ -31,8 +24,6 @@ public class AutomateRenamer {
         } else {
             renamingStates(secondReflection, firstReflection);
         }
-
-
     }
 
     @SuppressWarnings("unchecked")
@@ -73,12 +64,11 @@ public class AutomateRenamer {
             index++;
         }
 
-        if (!changes.isEmpty()) {
+        if (changes.size() == 1) {
             String state = String.valueOf(index - 1);
             String oldState = changes.get(state);
-            renameTransition(reflection, oldState, state);
+            renameTransition(reflection, state, oldState);
         }
-
     }
 
     private static String findTempState(Set<String> states) {
