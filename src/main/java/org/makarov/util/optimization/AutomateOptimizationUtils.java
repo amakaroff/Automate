@@ -6,9 +6,10 @@ import org.makarov.util.operations.AutomateRenamer;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class AutomateOptimizationUtils {
 
@@ -96,6 +97,7 @@ public class AutomateOptimizationUtils {
         AutomateRenamer.renameAutomate(automate);
     }
 
+
     @SuppressWarnings("unchecked")
     private static boolean isUnattainableState(String state, Map<String, Map<String, Object>> transitions) {
         for (Map.Entry<String, Map<String, Object>> entry : transitions.entrySet()) {
@@ -107,7 +109,7 @@ public class AutomateOptimizationUtils {
                             return false;
                         }
                     } else {
-                        if (value.equals(state)) {
+                        if (Objects.equals(value, state)) {
                             return false;
                         }
                     }
@@ -127,12 +129,12 @@ public class AutomateOptimizationUtils {
             for (Map.Entry<String, Object> entry : map.entrySet()) {
                 if (entry.getValue() instanceof Collection) {
                     Collection<String> values = (Collection<String>) entry.getValue();
-                    if (values.contains(state)){
+                    if (values.contains(state)) {
                         values.remove(state);
                         values.add(newState);
                     }
                 } else {
-                    if (entry.getValue().equals(state)) {
+                    if (Objects.equals(entry.getValue(), state)) {
                         removeTemplate.add(entry.getKey());
                     }
                 }
@@ -157,7 +159,7 @@ public class AutomateOptimizationUtils {
         for (int i = 0; i < firstValues.size(); i++) {
             Object firstObject = firstValues.get(i);
             Object secondObject = secondValues.get(i);
-            if (!firstObject.equals(secondObject)) {
+            if (Objects.equals(firstObject, secondObject)) {
                 return false;
             }
         }

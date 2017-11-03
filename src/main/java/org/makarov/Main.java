@@ -17,13 +17,8 @@ public class Main {
 
     public static void main(String[] args) {
         AutomateSerializer serializer = new AutomateToJSONSerializer();
-        Automate automate = RegexParser.parseRegex("(+|-|\\?)(((\\d(\\d)*|\\?).\\d(\\d)*)|(\\d(\\d)*(.\\d(\\d)*|\\?)))");
-        AutomateOptimizationUtils.verticalOptimization(automate);
-        System.out.println(serializer.serialize(automate) + "\n\n");
-        System.out.println(Functions.function(automate, "-.55", 0));
+        Automate automate = RegexParser.parseRegex("(A | B)*");
 
-        DeterministicAutomate deterministicAutomate = AutomateTransformer.toDeterministicAutomateTransform(automate);
-        System.out.println(serializer.serialize(deterministicAutomate));
     }
 
     //Regular helpers

@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -66,27 +65,6 @@ public class AutomateRenamer {
 
             renameTransition(reflection, state, newState);
             index++;
-        }
-
-        Map<String, String> newChanges = new HashMap<>();
-        while (!changes.isEmpty()) {
-            for (Map.Entry<String, String> entry : changes.entrySet()) {
-                String state = entry.getValue();
-                if (states.contains(entry.getKey())) {
-                    String tempState = findTempState(transitions.keySet());
-                    renameTransition(reflection, entry.getValue(), tempState);
-                    newChanges.put(entry.getValue(), tempState);
-                }
-
-                if (newChanges.containsKey(state)) {
-                    String tempState = newChanges.get(state);
-                    newChanges.remove(state);
-                    state = tempState;
-                }
-
-                renameTransition(reflection, state, entry.getKey());
-            }
-            changes = new HashMap<>(newChanges);
         }
     }
 
