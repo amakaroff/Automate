@@ -2,6 +2,7 @@ package org.makarov.util.optimization;
 
 import org.makarov.automate.Automate;
 import org.makarov.util.AutomateReflection;
+import org.makarov.util.operations.AutomateRenamer;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -91,7 +92,7 @@ public class AutomateOptimizationUtils {
             }
         }
 
-        //AutomateRenamer.renameAutomate(automate);
+        AutomateRenamer.renameAutomate(automate);
     }
 
     @SuppressWarnings("unchecked")

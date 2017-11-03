@@ -25,7 +25,7 @@ public class RegexParser {
     public static Automate parseRegex(String regex, boolean debug) {
         long time = System.currentTimeMillis();
         Automate automate = parseRegex0(regex, debug);
-        //AutomateOptimizationUtils.verticalOptimization(automate);
+        AutomateOptimizationUtils.verticalOptimization(automate);
         time = System.currentTimeMillis() - time;
 
         log(true, "Regular expression compilation complete for %s", getTime(time));
