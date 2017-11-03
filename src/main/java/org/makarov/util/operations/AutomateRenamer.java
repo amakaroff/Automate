@@ -69,6 +69,10 @@ public class AutomateRenamer {
             String oldState = changes.get(state);
             renameTransition(reflection, state, oldState);
         }
+
+        if (reflection.getBeginState() instanceof String) {
+            renameTransition(reflection, reflection.getBeginState().toString(), "1");
+        }
     }
 
     private static String findTempState(Set<String> states) {

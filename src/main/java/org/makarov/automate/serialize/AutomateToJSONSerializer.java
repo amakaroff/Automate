@@ -72,7 +72,21 @@ public class AutomateToJSONSerializer implements AutomateSerializer {
         Map<String, Map<String, Object>> table = (Map<String, Map<String, Object>>) automateReflection.getTransitions();
 
         List<JSONObject> rows = new ArrayList<>();
-        for (String transition : table.keySet()) {
+        TreeSet<String> states = new TreeSet<>(new Comparator<String>() {
+            @Override
+            public int compare(String first, String second) {
+                if (first.length() > second.length()) {
+                    return 1;
+                } else if (first.length() < second.length()) {
+                    return -1;
+                } else {
+                    return first.compareTo(second);
+                }
+            }
+        });
+        states.addAll(table.keySet());
+
+        for (String transition : states) {
             JSONObject row = new JSONObject();
             row.put(AutomateReader.ROW_NAME, transition);
 
