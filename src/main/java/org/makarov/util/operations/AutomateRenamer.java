@@ -50,6 +50,9 @@ public class AutomateRenamer {
         Set<String> automateStates = new HashSet<>(transitions.keySet());
         for (String state : automateStates) {
             String newState = String.valueOf(index);
+            if (state.equals(newState)) {
+                continue;
+            }
 
             if (states.contains(newState)) {
                 String tempState = findTempState(transitions.keySet());

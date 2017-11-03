@@ -159,7 +159,7 @@ public class AutomateOptimizationUtils {
         for (int i = 0; i < firstValues.size(); i++) {
             Object firstObject = firstValues.get(i);
             Object secondObject = secondValues.get(i);
-            if (Objects.equals(firstObject, secondObject)) {
+            if (!Objects.equals(firstObject, secondObject)) {
                 return false;
             }
         }

@@ -47,8 +47,12 @@ public class RepeatAutomateReader implements AutomateReader<Set<String>> {
                 if (innerTransitions == null) {
                     innerTransitions = new HashSet<>();
                 }
+
                 for (String beginState : beginStates) {
                     Set<String> beginTransitions = table.get(beginState).get(letter);
+                    if (beginTransitions == null) {
+                        beginTransitions = new HashSet<>();
+                    }
                     innerTransitions.addAll(beginTransitions);
                 }
                 stringSetMap.put(letter, innerTransitions);

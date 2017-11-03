@@ -17,8 +17,8 @@ public class Main {
 
     public static void main(String[] args) {
         AutomateSerializer serializer = new AutomateToJSONSerializer();
-        Automate automate = RegexParser.parseRegex("(A | B)*");
-
+        Automate automate = RegexParser.parseRegex("(A | B)**");
+        System.out.println(serializer.serialize(automate));
     }
 
     //Regular helpers
