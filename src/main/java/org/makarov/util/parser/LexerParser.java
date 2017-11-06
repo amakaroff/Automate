@@ -22,12 +22,7 @@ public class LexerParser {
     private static final String REGEX = "regex";
 
     public static Collection<Automate> getAutomates(String filePath) {
-        return getAutomates(filePath, false);
-    }
-
-    public static Collection<Automate> getAutomates(String filePath, boolean debug) {
         String content = FileUtils.readFile(filePath);
-
         return parseText(content);
     }
 
@@ -37,7 +32,7 @@ public class LexerParser {
         List<AutomateTemplate> automateTemplates = new ArrayList<>();
 
         while (index < content.length()) {
-            char character = content.charAt(index);
+            char character;
             index = skipSpace(content, index);
             character = content.charAt(index);
 
@@ -82,7 +77,7 @@ public class LexerParser {
 
         LexicalEnvironment lexicalEnvironment = new LexicalEnvironment(automateTemplates);
 
-        return null;
+        return lexicalEnvironment.getAutomates();
     }
 
     private static int skipSeparator(String content, int index) {
@@ -117,7 +112,7 @@ public class LexerParser {
         Automate automate = RegexParser.parseRegex(template.getRegularExpression());
         AutomateReflection reflection = new AutomateReflection(automate);
         reflection.setName(template.getName());
-        reflection.setPriority(Integer.valueOf(template.getPriority()));
+        reflection.setPriority(template.getPriority());
 
         return reflection.getAutomate();
     }
@@ -154,6 +149,10 @@ public class LexerParser {
             } else {
                 return automate;
             }
+        }
+
+        public Collection<Automate> getAutomates() {
+            return automates.values();
         }
     }
 
