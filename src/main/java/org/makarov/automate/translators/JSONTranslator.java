@@ -23,9 +23,9 @@ public class JSONTranslator implements Translator {
             String symbol = translation.getString(SYMBOL);
             List<String> translationSymbols = JSONUtils.toList(translation.getJSONArray(TRANSLATION), String.class);
             if (!translators.containsKey(symbol)) {
-                translators.put(symbol, translationSymbols);
+                translators.put(symbol, getTranslationSymbols(translationSymbols));
             } else {
-                translators.get(symbol).addAll(translationSymbols);
+                translators.get(symbol).addAll(getTranslationSymbols(translationSymbols));
             }
         }
     }
@@ -55,5 +55,18 @@ public class JSONTranslator implements Translator {
     @Override
     public List<String> getTranslateElements(String character) {
         return translators.get(character);
+    }
+
+    private List<String> getTranslationSymbols(List<String> translationSymbols) {
+        if (translationSymbols.size() == 1) {
+            String line = translationSymbols.get(0);
+            if (line.length() == 3 && line.charAt(1) == '-') {
+                List<String> list = new ArrayList<>();
+                fillListOfSymbols(list, line.charAt(0), line.charAt(2));
+                return list;
+            }
+        }
+
+        return translationSymbols;
     }
 }

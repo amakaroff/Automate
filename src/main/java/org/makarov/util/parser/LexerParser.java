@@ -9,18 +9,6 @@ import java.util.*;
 
 public class LexerParser {
 
-    private static final String NAME = "name";
-
-    private static final String COLON = "colon";
-
-    private static final String PRIORITY = "priority";
-
-    private static final String SEMICOLON = "semicolon";
-
-    private static final String SPACE = "space";
-
-    private static final String REGEX = "regex";
-
     public static Collection<Automate> getAutomates(String filePath) {
         String content = FileUtils.readFile(filePath);
         return parseText(content);
