@@ -81,11 +81,9 @@ public abstract class JSONAutomateReader<T> implements AutomateReader<T> {
 
             try {
                 Class<?> clazz = Class.forName(className);
-                if (JSONTranslator.class.isInstance(clazz)) {
-                    if (Translator.class.isAssignableFrom(clazz)) {
-                        Constructor<?> constructor = clazz.getConstructor(JSONArray.class);
-                        return Translator.class.cast(constructor.newInstance(translations));
-                    }
+                if (JSONTranslator.class.isAssignableFrom(clazz)) {
+                    Constructor<?> constructor = clazz.getConstructor(JSONArray.class);
+                    return Translator.class.cast(constructor.newInstance(translations));
                 }
             } catch (ClassNotFoundException | IllegalAccessException |
                     InstantiationException | NoSuchMethodException | InvocationTargetException ignore) {

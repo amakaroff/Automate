@@ -55,7 +55,7 @@ public class LexerParser {
             index = skipSpace(content, index);
 
             if (content.charAt(index) != ';') {
-                throw new AutomateException("Separator is not fould!");
+                throw new AutomateException("Separator is not found!");
             }
             index++;
 
@@ -107,9 +107,9 @@ public class LexerParser {
 
     public static class LexicalEnvironment {
 
-        Map<String, AutomateTemplate> automateTemplates;
+        private Map<String, AutomateTemplate> automateTemplates;
 
-        Map<String, Automate> automates;
+        private Map<String, Automate> automates;
 
         public LexicalEnvironment(List<AutomateTemplate> automateTemplates) {
             this.automateTemplates = new HashMap<>();
