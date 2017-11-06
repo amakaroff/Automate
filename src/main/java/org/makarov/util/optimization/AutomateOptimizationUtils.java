@@ -147,8 +147,7 @@ public class AutomateOptimizationUtils {
     }
 
     private static boolean containsMap(Map<String, Object> first, Map<String, Object> second) {
-        if (first == null || second == null ||
-                (first.size() != second.size())) {
+        if (first == null || second == null || first.size() != second.size()) {
             return false;
         }
 
