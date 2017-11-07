@@ -58,9 +58,9 @@ public class ConcatAutomateReader implements AutomateReader<Set<String>> {
             table.put(state, newState);
         }
 
-
         Set<String> beginStates = new HashSet<>(second.getBeginState());
         beginStates.remove(emptyState);
+
         for (String endState : first.getEndStates()) {
             Map<String, Set<String>> endStateMap = new HashMap<>(table.get(endState));
             for (String beginState : beginStates) {

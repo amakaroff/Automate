@@ -1,6 +1,5 @@
 package org.makarov;
 
-
 import org.makarov.automate.Automate;
 import org.makarov.automate.DeterministicAutomate;
 import org.makarov.automate.serialize.AutomateSerializer;
@@ -13,11 +12,11 @@ public class Main {
 
     public static void main(String[] args) {
         AutomateSerializer serializer = new AutomateToJSONSerializer();
-        Automate automate = RegexParser.parseRegex("lambda | if | cond | define");
+        Automate automate = RegexParser.parseRegex("(00 | 11)* 15");
         DeterministicAutomate deterministicAutomate = AutomateTransformer.toDeterministicAutomateTransform(automate);
-        System.out.println(serializer.serialize(deterministicAutomate));
-        System.out.println(Functions.function(deterministicAutomate, "lambda", 0));
-        System.out.println(Functions.function(deterministicAutomate, "if", 0));
+
+        System.out.println(Functions.function(automate, "0015", 0));
+        System.out.println(Functions.function(deterministicAutomate, "1115", 0));
     }
 
     //Regular helpers

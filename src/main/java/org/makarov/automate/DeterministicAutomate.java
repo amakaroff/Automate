@@ -24,6 +24,7 @@ public class DeterministicAutomate extends Automate<String> {
         if (newState != null) {
             log("New state: {%s}", newState);
         }
+
         if (newState == null) {
             newState = table.get(currentState).get(alwaysSymbol);
             if (newState != null) {

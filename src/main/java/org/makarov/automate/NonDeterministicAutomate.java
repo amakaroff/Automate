@@ -9,8 +9,6 @@ import java.util.Set;
 
 public class NonDeterministicAutomate extends Automate<Set<String>> {
 
-    private boolean isNullCleaning = false;
-
     public NonDeterministicAutomate(String filePath) {
         super(new JSONNonDeterministicAutomateReader(filePath));
     }
@@ -24,6 +22,10 @@ public class NonDeterministicAutomate extends Automate<Set<String>> {
         String currentSignal = String.valueOf(signal);
         log("Input signal: {%s}", currentSignal);
         checkNext(currentSignal);
+        if (currentState.isEmpty()) {
+            log("Current state is empty. Automate has finished!");
+            throw new AutomateException();
+        }
 
         Set<String> newStates = new HashSet<>();
         log("Current state is : {%s}", currentState);

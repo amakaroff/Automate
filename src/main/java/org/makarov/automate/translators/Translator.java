@@ -13,6 +13,7 @@ public interface Translator {
             list.add(String.valueOf(currentChar));
             currentChar++;
         }
+
         list.add(String.valueOf(currentChar));
     }
 }

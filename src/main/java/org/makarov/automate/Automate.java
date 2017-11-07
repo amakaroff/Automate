@@ -4,12 +4,7 @@ import org.makarov.automate.exception.AutomateException;
 import org.makarov.automate.reader.AutomateReader;
 import org.makarov.automate.translators.Translator;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public abstract class Automate<T> {
 
@@ -49,7 +44,7 @@ public abstract class Automate<T> {
         if (!isInit) {
             try {
                 this.debug = debug;
-                log("\nInitializating of Automate is started!");
+                log("\nInitialization of Automate is started!");
 
                 name = reader.getName();
                 table = reader.getTable();
@@ -63,7 +58,7 @@ public abstract class Automate<T> {
                 isInit = true;
                 parseAlphabet();
                 removeNullStates();
-                log("Initializating of Automate: %s complete!\n", name);
+                log("Initialization of Automate: %s complete!\n", name);
             } catch (Exception exception) {
                 throw new AutomateException("Problem at reading automate: " + name, exception);
             }
@@ -127,10 +122,8 @@ public abstract class Automate<T> {
         return priority;
     }
 
-    //TODO: rewrite
     protected void checkNext(String currentSignal) {
-        if ((!alphabet.contains(currentSignal) && !alphabet.contains(alwaysSymbol))
-                || (!(currentState instanceof Collection) && table.get(currentState) == null)) {
+        if ((!alphabet.contains(currentSignal) && !alphabet.contains(alwaysSymbol))) {
             log("Signal: {%s} is can't complete next", currentSignal);
             throw new AutomateException();
         }

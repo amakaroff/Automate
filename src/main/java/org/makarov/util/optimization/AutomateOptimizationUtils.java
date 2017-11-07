@@ -12,13 +12,8 @@ import java.util.Objects;
 
 public class AutomateOptimizationUtils {
 
-    public static void fullOptimization(Automate automate) {
-        verticalOptimization(automate);
-        horizontalOptimization(automate);
-    }
-
     @SuppressWarnings("unchecked")
-    public static void verticalOptimization(Automate automate) {
+    public static void optimization(Automate automate) {
         AutomateReflection reflection = new AutomateReflection(automate);
         Map<String, Map<String, Object>> transitions = reflection.getTransitions();
         Object beginState = reflection.getBeginState();
@@ -163,9 +158,5 @@ public class AutomateOptimizationUtils {
         }
 
         return true;
-    }
-
-    public static void horizontalOptimization(Automate automate) {
-        //TODO: added if needed
     }
 }

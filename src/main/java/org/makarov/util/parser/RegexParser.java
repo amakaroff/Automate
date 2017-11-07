@@ -26,7 +26,7 @@ public class RegexParser {
         long time = System.currentTimeMillis();
         List<String> errors = new ArrayList<>();
         Automate automate = parseRegex0(regex, debug, errors);
-        AutomateOptimizationUtils.verticalOptimization(automate);
+        AutomateOptimizationUtils.optimization(automate);
         time = System.currentTimeMillis() - time;
 
         if (!errors.isEmpty()) {

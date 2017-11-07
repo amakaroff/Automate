@@ -13,7 +13,9 @@ import java.util.Map;
 public class JSONTranslator implements Translator {
 
     private static final String SYMBOL = "symbol";
+
     private static final String TRANSLATION = "translation";
+
     private static Map<String, List<String>> translators = new HashMap<>();
 
     public JSONTranslator(JSONArray array) {
