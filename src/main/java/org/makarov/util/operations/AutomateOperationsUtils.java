@@ -1,7 +1,6 @@
 package org.makarov.util.operations;
 
 import org.makarov.automate.exception.AutomateException;
-import org.makarov.automate.reader.AutomateReader;
 import org.makarov.automate.translators.constants.RegexConstants;
 import org.makarov.util.AutomateReflection;
 
