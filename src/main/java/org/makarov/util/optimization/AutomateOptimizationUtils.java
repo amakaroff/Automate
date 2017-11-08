@@ -31,10 +31,7 @@ public class AutomateOptimizationUtils {
                 for (int j = i + 1; j < states.size(); j++) {
                     String newState = states.get(j);
                     if (Objects.equals(transitions.get(currentState), transitions.get(newState))) {
-                        if ((endStates.contains(newState) && endStates.contains(currentState)) ||
-                                (!endStates.contains(newState) && !endStates.contains(currentState))) {
-                            removeStates.add(newState);
-                        }
+                        removeStates.add(newState);
                     }
                 }
 
@@ -47,21 +44,21 @@ public class AutomateOptimizationUtils {
                 isEndOptimize = true;
             } else {
                 for (String removeState : removeStates) {
-                        if (beginState instanceof Collection) {
-                            Collection<String> beginStates = (Collection<String>) beginState;
-                            if (beginStates.contains(removeState)) {
-                                beginStates.remove(removeState);
-                                if (!beginStates.contains(currentState)) {
-                                    beginStates.add(currentState);
-                                }
-                            }
-                        } else {
-                            if (beginState.equals(removeState)) {
-                                beginState = currentState;
+                    if (beginState instanceof Collection) {
+                        Collection<String> beginStates = (Collection<String>) beginState;
+                        if (beginStates.contains(removeState)) {
+                            beginStates.remove(removeState);
+                            if (!beginStates.contains(currentState)) {
+                                beginStates.add(currentState);
                             }
                         }
-                        removeState(removeState, currentState, transitions);
-                        endStates.remove(removeState);
+                    } else {
+                        if (beginState.equals(removeState)) {
+                            beginState = currentState;
+                        }
+                    }
+                    removeState(removeState, currentState, transitions);
+                    endStates.remove(removeState);
                 }
 
                 removeStates.clear();
