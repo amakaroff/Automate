@@ -31,7 +31,10 @@ public class AutomateOptimizationUtils {
                 for (int j = i + 1; j < states.size(); j++) {
                     String newState = states.get(j);
                     if (Objects.equals(transitions.get(currentState), transitions.get(newState))) {
-                        removeStates.add(newState);
+                        if ((endStates.contains(newState) && endStates.contains(currentState)) ||
+                                (!endStates.contains(newState) && !endStates.contains(currentState))) {
+                            removeStates.add(newState);
+                        }
                     }
                 }
 
@@ -44,8 +47,6 @@ public class AutomateOptimizationUtils {
                 isEndOptimize = true;
             } else {
                 for (String removeState : removeStates) {
-                    if ((endStates.contains(removeState) && endStates.contains(currentState)) ||
-                            (!endStates.contains(removeState) && !endStates.contains(currentState))) {
                         if (beginState instanceof Collection) {
                             Collection<String> beginStates = (Collection<String>) beginState;
                             if (beginStates.contains(removeState)) {
@@ -61,7 +62,6 @@ public class AutomateOptimizationUtils {
                         }
                         removeState(removeState, currentState, transitions);
                         endStates.remove(removeState);
-                    }
                 }
 
                 removeStates.clear();

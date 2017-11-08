@@ -18,6 +18,16 @@ import java.util.TreeSet;
 
 public class AutomateToJSONSerializer implements AutomateSerializer {
 
+    private Comparator<String> comparator = (first, second) -> {
+        if (first.length() > second.length()) {
+            return 1;
+        } else if (first.length() < second.length()) {
+            return -1;
+        } else {
+            return first.compareTo(second);
+        }
+    };
+
     @SuppressWarnings("unchecked")
     private static boolean addBeginState(JSONObject object, Object element) {
         if (element instanceof Collection) {
@@ -54,7 +64,9 @@ public class AutomateToJSONSerializer implements AutomateSerializer {
         String alwaysSymbol = automateReflection.getAlwaysSymbol();
         Translator translator = automateReflection.getTranslator();
         List<String> alphabet = automateReflection.getAlphabet();
-        Set<String> endStates = new TreeSet<>(automateReflection.getEndStates());
+
+        TreeSet<String> endStates = new TreeSet<>(comparator);
+        endStates.addAll(automateReflection.getEndStates());
 
         JSONObject object = new JSONObject();
 
@@ -78,15 +90,7 @@ public class AutomateToJSONSerializer implements AutomateSerializer {
         Map<String, Map<String, Object>> table = (Map<String, Map<String, Object>>) automateReflection.getTransitions();
 
         List<JSONObject> rows = new ArrayList<>();
-        TreeSet<String> states = new TreeSet<>((first, second) -> {
-            if (first.length() > second.length()) {
-                return 1;
-            } else if (first.length() < second.length()) {
-                return -1;
-            } else {
-                return first.compareTo(second);
-            }
-        });
+        TreeSet<String> states = new TreeSet<>(comparator);
         states.addAll(table.keySet());
 
         for (String transition : states) {

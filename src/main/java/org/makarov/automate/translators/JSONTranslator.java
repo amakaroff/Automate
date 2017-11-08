@@ -20,20 +20,16 @@ public class JSONTranslator implements Translator {
 
     public JSONTranslator(JSONArray array) {
         this();
-        System.out.println(array.toList().get(0).getClass());
-        List<JSONObject> translations = JSONUtils.toList(array, JSONObject.class);
-        try {
-            for (JSONObject translation : translations) {
-                String symbol = translation.getString(SYMBOL);
-                List<String> translationSymbols = JSONUtils.toList(translation.getJSONArray(TRANSLATION), String.class);
-                if (!translators.containsKey(symbol)) {
-                    translators.put(symbol, getTranslationSymbols(translationSymbols));
-                } else {
-                    translators.get(symbol).addAll(getTranslationSymbols(translationSymbols));
-                }
+        List<Map> translations = JSONUtils.toList(array, Map.class);
+        for (Map translation : translations) {
+            String symbol = String.valueOf(translation.get(SYMBOL));
+            @SuppressWarnings("unchecked")
+            List<String> translationSymbols = (List<String>) translation.get(TRANSLATION);
+            if (!translators.containsKey(symbol)) {
+                translators.put(symbol, getTranslationSymbols(translationSymbols));
+            } else {
+                translators.get(symbol).addAll(getTranslationSymbols(translationSymbols));
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
         }
     }
 
