@@ -6,10 +6,19 @@ import org.makarov.automate.translators.Translator;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class AutomateReflection<T> {
 
     private Automate<T> automate;
+
+    private Map<String, Map<String, T>> table;
+
+    private List<String> alphabet;
+
+    private T beginState;
+
+    private List<String> endStates;
 
     public AutomateReflection(Automate<T> automate) {
         this.automate = automate;
@@ -50,7 +59,10 @@ public class AutomateReflection<T> {
 
     @SuppressWarnings("unchecked")
     public T getBeginState() {
-        return (T) getFieldValue("beginState");
+        if (beginState == null) {
+            beginState = (T) getFieldValue("beginState");
+        }
+        return beginState;
     }
 
     public void setBeginState(T newBeginState) {
@@ -59,17 +71,27 @@ public class AutomateReflection<T> {
 
     @SuppressWarnings("unchecked")
     public List<String> getEndStates() {
-        return (List<String>) getFieldValue("endState");
+        if (endStates == null) {
+            endStates = (List<String>) getFieldValue("endState");
+        }
+
+        return endStates;
     }
 
     @SuppressWarnings("unchecked")
     public List<String> getAlphabet() {
-        return (List<String>) getFieldValue("alphabet");
+        if (alphabet == null) {
+            alphabet = (List<String>) getFieldValue("alphabet");
+        }
+        return alphabet;
     }
 
     @SuppressWarnings("unchecked")
     public Map<String, Map<String, T>> getTransitions() {
-        return (Map<String, Map<String, T>>) getFieldValue("table");
+        if (table == null) {
+            table = (Map<String, Map<String, T>>) getFieldValue("table");
+        }
+        return table;
     }
 
     private Object getFieldValue(String fieldName) {

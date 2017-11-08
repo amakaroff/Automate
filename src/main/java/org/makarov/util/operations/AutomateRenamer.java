@@ -105,8 +105,8 @@ public class AutomateRenamer {
     private static void renameState(AutomateReflection reflection, String oldState, String newState) {
         @SuppressWarnings("unchecked")
         Map<String, Map<String, Object>> transitions = reflection.getTransitions();
-        Map<String, Object> map = transitions.get(oldState);
         if (!Objects.equals(newState, oldState)) {
+            Map<String, Object> map = transitions.get(oldState);
             transitions.remove(oldState);
             transitions.put(newState, map);
         }
@@ -124,7 +124,6 @@ public class AutomateRenamer {
         }
     }
 
-
     private static void renameEndState(AutomateReflection reflection, String oldState, String newState) {
         Object endState = reflection.getEndStates();
         renameInCollection(endState, oldState, newState);
@@ -140,25 +139,23 @@ public class AutomateRenamer {
 
     private static void renameInMap(Map<String, Object> map, String oldState, String newState) {
         List<String> changeKeyList = new ArrayList<>();
-        if (map == null) {
-            map = new HashMap<>();
-        }
-
-        for (Map.Entry<String, Object> entry : map.entrySet()) {
-            if (entry.getValue() instanceof Collection) {
-                renameInCollection(entry.getValue(), oldState, newState);
-            } else {
-                Object value = entry.getValue();
-                value = (value == null ? null : String.valueOf(value));
-                if (oldState.equals(value)) {
-                    changeKeyList.add(entry.getKey());
+        if (map != null) {
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                if (entry.getValue() instanceof Collection) {
+                    renameInCollection(entry.getValue(), oldState, newState);
+                } else {
+                    Object value = entry.getValue();
+                    value = (value == null ? null : String.valueOf(value));
+                    if (oldState.equals(value)) {
+                        changeKeyList.add(entry.getKey());
+                    }
                 }
             }
-        }
 
-        for (String key : changeKeyList) {
-            if (map.get(key) instanceof String) {
-                map.replace(key, newState);
+            for (String key : changeKeyList) {
+                if (map.get(key) instanceof String) {
+                    map.replace(key, newState);
+                }
             }
         }
     }

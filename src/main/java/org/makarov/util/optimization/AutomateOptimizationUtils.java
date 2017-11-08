@@ -30,7 +30,7 @@ public class AutomateOptimizationUtils {
                 currentState = states.get(i);
                 for (int j = i + 1; j < states.size(); j++) {
                     String newState = states.get(j);
-                    if (containsMap(transitions.get(currentState), transitions.get(newState))) {
+                    if (Objects.equals(transitions.get(currentState), transitions.get(newState))) {
                         removeStates.add(newState);
                     }
                 }
@@ -44,8 +44,8 @@ public class AutomateOptimizationUtils {
                 isEndOptimize = true;
             } else {
                 for (String removeState : removeStates) {
-                    if ((endStates.contains(removeState) && endStates.contains(removeState)) ||
-                            (!endStates.contains(removeState) && !endStates.contains(removeState))) {
+                    if ((endStates.contains(removeState) && endStates.contains(currentState)) ||
+                            (!endStates.contains(removeState) && !endStates.contains(currentState))) {
                         if (beginState instanceof Collection) {
                             Collection<String> beginStates = (Collection<String>) beginState;
                             if (beginStates.contains(removeState)) {
@@ -114,14 +114,13 @@ public class AutomateOptimizationUtils {
         return true;
     }
 
-
-    @SuppressWarnings("unchecked")
     private static void removeState(String state, String newState, Map<String, Map<String, Object>> transitions) {
         transitions.remove(state);
         for (Map<String, Object> map : transitions.values()) {
             List<String> removeTemplate = new ArrayList<>();
             for (Map.Entry<String, Object> entry : map.entrySet()) {
                 if (entry.getValue() instanceof Collection) {
+                    @SuppressWarnings("unchecked")
                     Collection<String> values = (Collection<String>) entry.getValue();
                     if (values.contains(state)) {
                         values.remove(state);
@@ -138,25 +137,5 @@ public class AutomateOptimizationUtils {
                 map.put(key, newState);
             }
         }
-
-    }
-
-    private static boolean containsMap(Map<String, Object> first, Map<String, Object> second) {
-        if (first == null || second == null || first.size() != second.size()) {
-            return false;
-        }
-
-        List<Object> firstValues = new ArrayList<>(first.values());
-        List<Object> secondValues = new ArrayList<>(second.values());
-
-        for (int i = 0; i < firstValues.size(); i++) {
-            Object firstObject = firstValues.get(i);
-            Object secondObject = secondValues.get(i);
-            if (!Objects.equals(firstObject, secondObject)) {
-                return false;
-            }
-        }
-
-        return true;
     }
 }

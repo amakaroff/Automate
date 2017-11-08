@@ -3,14 +3,14 @@ package org.makarov.util.parser;
 import org.makarov.automate.Automate;
 import org.makarov.automate.exception.AutomateException;
 import org.makarov.util.AutomateReflection;
-import org.makarov.util.FileUtils;
+import org.makarov.util.FileReader;
 
 import java.util.*;
 
 public class LexerParser {
 
     public static Collection<Automate> getAutomates(String filePath) {
-        String content = FileUtils.readFile(filePath);
+        String content = FileReader.readFile(filePath);
         return parseText(content);
     }
 

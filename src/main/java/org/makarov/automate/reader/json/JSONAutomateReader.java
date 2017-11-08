@@ -6,7 +6,7 @@ import org.makarov.automate.reader.AutomateReader;
 import org.makarov.automate.translators.JSONTranslator;
 import org.makarov.automate.translators.Translator;
 import org.makarov.automate.translators.constants.RegexConstants;
-import org.makarov.util.FileUtils;
+import org.makarov.util.FileReader;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -24,7 +24,7 @@ public abstract class JSONAutomateReader<T> implements AutomateReader<T> {
             fileName += TYPE;
         }
         this.fileName = fileName;
-        json = new JSONObject(FileUtils.readFile(fileName));
+        json = new JSONObject(FileReader.readFile(fileName));
     }
 
     public String getAlwaysSymbol() {

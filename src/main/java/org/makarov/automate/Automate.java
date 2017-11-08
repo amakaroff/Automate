@@ -8,13 +8,13 @@ import java.util.*;
 
 public abstract class Automate<T> {
 
-    protected Map<String, Map<String, T>> table;
-
-    protected T beginState;
-
     protected String name;
 
     protected int priority;
+
+    protected Map<String, Map<String, T>> table;
+
+    protected T beginState;
 
     protected List<String> endState;
 
@@ -45,10 +45,9 @@ public abstract class Automate<T> {
             try {
                 this.debug = debug;
                 log("\nInitialization of Automate is started!");
-
                 name = reader.getName();
-                table = reader.getTable();
                 priority = reader.getPriority();
+                table = reader.getTable();
                 beginState = reader.getBeginState();
                 endState = reader.getEndStates();
                 alphabet = reader.getAlphabet();
@@ -57,7 +56,7 @@ public abstract class Automate<T> {
                 currentState = beginState;
                 isInit = true;
                 parseAlphabet();
-                removeNullStates();
+                //removeNullStates();
                 log("Initialization of Automate: %s complete!\n", name);
             } catch (Exception exception) {
                 throw new AutomateException("Problem at reading automate: " + name, exception);
@@ -155,9 +154,8 @@ public abstract class Automate<T> {
                     }
                 }
             }
+            log("Parsing alphabet is finished!");
         }
-
-        log("Parsing alphabet is finished!");
     }
 
     protected void log(String message, Object... params) {

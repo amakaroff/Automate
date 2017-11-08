@@ -22,8 +22,6 @@ public class Functions {
         int allCount = 0;
         int tempCount = 0;
 
-        log(debug, "Functions is initialized!");
-
         if (automate.isEnd() && line.length() == 0) {
             Pair<Boolean, Integer> pair = new Pair<>(true, allCount);
             log(debug, "Automate has finished with result: %s\n", pair);
@@ -32,12 +30,10 @@ public class Functions {
 
         for (int i = index; i < line.length(); i++) {
             try {
-                log(debug, "Signal: {%s}. Try to next state!", line.charAt(i));
-                log(debug, "Current state is {%s}", automate.getCurrentState());
                 automate.nextState(line.charAt(i));
                 tempCount++;
                 if (automate.isEnd()) {
-                    log(debug, "Signal: {%s}. Data flush to line!", line.charAt(i));
+                    log(debug, "On signal: {%s} - State is end!", line.charAt(i));
                     allCount += tempCount;
                     tempCount = 0;
                     isEnd = true;

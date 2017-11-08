@@ -1,5 +1,6 @@
 package org.makarov.util;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.makarov.automate.exception.AutomateException;
 
@@ -7,7 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class FileUtils {
+public class FileReader {
 
     public static String readFile(String fileName) {
         try {
@@ -15,10 +16,10 @@ public class FileUtils {
             InputStream stream = loader.getResourceAsStream(fileName);
             if (stream == null) {
                 File file = new File(fileName);
-                if (!file.exists()) {
-                    throw new AutomateException("File: " + fileName + " is not found in resources!");
+                if (file.exists()) {
+                    return FileUtils.readFileToString(file);
                 } else {
-                    return org.apache.commons.io.FileUtils.readFileToString(file);
+                    throw new AutomateException("File: " + fileName + " is not found in resources!");
                 }
             }
 

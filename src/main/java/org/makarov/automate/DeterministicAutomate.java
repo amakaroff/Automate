@@ -21,21 +21,16 @@ public class DeterministicAutomate extends Automate<String> {
         checkNext(currentSignal);
 
         String newState = table.get(currentState).get(currentSignal);
-        if (newState != null) {
-            log("New state: {%s}", newState);
-        }
-
         if (newState == null) {
             newState = table.get(currentState).get(alwaysSymbol);
-            if (newState != null) {
-                log("New state: {%s}", newState);
-            }
 
             if (newState == null) {
                 log("New state for automate is not found! Current State: %s", currentState);
                 throw new AutomateException();
             }
         }
+
+        log("New state: {%s}", newState);
 
         currentState = newState;
     }

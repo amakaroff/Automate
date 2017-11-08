@@ -4,6 +4,7 @@ import org.makarov.automate.Automate;
 import org.makarov.automate.reader.AutomateReader;
 import org.makarov.util.AutomateReflection;
 import org.makarov.util.operations.AutomateOperations;
+import org.makarov.util.operations.AutomateOperationsUtils;
 import org.makarov.util.operations.AutomateRenamer;
 
 import java.util.ArrayList;
@@ -43,16 +44,10 @@ public class RepeatAutomateReader implements AutomateReader<Set<String>> {
         for (String endState : endStates) {
             Map<String, Set<String>> stringSetMap = table.get(endState);
             for (String letter : getAlphabet()) {
-                Set<String> innerTransitions = stringSetMap.get(letter);
-                if (innerTransitions == null) {
-                    innerTransitions = new HashSet<>();
-                }
+                Set<String> innerTransitions = AutomateOperationsUtils.getState(stringSetMap.get(letter));
 
                 for (String beginState : beginStates) {
-                    Set<String> beginTransitions = table.get(beginState).get(letter);
-                    if (beginTransitions == null) {
-                        beginTransitions = new HashSet<>();
-                    }
+                    Set<String> beginTransitions = AutomateOperationsUtils.getState(table.get(beginState).get(letter));
                     innerTransitions.addAll(beginTransitions);
                 }
                 stringSetMap.put(letter, innerTransitions);
@@ -60,7 +55,7 @@ public class RepeatAutomateReader implements AutomateReader<Set<String>> {
         }
 
         for (String letter : getAlphabet()) {
-            HashMap<String, Set<String>> transitions = new HashMap<>();
+            Map<String, Set<String>> transitions = new HashMap<>();
             transitions.put(letter, new HashSet<>());
             table.put(emptyState, transitions);
         }
