@@ -5,7 +5,11 @@ import org.makarov.automate.exception.AutomateException;
 import org.makarov.util.AutomateReflection;
 import org.makarov.util.FileReader;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class LexerParser {
 

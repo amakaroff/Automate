@@ -21,7 +21,6 @@ public class JSONUtils {
     }
 
 
-
     public static JSONArray toJSONArray(List<String> list) {
         return new JSONArray(list);
     }

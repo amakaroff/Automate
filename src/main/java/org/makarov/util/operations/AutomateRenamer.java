@@ -3,7 +3,14 @@ package org.makarov.util.operations;
 import org.makarov.automate.Automate;
 import org.makarov.util.AutomateReflection;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 public class AutomateRenamer {
 

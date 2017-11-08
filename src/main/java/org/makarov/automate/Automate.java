@@ -4,7 +4,9 @@ import org.makarov.automate.exception.AutomateException;
 import org.makarov.automate.reader.AutomateReader;
 import org.makarov.automate.translators.Translator;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public abstract class Automate<T> {
 

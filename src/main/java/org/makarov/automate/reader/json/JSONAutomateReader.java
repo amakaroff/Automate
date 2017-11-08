@@ -11,7 +11,6 @@ import org.makarov.util.json.JSONUtils;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class JSONAutomateReader<T> implements AutomateReader<T> {

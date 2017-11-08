@@ -2,7 +2,6 @@ package org.makarov.automate.reader.transform;
 
 import org.makarov.automate.NonDeterministicAutomate;
 import org.makarov.automate.reader.AutomateReader;
-import org.makarov.automate.translators.Translator;
 import org.makarov.util.AutomateReflection;
 
 import java.util.ArrayDeque;

@@ -6,7 +6,6 @@ import org.makarov.automate.translators.Translator;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class AutomateReflection<T> {
 
