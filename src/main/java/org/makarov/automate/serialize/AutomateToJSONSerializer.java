@@ -65,7 +65,7 @@ public class AutomateToJSONSerializer implements AutomateSerializer {
             object.put(AutomateReader.ALWAYS_SYMBOL, alwaysSymbol);
         }
 
-        if (!(translator instanceof JSONTranslator)) {
+        if (translator != null && !(translator instanceof JSONTranslator)) {
             object.put(AutomateReader.TRANSLATOR, translator.getClass().getName());
         }
 
@@ -78,16 +78,13 @@ public class AutomateToJSONSerializer implements AutomateSerializer {
         Map<String, Map<String, Object>> table = (Map<String, Map<String, Object>>) automateReflection.getTransitions();
 
         List<JSONObject> rows = new ArrayList<>();
-        TreeSet<String> states = new TreeSet<>(new Comparator<String>() {
-            @Override
-            public int compare(String first, String second) {
-                if (first.length() > second.length()) {
-                    return 1;
-                } else if (first.length() < second.length()) {
-                    return -1;
-                } else {
-                    return first.compareTo(second);
-                }
+        TreeSet<String> states = new TreeSet<>((first, second) -> {
+            if (first.length() > second.length()) {
+                return 1;
+            } else if (first.length() < second.length()) {
+                return -1;
+            } else {
+                return first.compareTo(second);
             }
         });
         states.addAll(table.keySet());
