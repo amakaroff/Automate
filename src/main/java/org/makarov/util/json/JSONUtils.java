@@ -12,9 +12,7 @@ public class JSONUtils {
         List list = array.toList();
         List<T> result = new ArrayList<>();
         for (Object object : list) {
-            if (clazz.isInstance(object)) {
-                result.add((T) object);
-            }
+            result.add((T) object);
         }
 
         return result;

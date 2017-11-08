@@ -13,14 +13,17 @@ public class Main {
 
     public static void main(String[] args) {
         AutomateSerializer serializer = new AutomateToJSONSerializer();
-        Automate automate = RegexParser.parseRegex("(00 | 11)* 15");
+        /*Automate automate = RegexParser.parseRegex("(00 | 11)* 15");
         System.out.println(serializer.serialize(automate));
         DeterministicAutomate deterministicAutomate = AutomateTransformer.toDeterministicAutomateTransform(automate);
         AutomateOptimizationUtils.optimization(deterministicAutomate);
         System.out.println(serializer.serialize(deterministicAutomate));
 
         System.out.println(Functions.function(automate, "0015", 0));
-        System.out.println(Functions.function(deterministicAutomate, "1115", 0));
+        System.out.println(Functions.function(deterministicAutomate, "1115", 0));*/
+        Automate automate = new DeterministicAutomate("testing.json");
+        automate.init();
+        System.out.println(serializer.serialize(automate));
     }
 
     //Regular helpers

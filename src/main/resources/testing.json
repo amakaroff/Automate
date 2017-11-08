@@ -1,0 +1,67 @@
+{
+  "name": "Real",
+  "priority": 4,
+  "translator": {
+    "class-name": "org.makarov.automate.translators.JSONTranslator",
+    "translators" : [
+      {
+        "symbol": "S",
+        "translation" : ["+", "-"]
+      },
+      {
+        "symbol": "E",
+        "translation" : ["e", "E"]
+      }
+    ]
+  },
+  "alphabet": [
+    "S", "\\d", ".", "E"
+  ],
+  "begin-state": "A",
+  "end-states": [
+    "C", "E", "G"
+  ],
+  "table": [
+    {
+      "row-name": "A",
+      "transitions": [
+        "B", "C", "D", null
+      ]
+    }, {
+      "row-name": "B",
+      "transitions": [
+        null, "C", "D", null
+      ]
+    }, {
+      "row-name": "C",
+      "transitions": [
+        null, "C", "E", "F"
+      ]
+    }, {
+      "row-name": "D",
+      "transitions": [
+        null, "E", null, null
+      ]
+    }, {
+      "row-name": "E",
+      "transitions": [
+        null, "E", null, "F"
+      ]
+    }, {
+      "row-name": "F",
+      "transitions": [
+        "H", "G", null, null
+      ]
+    }, {
+      "row-name": "G",
+      "transitions": [
+        null, "G", null, null
+      ]
+    }, {
+      "row-name": "H",
+      "transitions": [
+        null, "G", null, null
+      ]
+    }
+  ]
+}
