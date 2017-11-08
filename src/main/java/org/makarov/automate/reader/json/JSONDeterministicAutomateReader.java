@@ -2,6 +2,7 @@ package org.makarov.automate.reader.json;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.makarov.util.json.JSONUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +24,7 @@ public class JSONDeterministicAutomateReader extends JSONAutomateReader<String> 
             String rowName = metaRow.getString(ROW_NAME);
             Map<String, String> map = new HashMap<>();
             resultMap.put(rowName, map);
-            List<String> row = jsonArrayToList(metaRow.getJSONArray(TRANSITIONS));
+            List<String> row = JSONUtils.toList((metaRow.getJSONArray(TRANSITIONS)), String.class);
             for (int j = 0; j < columns.size(); j++) {
                 String element = row.get(j);
                 map.put(columns.get(j), element);

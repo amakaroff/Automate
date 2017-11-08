@@ -7,6 +7,7 @@ import org.makarov.automate.translators.JSONTranslator;
 import org.makarov.automate.translators.Translator;
 import org.makarov.automate.translators.constants.RegexConstants;
 import org.makarov.util.FileReader;
+import org.makarov.util.json.JSONUtils;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -37,12 +38,12 @@ public abstract class JSONAutomateReader<T> implements AutomateReader<T> {
 
     public List<String> getAlphabet() {
         JSONArray alphabet = json.getJSONArray(ALPHABET);
-        return jsonArrayToList(alphabet);
+        return JSONUtils.toList(alphabet, String.class);
     }
 
     public List<String> getEndStates() {
         JSONArray endState = json.getJSONArray(END_STATES);
-        return jsonArrayToList(endState);
+        return JSONUtils.toList(endState, String.class);
     }
 
     public String getName() {
@@ -59,17 +60,6 @@ public abstract class JSONAutomateReader<T> implements AutomateReader<T> {
 
     public int getPriority() {
         return json.isNull(PRIORITY) ? 0 : json.getInt(PRIORITY);
-    }
-
-    protected List<String> jsonArrayToList(JSONArray array) {
-        List<Object> objects = array.toList();
-
-        List<String> strings = new ArrayList<>();
-        for (Object object : objects) {
-            strings.add(object == null ? null : String.valueOf(object));
-        }
-
-        return strings;
     }
 
     @Override

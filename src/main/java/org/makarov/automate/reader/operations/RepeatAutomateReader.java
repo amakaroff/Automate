@@ -42,15 +42,15 @@ public class RepeatAutomateReader implements AutomateReader<Set<String>> {
         List<String> endStates = automate.getEndStates();
 
         for (String endState : endStates) {
-            Map<String, Set<String>> stringSetMap = table.get(endState);
+            Map<String, Set<String>> map = table.get(endState);
             for (String letter : getAlphabet()) {
-                Set<String> innerTransitions = AutomateOperationsUtils.getState(stringSetMap.get(letter));
+                Set<String> innerTransitions = AutomateOperationsUtils.getState(map.get(letter));
 
                 for (String beginState : beginStates) {
                     Set<String> beginTransitions = AutomateOperationsUtils.getState(table.get(beginState).get(letter));
                     innerTransitions.addAll(beginTransitions);
                 }
-                stringSetMap.put(letter, innerTransitions);
+                map.put(letter, innerTransitions);
             }
         }
 

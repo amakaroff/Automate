@@ -2,6 +2,7 @@ package org.makarov.automate.reader.json;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.makarov.util.json.JSONUtils;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,7 +30,7 @@ public class JSONNonDeterministicAutomateReader extends JSONAutomateReader<Set<S
             JSONArray transitions = metaRow.getJSONArray(TRANSITIONS);
 
             for (int j = 0; j < alphabet.size(); j++) {
-                Set<String> row = new HashSet<>(jsonArrayToList(transitions.getJSONArray(j)));
+                Set<String> row = new HashSet<>(JSONUtils.toList(transitions.getJSONArray(j), String.class));
                 Set<String> newRow = new HashSet<>();
                 newRow.addAll(row);
 
@@ -37,16 +38,11 @@ public class JSONNonDeterministicAutomateReader extends JSONAutomateReader<Set<S
             }
         }
 
-
         return resultMap;
     }
 
     public Set<String> getBeginState() {
         JSONArray beginState = json.getJSONArray(BEGIN_STATES);
-        return jsonArrayToSet(beginState);
-    }
-
-    private Set<String> jsonArrayToSet(JSONArray array) {
-        return new HashSet<>(jsonArrayToList(array));
+        return new HashSet<>(JSONUtils.toList(beginState, String.class));
     }
 }
