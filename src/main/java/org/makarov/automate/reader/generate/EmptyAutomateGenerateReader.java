@@ -16,20 +16,12 @@ public class EmptyAutomateGenerateReader implements AutomateReader<String> {
 
     @Override
     public List<String> getAlphabet() {
-        List<String> alphabet = new ArrayList<>();
-        alphabet.add(getAlwaysSymbol());
-
-        return alphabet;
+        return new ArrayList<>();
     }
 
     @Override
     public Map<String, Map<String, String>> getTable() {
-        Map<String, String> transitions = new HashMap<>();
-        transitions.put(AutomateReader.ALWAYS_SYMBOL, null);
-        Map<String, Map<String, String>> table = new HashMap<>();
-        table.put(POSITION, transitions);
-
-        return table;
+        return new HashMap<>();
     }
 
     @Override

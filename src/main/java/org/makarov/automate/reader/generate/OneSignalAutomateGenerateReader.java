@@ -13,16 +13,16 @@ public class OneSignalAutomateGenerateReader implements AutomateReader<String> {
 
     private static final String END_POSITION = "2";
 
-    private String oneChar;
+    private String character;
 
-    public OneSignalAutomateGenerateReader(String oneChar) {
-        this.oneChar = oneChar;
+    public OneSignalAutomateGenerateReader(String character) {
+        this.character = character;
     }
 
     @Override
     public List<String> getAlphabet() {
         List<String> alphabet = new ArrayList<>();
-        alphabet.add(oneChar);
+        alphabet.add(character);
 
         return alphabet;
     }
@@ -31,7 +31,7 @@ public class OneSignalAutomateGenerateReader implements AutomateReader<String> {
     public Map<String, Map<String, String>> getTable() {
         Map<String, Map<String, String>> table = new HashMap<>();
         Map<String, String> first = new HashMap<>();
-        first.put(oneChar, END_POSITION);
+        first.put(character, END_POSITION);
         table.put(BEGIN_POSITION, first);
         table.put(END_POSITION, new HashMap<>());
 

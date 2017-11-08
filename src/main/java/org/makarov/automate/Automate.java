@@ -55,29 +55,10 @@ public abstract class Automate<T> {
                 translator = reader.getTranslator();
                 currentState = beginState;
                 isInit = true;
-                parseAlphabet();
-                //removeNullStates();
+                compileAlphabet();
                 log("Initialization of Automate: %s complete!\n", name);
             } catch (Exception exception) {
                 throw new AutomateException("Problem at reading automate: " + name, exception);
-            }
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    private void removeNullStates() {
-        if (this instanceof NonDeterministicAutomate) {
-            for (String key : table.keySet()) {
-                Map<String, T> map = table.get(key);
-                for (String signal : alphabet) {
-                    Set<String> transitions = (Set<String>) map.get(signal);
-                    if (transitions == null) {
-                        transitions = new HashSet<>();
-                    }
-                    if (transitions.contains(null)) {
-                        transitions.remove(null);
-                    }
-                }
             }
         }
     }
@@ -128,7 +109,7 @@ public abstract class Automate<T> {
         }
     }
 
-    private void parseAlphabet() {
+    private void compileAlphabet() {
         if (translator != null) {
             log("Parsing alphabet is started!");
             List<String> tempAlphabet = new ArrayList<>(alphabet);

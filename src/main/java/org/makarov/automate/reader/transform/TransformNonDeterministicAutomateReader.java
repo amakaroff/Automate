@@ -72,9 +72,4 @@ public class TransformNonDeterministicAutomateReader implements AutomateReader<S
     public String getAlwaysSymbol() {
         return automateReflection.getAlwaysSymbol();
     }
-
-    @Override
-    public Translator getTranslator() {
-        return automateReflection.getTranslator();
-    }
 }
