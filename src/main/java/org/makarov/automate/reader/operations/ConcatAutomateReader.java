@@ -113,4 +113,9 @@ public class ConcatAutomateReader implements AutomateReader<Set<String>> {
 
         return null;
     }
+
+    @Override
+    public String getAlwaysSymbol() {
+        return AutomateOperationsUtils.getAlwaysSymbol(first, second);
+    }
 }

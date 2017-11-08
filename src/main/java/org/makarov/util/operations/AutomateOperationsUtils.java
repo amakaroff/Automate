@@ -1,5 +1,10 @@
 package org.makarov.util.operations;
 
+import org.makarov.automate.exception.AutomateException;
+import org.makarov.automate.reader.AutomateReader;
+import org.makarov.automate.translators.constants.RegexConstants;
+import org.makarov.util.AutomateReflection;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -35,6 +40,23 @@ public class AutomateOperationsUtils {
         }
 
         return joinedMap;
+    }
+
+    public static String getAlwaysSymbol(AutomateReflection first, AutomateReflection second) {
+        String firstAlwaysSymbol = first.getAlwaysSymbol();
+        String secondAlwaysSymbol = second.getAlwaysSymbol();
+
+        if (RegexConstants.ALWAYS_SYMBOL.equals(firstAlwaysSymbol) &&
+                !RegexConstants.ALWAYS_SYMBOL.equals(secondAlwaysSymbol)) {
+            return secondAlwaysSymbol;
+        } else if (!RegexConstants.ALWAYS_SYMBOL.equals(firstAlwaysSymbol) &&
+                RegexConstants.ALWAYS_SYMBOL.equals(secondAlwaysSymbol)) {
+            return firstAlwaysSymbol;
+        } else if (RegexConstants.ALWAYS_SYMBOL.equals(firstAlwaysSymbol) &&
+                RegexConstants.ALWAYS_SYMBOL.equals(secondAlwaysSymbol)) {
+            return RegexConstants.ALWAYS_SYMBOL;
+        }
+        throw new AutomateException("Two automates is can't have different always symbols!");
     }
 
     public static Set<String> getState(Set<String> set) {
