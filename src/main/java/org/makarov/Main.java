@@ -20,7 +20,10 @@ public class Main {
 
     public static void main(String[] args) {
         AutomateSerializer serializer = new AutomateToJSONSerializer();
-        System.out.println(LexerParser.getAutomates("lexic/lexer.lex"));
+        //System.out.println(LexerParser.getAutomates("lexic/lexer.lex"));
+
+        Automate automate = new NonDeterministicAutomate("automate2.json");
+        System.out.println(automate.toString());
     }
 
     //Regular helpers

@@ -3,10 +3,14 @@ package org.makarov.automate;
 import org.makarov.automate.exception.AutomateException;
 import org.makarov.automate.reader.AutomateReader;
 import org.makarov.automate.translators.Translator;
+import org.makarov.util.Functions;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 public abstract class Automate<T> {
 
@@ -149,6 +153,7 @@ public abstract class Automate<T> {
 
     @Override
     public String toString() {
+        init();
         return "Automate {\n\tName: " + name + ";\n" +
                 "\tAlphabet: " + alphabet + ";\n" +
                 "\tBegin state: " + beginState + ";\n" +
@@ -162,10 +167,71 @@ public abstract class Automate<T> {
 
     private String getTransitions() {
         StringBuilder builder = new StringBuilder();
+        int elementSize = getElementSize();
+        int collectionSize = getCollectionSize();
         builder.append("\n");
-        for (Map.Entry<String, Map<String, T>> entry : table.entrySet()) {
-            builder.append("\t[").append(entry.getKey()).append("] ").append(entry.getValue().values()).append("\n");
+        Set<String> states = new TreeSet<>(Functions.stringComparator);
+        states.addAll(table.keySet());
+        StringBuilder emptySpaces = new StringBuilder();
+        for (int i = 0; i < elementSize + 3; i++) {
+            emptySpaces.append(" ");
         }
+        builder.append("\t").append(emptySpaces).append(printCollections(alphabet, collectionSize)).append("\n");
+        for (String key : states) {
+            builder.append("\t").append(getElement(key, elementSize)).append(printCollections(table.get(key).values(), collectionSize)).append("\n");
+        }
+
+        builder.deleteCharAt(builder.length() - 1);
+
+        return builder.toString();
+    }
+
+    private int getElementSize() {
+        int maxLength = 0;
+        for (String state : table.keySet()) {
+            if (state.length() > maxLength) {
+                maxLength = state.length();
+            }
+        }
+
+        return maxLength;
+    }
+
+    private String getElement(String line, int count) {
+        StringBuilder builder = new StringBuilder("[" + line + "]");
+        count = count - line.length() + 1;
+        for (int i = 0; i < count; i++) {
+            builder.append(" ");
+        }
+
+        return builder.toString();
+    }
+
+    private int getCollectionSize() {
+        int size = 0;
+        for (Map<String, T> map : table.values()) {
+            for (T element : map.values()) {
+                if (element instanceof Collection && element.toString().length() > size) {
+                    size = element.toString().length();
+                }
+            }
+        }
+
+        return size;
+    }
+
+    private String printCollections(Collection collection, int collectionSize) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("[");
+        for (Object element : collection) {
+            StringBuilder collectionBuilder = new StringBuilder(element.toString());
+            int newSize = collectionSize - collectionBuilder.length();
+            for (int i = 0; i < newSize; i++) {
+                collectionBuilder.append(" ");
+            }
+            builder.append(collectionBuilder.toString()).append(" ");
+        }
+        builder.append("]");
 
         return builder.toString();
     }
