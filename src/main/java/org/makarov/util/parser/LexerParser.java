@@ -23,48 +23,27 @@ public class LexerParser {
 
         List<AutomateTemplate> automateTemplates = new ArrayList<>();
 
-        while (index < content.length()) {
-            char character;
-            index = skipSpace(content, index);
-            character = content.charAt(index);
+        while (!content.substring(index, content.length()).trim().isEmpty() && index < content.length()) {
+            String name = readBeforeChar(content, index, ':');
+            index += name.length() + 1;
+            name = name.trim();
 
-            StringBuilder nameBuilder = new StringBuilder();
-            while (!isSpace(character) || character != ':') {
-                nameBuilder.append(character);
-                index++;
-                character = content.charAt(index);
+            String priority = readBeforeChar(content, index, ':');
+            index += priority.length() + 1;
+            priority = priority.trim();
+
+            String regex = readBeforeChar(content, index, ';');
+            index += regex.length() + 1;
+            regex = regex.trim();
+
+            if (name.isEmpty() || priority.isEmpty() || regex.isEmpty()) {
+                int lineNumber = countLineSeparators(content, index);
+                int positionIndex = index - content.lastIndexOf("\n", index);
+                throw new AutomateException("Automate reading error. Line: " + lineNumber + ", " + "Position: " + positionIndex);
             }
 
-            index = skipSeparator(content, index);
-            character = content.charAt(index);
-
-            StringBuilder priorityBuilder = new StringBuilder();
-            while (Character.isDigit(character)) {
-                priorityBuilder.append(character);
-                index++;
-                character = content.charAt(index);
-            }
-
-            index = skipSeparator(content, index);
-            character = content.charAt(index);
-
-            StringBuilder regexBuilder = new StringBuilder();
-
-            while (!isSpace(character) || character != ';') {
-                regexBuilder.append(character);
-                index++;
-                character = content.charAt(index);
-            }
-
-            index = skipSpace(content, index);
-
-            if (content.charAt(index) != ';') {
-                throw new AutomateException("Separator is not found!");
-            }
-            index++;
-
-            automateTemplates.add(new AutomateTemplate(nameBuilder.toString(),
-                    Integer.parseInt(priorityBuilder.toString()), regexBuilder.toString()));
+            AutomateTemplate automateTemplate = new AutomateTemplate(name, Integer.parseInt(priority), regex);
+            automateTemplates.add(automateTemplate);
         }
 
         LexicalEnvironment lexicalEnvironment = new LexicalEnvironment(automateTemplates);
@@ -72,35 +51,31 @@ public class LexerParser {
         return lexicalEnvironment.getAutomates();
     }
 
-    private static int skipSeparator(String content, int index) {
-        index = skipSpace(content, index);
+    private static int countLineSeparators(String content, int index) {
+        int count = 0;
+        for (int i = 0; i < index; i++) {
+            if (content.charAt(i) == '\n') {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    private static String readBeforeChar(String content, int index, char separator) {
+        StringBuilder lineBuilder = new StringBuilder();
         char character = content.charAt(index);
-
-        if (character != ':') {
-            throw new AutomateException("Separator is not found!");
-        }
-        index++;
-
-        return skipSpace(content, index);
-    }
-
-    private static int skipSpace(String line, int index) {
-        char character = line.charAt(index);
-        while (isSpace(character)) {
+        while (character != separator && index + 1 < content.length()) {
+            lineBuilder.append(character);
             index++;
-            character = line.charAt(index);
+            character = content.charAt(index);
         }
 
-        return index;
-    }
-
-
-    private static boolean isSpace(char symbol) {
-        return symbol == ' ' || symbol == '\n' || symbol == '\t' || symbol == '\r';
+        return lineBuilder.toString();
     }
 
     @SuppressWarnings("unchecked")
-    public static Automate generate(AutomateTemplate template) {
+    private static Automate generate(AutomateTemplate template) {
         Automate automate = RegexParser.parseRegex(template.getRegularExpression());
         AutomateReflection reflection = new AutomateReflection(automate);
         reflection.setName(template.getName());
@@ -123,7 +98,7 @@ public class LexerParser {
             automates = new HashMap<>();
 
             for (String key : this.automateTemplates.keySet()) {
-                automates.computeIfAbsent(key, put -> getAutomate(key));
+                automates.computeIfAbsent(key, value -> getAutomate(key));
             }
         }
 
@@ -172,6 +147,14 @@ public class LexerParser {
 
         public String getRegularExpression() {
             return regularExpression;
+        }
+
+        @Override
+        public String toString() {
+            return "AutomateTemplate {" +
+                    "\n\tname = \"" + name + "\";" +
+                    "\n\tpriority = " + priority + ";" +
+                    "\n\tregularExpression = \"" + regularExpression + "\";\n}\n";
         }
     }
 }

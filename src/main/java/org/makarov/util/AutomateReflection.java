@@ -53,7 +53,7 @@ public class AutomateReflection<T> {
     }
 
     public void setPriority(int newPriority) {
-        setFieldValue("name", newPriority);
+        setFieldValue("priority", newPriority);
     }
 
     @SuppressWarnings("unchecked")

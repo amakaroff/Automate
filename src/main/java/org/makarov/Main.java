@@ -6,21 +6,18 @@ import org.makarov.automate.serialize.AutomateSerializer;
 import org.makarov.automate.serialize.AutomateToJSONSerializer;
 import org.makarov.util.Functions;
 import org.makarov.util.optimization.AutomateOptimizationUtils;
+import org.makarov.util.parser.LexerParser;
 import org.makarov.util.parser.RegexParser;
 import org.makarov.util.transformer.AutomateTransformer;
+
+import java.util.Collection;
 
 public class Main {
 
     public static void main(String[] args) {
         AutomateSerializer serializer = new AutomateToJSONSerializer();
-        Automate automate = RegexParser.parseRegex("((00 | 11)(01 | 10)*(00 | 11)(01 | 10)*)*(00 | 11)*");
-        String test = "00111001";
-        System.out.println(serializer.serialize(automate));
-        DeterministicAutomate deterministicAutomate = AutomateTransformer.toDeterministicAutomateTransform(automate);
-        AutomateOptimizationUtils.optimization(deterministicAutomate);
-        System.out.println(serializer.serialize(deterministicAutomate));
-        System.out.println(Functions.function(automate, test, 0));
-        System.out.println(Functions.function(deterministicAutomate, test, 0));
+        Collection<Automate> automates = LexerParser.getAutomates("lexic/lexer.lex");
+        System.out.println(automates);
 
     }
 
