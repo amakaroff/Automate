@@ -3,6 +3,7 @@ package org.makarov.automate.reader.json;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.makarov.automate.reader.AutomateReader;
+import org.makarov.automate.translators.DefaultTranslator;
 import org.makarov.automate.translators.JSONTranslator;
 import org.makarov.automate.translators.Translator;
 import org.makarov.automate.translators.constants.RegexConstants;
@@ -76,14 +77,14 @@ public abstract class JSONAutomateReader<T> implements AutomateReader<T> {
                 } else if (Translator.class.isAssignableFrom(clazz)) {
                     return (Translator) clazz.newInstance();
                 } else {
-                    return null;
+                    return new DefaultTranslator();
                 }
             } catch (ClassNotFoundException | IllegalAccessException | InstantiationException |
                     NoSuchMethodException | InvocationTargetException ignore) {
-                return null;
+                return new DefaultTranslator();
             }
         }
 
-        return new JSONTranslator();
+        return new DefaultTranslator();
     }
 }

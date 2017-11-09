@@ -1,5 +1,6 @@
 package org.makarov.automate.reader;
 
+import org.makarov.automate.translators.DefaultTranslator;
 import org.makarov.automate.translators.Translator;
 import org.makarov.automate.translators.constants.RegexConstants;
 
@@ -55,6 +56,6 @@ public interface AutomateReader<T> {
     int getPriority();
 
     default Translator getTranslator() {
-        return null;
+        return new DefaultTranslator();
     }
 }

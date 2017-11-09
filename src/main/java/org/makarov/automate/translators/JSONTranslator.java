@@ -16,6 +16,8 @@ public class JSONTranslator implements Translator {
 
     private static final String TRANSLATION = "translation";
 
+    private Translator translator;
+
     private static Map<String, List<String>> translators = new HashMap<>();
 
     public JSONTranslator(JSONArray array) {
@@ -34,30 +36,17 @@ public class JSONTranslator implements Translator {
     }
 
     public JSONTranslator() {
-        init();
-    }
-
-    private void init() {
-        List<String> letters = new ArrayList<>();
-        fillListOfSymbols(letters, 'a', 'z');
-        fillListOfSymbols(letters, 'A', 'Z');
-        translators.put(RegexConstants.LETTER_SYMBOL, letters);
-
-        List<String> numbers = new ArrayList<>();
-        fillListOfSymbols(numbers, '0', '9');
-        translators.put(RegexConstants.NUMBER_SYMBOL, numbers);
-
-        List<String> spaces = new ArrayList<>();
-        spaces.add(" ");
-        spaces.add("\t");
-        spaces.add("\r");
-        spaces.add("\n");
-        translators.put(RegexConstants.SPACE_SYMBOL, spaces);
+        translator = new DefaultTranslator();
     }
 
     @Override
     public List<String> getTranslateElements(String character) {
-        return translators.get(character);
+        List<String> strings = translators.get(character);
+        if (strings == null) {
+            return translator.getTranslateElements(character);
+        }
+
+        return strings;
     }
 
     private List<String> getTranslationSymbols(List<String> translationSymbols) {

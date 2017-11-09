@@ -22,6 +22,24 @@ public class Functions {
         }
     };
 
+    public static String scheduleSymbols(String line) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < line.length(); i++) {
+            char c = line.charAt(i);
+            if (c == '\r') {
+                builder.append("\\r");
+            } else if (c == '\n') {
+                builder.append("\\n");
+            } else if (c == '\t') {
+                builder.append("\\t");
+            } else {
+                builder.append(c);
+            }
+        }
+
+        return builder.toString();
+    }
+
     public static Pair<Boolean, Integer> function(Automate automate, String line, int index) {
         return function(automate, line, index, false);
     }
