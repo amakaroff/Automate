@@ -10,15 +10,22 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class LexerParser {
 
+    private static final Pattern pattern = Pattern.compile("\\d+");
+
     public static Collection<Automate> getAutomates(String filePath) {
-        String content = FileReader.readFile(filePath);
-        return parseText(content);
+        return getAutomates(filePath, false);
     }
 
-    private static Collection<Automate> parseText(String content) {
+    public static Collection<Automate> getAutomates(String filePath, boolean debug) {
+        String content = FileReader.readFile(filePath);
+        return parseText(content, debug);
+    }
+
+    private static Collection<Automate> parseText(String content, boolean debug) {
         int index = 0;
 
         List<AutomateTemplate> automateTemplates = new ArrayList<>();
@@ -36,13 +43,16 @@ public class LexerParser {
             index += regex.length() + 1;
             regex = regex.trim();
 
-            if (name.isEmpty() || priority.isEmpty() || regex.isEmpty()) {
+            if (name.isEmpty() || priority.isEmpty() || regex.isEmpty() || !isNumber(priority)) {
                 int lineNumber = countLineSeparators(content, index);
                 int positionIndex = index - content.lastIndexOf("\n", index);
                 throw new AutomateException("Automate reading error. Line: " + lineNumber + ", " + "Position: " + positionIndex);
             }
 
             AutomateTemplate automateTemplate = new AutomateTemplate(name, Integer.parseInt(priority), regex);
+
+            log(debug, automateTemplate.toString());
+
             automateTemplates.add(automateTemplate);
         }
 
@@ -50,6 +60,11 @@ public class LexerParser {
 
         return lexicalEnvironment.getAutomates();
     }
+
+    private static boolean isNumber(String line) {
+        return pattern.matcher(line).matches();
+    }
+
 
     private static int countLineSeparators(String content, int index) {
         int count = 0;
@@ -72,6 +87,12 @@ public class LexerParser {
         }
 
         return lineBuilder.toString();
+    }
+
+    private static void log(boolean debug, String message) {
+        if (debug) {
+            System.out.println(message);
+        }
     }
 
     @SuppressWarnings("unchecked")

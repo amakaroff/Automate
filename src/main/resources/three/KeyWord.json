@@ -4,103 +4,103 @@
   "alphabet": [
     "d", "e", "f", "i", "n", "c", "o", "l", "a", "m", "b"
   ],
-  "beginState": "A",
-  "endStates": [
+  "begin-state": "A",
+  "end-states": [
     "G", "N", "R", "S"
   ],
   "table": [
     {
-      "rowName": "A",
+      "row-name": "A",
       "transitions": [
         "B", null, null, "C", null, "D", null, "E", null, null, null
       ]
     }, {
-      "rowName": "B",
+      "row-name": "B",
       "transitions": [
         null, "F", null, null, null, null, null, null, null, null, null
       ]
     }, {
-      "rowName": "C",
+      "row-name": "C",
       "transitions": [
         null, null, "G", null, null, null, null, null, null, null, null
       ]
     }, {
-      "rowName": "D",
+      "row-name": "D",
       "transitions": [
         null, null, null, null, null, null, "H", null, null, null, null
       ]
     }, {
-      "rowName": "E",
+      "row-name": "E",
       "transitions": [
         null, null, null, null, null, null, null, null, "I", null, null
       ]
     }, {
-      "rowName": "F",
+      "row-name": "F",
       "transitions": [
         null, null, "J", null, null, null, null, null, null, null, null
       ]
     }, {
-      "rowName": "G",
+      "row-name": "G",
       "transitions": [
         null, null, null, null, null, null, null, null, null, null, null
       ]
     }, {
-      "rowName": "H",
+      "row-name": "H",
       "transitions": [
         null, null, null, null, "K", null, null, null, null, null, null
       ]
     }, {
-      "rowName": "I",
+      "row-name": "I",
       "transitions": [
         null, null, null, null, null, null, null, null, null, "L", null
       ]
     }, {
-      "rowName": "J",
+      "row-name": "J",
       "transitions": [
         null, null, null, "M", null, null, null, null, null, null, null
       ]
     }, {
-      "rowName": "K",
+      "row-name": "K",
       "transitions": [
         "N", null, null, null, null, null, null, null, null, null, null
       ]
     }, {
-      "rowName": "L",
+      "row-name": "L",
       "transitions": [
         null, null, null, null, null, null, null, null, null, null, "O"
       ]
     }, {
-      "rowName": "M",
+      "row-name": "M",
       "transitions": [
         null, null, null, null, "P", null, null, null, null, null, null
       ]
     }, {
-      "rowName": "N",
+      "row-name": "N",
       "transitions": [
         null, null, null, null, null, null, null, null, null, null, null
       ]
     }, {
-      "rowName": "O",
+      "row-name": "O",
       "transitions": [
         "Q", null, null, null, null, null, null, null, null, null, null
       ]
     }, {
-      "rowName": "P",
+      "row-name": "P",
       "transitions": [
         null, "R", null, null, null, null, null, null, null, null, null
       ]
     }, {
-      "rowName": "Q",
+      "row-name": "Q",
       "transitions": [
         null, null, null, null, null, null, null, null, "S", null, null
       ]
     }, {
-      "rowName": "R",
+      "row-name": "R",
       "transitions": [
         null, null, null, null, null, null, null, null, null, null, null
       ]
     }, {
-      "rowName": "S",
+      "row-name": "S",
       "transitions": [
         null, null, null, null, null, null, null, null, null, null, null
       ]

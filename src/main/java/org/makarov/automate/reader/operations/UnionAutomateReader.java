@@ -85,10 +85,4 @@ public class UnionAutomateReader implements AutomateReader<Set<String>> {
     public int getPriority() {
         return 0;
     }
-
-    @Override
-    public String getAlwaysSymbol() {
-        return AutomateOperationsUtils.getAlwaysSymbol(first, second);
-    }
-
 }

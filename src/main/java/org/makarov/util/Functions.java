@@ -5,11 +5,22 @@ import org.makarov.automate.exception.AutomateException;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Functions {
+
+    public static final Comparator<String> stringComparator = (first, second) -> {
+        if (first.length() > second.length()) {
+            return 1;
+        } else if (first.length() < second.length()) {
+            return -1;
+        } else {
+            return first.compareTo(second);
+        }
+    };
 
     public static Pair<Boolean, Integer> function(Automate automate, String line, int index) {
         return function(automate, line, index, false);

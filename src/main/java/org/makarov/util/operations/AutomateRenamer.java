@@ -2,6 +2,7 @@ package org.makarov.util.operations;
 
 import org.makarov.automate.Automate;
 import org.makarov.util.AutomateReflection;
+import org.makarov.util.Functions;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,8 +10,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class AutomateRenamer {
 
@@ -47,10 +48,11 @@ public class AutomateRenamer {
 
         Map<String, String> changes = new HashMap<>();
 
-        Set<String> automateStates = new HashSet<>(transitions.keySet());
+        Set<String> automateStates = new TreeSet<>(Functions.stringComparator);
+        automateStates.addAll(transitions.keySet());
         for (String state : automateStates) {
             String newState = String.valueOf(index);
-            if (state.equals(newState)) {
+            if (newState.equals(state)) {
                 index++;
                 continue;
             }
@@ -71,7 +73,7 @@ public class AutomateRenamer {
             index++;
         }
 
-        if (changes.size() == 1) {
+        if (changes.size() > 1) {
             String state = String.valueOf(index - 1);
             String oldState = changes.get(state);
             renameTransition(reflection, state, oldState);
@@ -99,7 +101,7 @@ public class AutomateRenamer {
     }
 
     private static void renamingStates(AutomateReflection first, AutomateReflection second) {
-        int firstSize = first.getTransitions().keySet().size();
+        int firstSize = first.getTransitions().keySet().size() + 1;
         int secondSize = second.getTransitions().keySet().size();
         renameAutomate(first.getAutomate());
         renameAutomate(second.getAutomate());
@@ -112,8 +114,8 @@ public class AutomateRenamer {
     private static void renameState(AutomateReflection reflection, String oldState, String newState) {
         @SuppressWarnings("unchecked")
         Map<String, Map<String, Object>> transitions = reflection.getTransitions();
-        if (!Objects.equals(newState, oldState)) {
-            Map<String, Object> map = transitions.get(oldState);
+        Map<String, Object> map = transitions.get(oldState);
+        if (map != null) {
             transitions.remove(oldState);
             transitions.put(newState, map);
         }

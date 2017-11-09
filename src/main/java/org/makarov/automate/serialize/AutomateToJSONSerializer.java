@@ -7,26 +7,16 @@ import org.makarov.automate.translators.JSONTranslator;
 import org.makarov.automate.translators.Translator;
 import org.makarov.automate.translators.constants.RegexConstants;
 import org.makarov.util.AutomateReflection;
+import org.makarov.util.Functions;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
 public class AutomateToJSONSerializer implements AutomateSerializer {
-
-    private Comparator<String> comparator = (first, second) -> {
-        if (first.length() > second.length()) {
-            return 1;
-        } else if (first.length() < second.length()) {
-            return -1;
-        } else {
-            return first.compareTo(second);
-        }
-    };
 
     @SuppressWarnings("unchecked")
     private static boolean addBeginState(JSONObject object, Object element) {
@@ -65,7 +55,7 @@ public class AutomateToJSONSerializer implements AutomateSerializer {
         Translator translator = automateReflection.getTranslator();
         List<String> alphabet = automateReflection.getAlphabet();
 
-        TreeSet<String> endStates = new TreeSet<>(comparator);
+        Set<String> endStates = new TreeSet<>(Functions.stringComparator);
         endStates.addAll(automateReflection.getEndStates());
 
         JSONObject object = new JSONObject();
@@ -90,7 +80,7 @@ public class AutomateToJSONSerializer implements AutomateSerializer {
         Map<String, Map<String, Object>> table = (Map<String, Map<String, Object>>) automateReflection.getTransitions();
 
         List<JSONObject> rows = new ArrayList<>();
-        TreeSet<String> states = new TreeSet<>(comparator);
+        Set<String> states = new TreeSet<>(Functions.stringComparator);
         states.addAll(table.keySet());
 
         for (String transition : states) {
