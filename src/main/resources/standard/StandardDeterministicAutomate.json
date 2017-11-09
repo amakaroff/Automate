@@ -3,10 +3,10 @@
   "priority": 0,
   "translator": {
     "class-name": "",
-    "translators" : [
+    "translators": [
       {
         "symbol": "",
-        "translation" : []
+        "translation": []
       }
     ]
   },
@@ -18,8 +18,7 @@
   "table": [
     {
       "row-name": "",
-      "transitions": [
-      ]
+      "transitions": []
     }
   ]
 }

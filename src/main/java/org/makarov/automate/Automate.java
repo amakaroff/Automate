@@ -149,10 +149,24 @@ public abstract class Automate<T> {
 
     @Override
     public String toString() {
-        return "Name: {" + name + "}, alphabet: " + alphabet;
+        return "Automate {\n\tName: " + name + ";\n" +
+                "\tAlphabet: " + alphabet + ";\n" +
+                "\tBegin state: " + beginState + ";\n" +
+                "\tEnd state: " + endState + ";\n" +
+                "\tTransitions: " + getTransitions() + ";\n}";
     }
 
     public boolean isInit() {
         return isInit;
+    }
+
+    private String getTransitions() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("\n");
+        for (Map.Entry<String, Map<String, T>> entry : table.entrySet()) {
+            builder.append("\t[").append(entry.getKey()).append("] ").append(entry.getValue().values()).append("\n");
+        }
+
+        return builder.toString();
     }
 }

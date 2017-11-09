@@ -20,17 +20,7 @@ public class Main {
 
     public static void main(String[] args) {
         AutomateSerializer serializer = new AutomateToJSONSerializer();
-        Automate automate = RegexParser.parseRegex("define | lambda | cond | if");
-        DeterministicAutomate automate1 = AutomateTransformer.toDeterministicAutomateTransform(automate);
-        AutomateOptimizationUtils.optimization(automate1);
-        System.out.println(serializer.serialize(automate1));
-
-        Automate automate2 = new DeterministicAutomate("three/KeyWord.json");
-        AutomateRenamer.renameAutomate(automate2);
-
-        String text = "if";
-        System.out.println(Functions.function(automate1, text, 0));
-        System.out.println(Functions.function(automate2, text, 0));
+        System.out.println(LexerParser.getAutomates("lexic/lexer.lex"));
     }
 
     //Regular helpers
