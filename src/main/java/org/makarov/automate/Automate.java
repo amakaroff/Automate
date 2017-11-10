@@ -169,21 +169,28 @@ public abstract class Automate<T> {
         StringBuilder builder = new StringBuilder();
         int elementSize = getElementSize();
         int collectionSize = getCollectionSize();
-        builder.append("\n");
         Set<String> states = new TreeSet<>(Functions.stringComparator);
         states.addAll(table.keySet());
-        StringBuilder emptySpaces = new StringBuilder();
-        for (int i = 0; i < elementSize + 3; i++) {
-            emptySpaces.append(" ");
-        }
-        builder.append("\t").append(emptySpaces).append(printCollections(alphabet, collectionSize)).append("\n");
+        builder.append("\t\n\t").append(printEmptySpaces(elementSize + 3)).append(printCollections(alphabet, collectionSize)).append("\n");
         for (String key : states) {
-            builder.append("\t").append(getElement(key, elementSize)).append(printCollections(table.get(key).values(), collectionSize)).append("\n");
+            builder.append("\t")
+                    .append(getElement(key, elementSize))
+                    .append(printCollections(getStateList(key), collectionSize))
+                    .append("\n");
         }
 
         builder.deleteCharAt(builder.length() - 1);
 
         return builder.toString();
+    }
+
+    private List<T> getStateList(String state) {
+        List<T> list = new ArrayList<>();
+        for (String letter : alphabet) {
+            list.add(table.get(state).get(letter));
+        }
+
+        return list;
     }
 
     private int getElementSize() {
@@ -194,12 +201,24 @@ public abstract class Automate<T> {
             }
         }
 
+        for (Map<String, T> stringTMap : table.values()) {
+            if (stringTMap.containsValue(null)) {
+                if (maxLength < 4) {
+                    maxLength = 4;
+                    break;
+                }
+            }
+        }
+
         return maxLength;
     }
 
     private String getElement(String line, int count) {
-        StringBuilder builder = new StringBuilder("[" + line + "]");
-        count = count - line.length() + 1;
+        return "[" + line + "]" + printEmptySpaces(count - line.length() + 1);
+    }
+
+    private String printEmptySpaces(int count) {
+        StringBuilder builder = new StringBuilder();
         for (int i = 0; i < count; i++) {
             builder.append(" ");
         }
@@ -211,25 +230,25 @@ public abstract class Automate<T> {
         int size = 0;
         for (Map<String, T> map : table.values()) {
             for (T element : map.values()) {
-                if (element instanceof Collection && element.toString().length() > size) {
-                    size = element.toString().length();
+                if (element instanceof Collection && String.valueOf(element).length() > size ||
+                        element instanceof String && String.valueOf(element).length() > size ||
+                        element == null && size < 4) {
+                    size = String.valueOf(element).length();
                 }
             }
         }
-
         return size;
     }
 
     private String printCollections(Collection collection, int collectionSize) {
         StringBuilder builder = new StringBuilder();
         builder.append("[");
+
         for (Object element : collection) {
-            StringBuilder collectionBuilder = new StringBuilder(element.toString());
-            int newSize = collectionSize - collectionBuilder.length();
-            for (int i = 0; i < newSize; i++) {
-                collectionBuilder.append(" ");
-            }
-            builder.append(collectionBuilder.toString()).append(" ");
+            StringBuilder collectionBuilder = new StringBuilder(String.valueOf(element));
+            builder.append(collectionBuilder.toString())
+                    .append(printEmptySpaces(collectionSize - collectionBuilder.length()))
+                    .append(" ");
         }
         builder.append("]");
 

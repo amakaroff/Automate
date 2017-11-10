@@ -50,15 +50,18 @@ public class JSONTranslator implements Translator {
     }
 
     private List<String> getTranslationSymbols(List<String> translationSymbols) {
-        if (translationSymbols.size() == 1) {
-            String line = translationSymbols.get(0);
-            if (line.length() == 3 && line.charAt(1) == '-') {
+        List<String> newTranslation = new ArrayList<>();
+
+        for (String translationSymbol : translationSymbols) {
+            if (translationSymbol.length() == 3 && translationSymbol.charAt(1) == '-') {
                 List<String> list = new ArrayList<>();
-                fillListOfSymbols(list, line.charAt(0), line.charAt(2));
-                return list;
+                fillListOfSymbols(list, translationSymbol.charAt(0), translationSymbol.charAt(2));
+                newTranslation.addAll(list);
+            } else {
+                newTranslation.add(translationSymbol);
             }
         }
 
-        return translationSymbols;
+        return newTranslation;
     }
 }

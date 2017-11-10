@@ -22,8 +22,8 @@ public class Main {
         AutomateSerializer serializer = new AutomateToJSONSerializer();
         //System.out.println(LexerParser.getAutomates("lexic/lexer.lex"));
 
-        Automate automate = RegexParser.parseRegex("\\d\\d");
-        System.out.println(Functions.function(automate, "12", 0));
+        Automate automate = new DeterministicAutomate("testing.json");
+        System.out.println(automate.toString());
     }
 
     //Regular helpers
