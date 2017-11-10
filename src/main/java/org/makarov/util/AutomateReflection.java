@@ -28,10 +28,6 @@ public class AutomateReflection<T> {
         return getFieldValue("alwaysSymbol").toString();
     }
 
-    public void setAlwaysSymbol(String value) {
-        setFieldValue("alwaysSymbol", value);
-    }
-
     public Translator getTranslator() {
         return (Translator) getFieldValue("translator");
     }

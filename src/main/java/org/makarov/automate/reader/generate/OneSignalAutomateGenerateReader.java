@@ -53,7 +53,7 @@ public class OneSignalAutomateGenerateReader implements AutomateReader<String> {
 
     @Override
     public String getName() {
-        return AutomateReader.EMPTY_NAME;
+        return AutomateReader.ONE_NAME;
     }
 
     @Override

@@ -1,8 +1,6 @@
 package org.makarov.automate.translators;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
-import org.makarov.automate.translators.constants.RegexConstants;
 import org.makarov.util.json.JSONUtils;
 
 import java.util.ArrayList;
@@ -15,10 +13,8 @@ public class JSONTranslator implements Translator {
     private static final String SYMBOL = "symbol";
 
     private static final String TRANSLATION = "translation";
-
-    private Translator translator;
-
     private static Map<String, List<String>> translators = new HashMap<>();
+    private Translator translator;
 
     public JSONTranslator(JSONArray array) {
         this();

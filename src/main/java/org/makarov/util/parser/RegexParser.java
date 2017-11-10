@@ -5,8 +5,6 @@ import org.makarov.automate.DeterministicAutomate;
 import org.makarov.automate.exception.AutomateException;
 import org.makarov.automate.reader.generate.EmptyAutomateGenerateReader;
 import org.makarov.automate.reader.generate.OneSignalAutomateGenerateReader;
-import org.makarov.automate.serialize.AutomateSerializer;
-import org.makarov.automate.serialize.AutomateToJSONSerializer;
 import org.makarov.automate.translators.constants.RegexConstants;
 import org.makarov.util.MessageUtils;
 import org.makarov.util.operations.AutomateOperations;

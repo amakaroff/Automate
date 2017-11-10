@@ -11,6 +11,8 @@ public interface AutomateReader<T> {
 
     String EMPTY_NAME = "Empty name";
 
+    String ONE_NAME = "One symbol name";
+
     String TYPE = ".json";
 
     String ALPHABET = "alphabet";
