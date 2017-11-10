@@ -40,7 +40,7 @@ public class RegexParser {
         return automate;
     }
 
-    public static Automate generateOneAutomate(String oneChar) {
+    private static Automate generateOneAutomate(String oneChar) {
         if (oneChar == null || oneChar.isEmpty() || RegexConstants.EMPTY_SYMBOL.equals(oneChar)) {
             Automate automate = new DeterministicAutomate(new EmptyAutomateGenerateReader());
             automate.init();
@@ -61,7 +61,7 @@ public class RegexParser {
             return time / 1000 + " seconds and " + time % 1000 + " milliseconds";
         }
 
-        return "";
+        return "Overtime!";
     }
 
     private static Automate parseRegex0(String regex, boolean debug, List<String> errors) {
@@ -72,7 +72,7 @@ public class RegexParser {
 
         log(debug, "\nRegex is initialized!");
 
-        while (index < regex.length()) {
+    exit:   while (index < regex.length()) {
             char character = regex.charAt(index);
             if (isSpace(character)) {
                 log(debug, "Skip space symbol");
@@ -152,7 +152,7 @@ public class RegexParser {
                 while (!queue.isEmpty()) {
                     if (index >= regex.length()) {
                         errors.add(MessageUtils.createMessage("Wrong open bracket. Position: " + currentIndex, currentIndex, regex));
-                        continue;
+                        break exit;
                     }
                     character = regex.charAt(index);
                     log(debug, "In brackets character: {%s}", character);

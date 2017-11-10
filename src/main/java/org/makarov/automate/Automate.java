@@ -154,7 +154,9 @@ public abstract class Automate<T> {
     @Override
     public String toString() {
         init();
-        return "Automate {\n\tName: " + name + ";\n" +
+        return "Automate {\n" +
+                "\tName: " + name + ";\n" +
+                "\tPriority: " + priority + ";\n" +
                 "\tAlphabet: " + alphabet + ";\n" +
                 "\tBegin state: " + beginState + ";\n" +
                 "\tEnd state: " + endState + ";\n" +
@@ -171,7 +173,10 @@ public abstract class Automate<T> {
         int collectionSize = getCollectionSize();
         Set<String> states = new TreeSet<>(Functions.stringComparator);
         states.addAll(table.keySet());
-        builder.append("\t\n\t").append(printEmptySpaces(elementSize + 3)).append(printCollections(alphabet, collectionSize)).append("\n");
+        builder.append("\t\n\t")
+                .append(printEmptySpaces(elementSize + 3))
+                .append(printCollections(alphabet, collectionSize))
+                .append("\n");
         for (String key : states) {
             builder.append("\t")
                     .append(getElement(key, elementSize))
@@ -230,9 +235,7 @@ public abstract class Automate<T> {
         int size = 0;
         for (Map<String, T> map : table.values()) {
             for (T element : map.values()) {
-                if (element instanceof Collection && String.valueOf(element).length() > size ||
-                        element instanceof String && String.valueOf(element).length() > size ||
-                        element == null && size < 4) {
+                if (element != null && String.valueOf(element).length() > size) {
                     size = String.valueOf(element).length();
                 }
             }
@@ -245,11 +248,15 @@ public abstract class Automate<T> {
         builder.append("[");
 
         for (Object element : collection) {
+            if (element == null) {
+                element = "-";
+            }
             StringBuilder collectionBuilder = new StringBuilder(String.valueOf(element));
             builder.append(collectionBuilder.toString())
                     .append(printEmptySpaces(collectionSize - collectionBuilder.length()))
                     .append(" ");
         }
+        builder.deleteCharAt(builder.length() - 1);
         builder.append("]");
 
         return builder.toString();

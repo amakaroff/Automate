@@ -72,7 +72,7 @@ public class RepeatAutomateReader implements AutomateReader<Set<String>> {
 
     @Override
     public List<String> getEndStates() {
-        List<String> endStates = automate.getEndStates();
+        Set<String> endStates = new HashSet<>(automate.getEndStates());
         endStates.add(emptyState);
         return new ArrayList<>(endStates);
     }

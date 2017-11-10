@@ -27,7 +27,7 @@ public class TransformDeterministicAutomateReader implements AutomateReader<Stri
 
     private String beginState;
 
-    private List<String> endStates = new ArrayList<>();
+    private Set<String> endStates = new HashSet<>();
 
     public TransformDeterministicAutomateReader(NonDeterministicAutomate automate) {
         this.automateReflection = new AutomateReflection<>(automate);
@@ -51,7 +51,7 @@ public class TransformDeterministicAutomateReader implements AutomateReader<Stri
 
     @Override
     public List<String> getEndStates() {
-        return endStates;
+        return new ArrayList<>(endStates);
     }
 
     @Override

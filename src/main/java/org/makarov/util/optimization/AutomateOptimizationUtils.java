@@ -30,7 +30,9 @@ public class AutomateOptimizationUtils {
                 currentState = states.get(i);
                 for (int j = i + 1; j < states.size(); j++) {
                     String newState = states.get(j);
-                    if (Objects.equals(transitions.get(currentState), transitions.get(newState))) {
+                    if ((endStates.contains(currentState) && endStates.contains(newState) ||
+                            !endStates.contains(currentState) && !endStates.contains(newState)) &&
+                            Objects.equals(transitions.get(currentState), transitions.get(newState))) {
                         removeStates.add(newState);
                     }
                 }
