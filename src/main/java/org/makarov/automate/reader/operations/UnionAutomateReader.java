@@ -59,7 +59,6 @@ public class UnionAutomateReader implements AutomateReader<Set<String>> {
         return table;
     }
 
-
     @Override
     public Set<String> getBeginState() {
         Set<String> beginStates = new HashSet<>();

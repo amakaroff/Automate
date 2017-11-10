@@ -50,8 +50,6 @@ public class ConcatAutomateReader implements AutomateReader<Set<String>> {
         transitions.addAll(first.getTransitions().keySet());
         transitions.addAll(second.getTransitions().keySet());
 
-        String emptyState = getEmptyState(second);
-
         for (String state : transitions) {
             Map<String, Set<String>> newState = AutomateOperationsUtils.joinMap(firstTable.get(state),
                     secondTable.get(state), getAlphabet());
@@ -59,7 +57,6 @@ public class ConcatAutomateReader implements AutomateReader<Set<String>> {
         }
 
         Set<String> beginStates = new HashSet<>(second.getBeginState());
-        beginStates.remove(emptyState);
 
         for (String endState : first.getEndStates()) {
             Map<String, Set<String>> endStateMap = new HashMap<>(table.get(endState));
@@ -86,7 +83,6 @@ public class ConcatAutomateReader implements AutomateReader<Set<String>> {
         List<String> endState = new ArrayList<>(second.getEndStates());
         String emptyState = getEmptyState(second);
         if (emptyState != null) {
-            endState.remove(emptyState);
             endState.addAll(first.getEndStates());
         }
 
