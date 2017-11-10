@@ -157,7 +157,7 @@ public abstract class Automate<T> {
         return "Automate {\n" +
                 "\tName: " + name + ";\n" +
                 "\tPriority: " + priority + ";\n" +
-                "\tAlphabet: " + alphabet + ";\n" +
+                "\tAlphabet: " + Functions.scheduleSymbols(alphabet.toString()) + ";\n" +
                 "\tBegin state: " + beginState + ";\n" +
                 "\tEnd state: " + endState + ";\n" +
                 "\tTransitions: " + getTransitions() + ";\n}";
@@ -173,18 +173,22 @@ public abstract class Automate<T> {
         int collectionSize = getCollectionSize();
         Set<String> states = new TreeSet<>(Functions.stringComparator);
         states.addAll(table.keySet());
-        builder.append("\t\n\t")
-                .append(printEmptySpaces(elementSize + 3))
-                .append(printCollections(alphabet, collectionSize))
-                .append("\n");
-        for (String key : states) {
-            builder.append("\t")
-                    .append(getElement(key, elementSize))
-                    .append(printCollections(getStateList(key), collectionSize))
+        if (!alphabet.isEmpty()) {
+            builder.append("\t\n\t")
+                    .append(printEmptySpaces(elementSize + 3))
+                    .append(Functions.scheduleSymbols(printCollections(alphabet, collectionSize)))
                     .append("\n");
         }
+        if (!table.isEmpty()) {
+            for (String key : states) {
+                builder.append("\t")
+                        .append(getElement(key, elementSize))
+                        .append(printCollections(getStateList(key), collectionSize))
+                        .append("\n");
+            }
 
-        builder.deleteCharAt(builder.length() - 1);
+            builder.deleteCharAt(builder.length() - 1);
+        }
 
         return builder.toString();
     }
@@ -203,15 +207,6 @@ public abstract class Automate<T> {
         for (String state : table.keySet()) {
             if (state.length() > maxLength) {
                 maxLength = state.length();
-            }
-        }
-
-        for (Map<String, T> stringTMap : table.values()) {
-            if (stringTMap.containsValue(null)) {
-                if (maxLength < 4) {
-                    maxLength = 4;
-                    break;
-                }
             }
         }
 
@@ -240,6 +235,15 @@ public abstract class Automate<T> {
                 }
             }
         }
+
+        for (String letter : alphabet) {
+            letter = Functions.scheduleSymbols(letter);
+            if (letter.length() > size) {
+                System.out.println(letter.length());
+                size = letter.length();
+            }
+        }
+
         return size;
     }
 

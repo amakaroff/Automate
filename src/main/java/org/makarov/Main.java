@@ -6,20 +6,26 @@ import org.makarov.automate.serialize.AutomateToJSONSerializer;
 import org.makarov.util.Functions;
 import org.makarov.util.operations.AutomateOperations;
 import org.makarov.util.optimization.AutomateOptimizationUtils;
+import org.makarov.util.parser.LexerParser;
 import org.makarov.util.parser.RegexParser;
 import org.makarov.util.transformer.AutomateTransformer;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class Main {
 
     public static void main(String[] args) {
         AutomateSerializer serializer = new AutomateToJSONSerializer();
         //System.out.println(LexerParser.getAutomates("lexic/lexer.lex"));
+        Collection<Automate> automates = new ArrayList<>();
+        for (Automate automate : LexerParser.getAutomates("lexic/lexer.lex")) {
+            automate = AutomateTransformer.toDeterministicAutomateTransform(automate);
+            AutomateOptimizationUtils.optimization(automate);
+            automates.add(automate);
+        }
 
-        Automate automate = RegexParser.parseRegex("(+|-|\\?)((\\d(\\d*)) | (\\d(\\d*)). | .(\\d(\\d*)) | (\\d(\\d*)).(\\d(\\d*)) )(\\? | ((e|E)(+|-|\\?) (\\d(\\d*))))");
-        automate = AutomateTransformer.toDeterministicAutomateTransform(automate);
-        AutomateOptimizationUtils.optimization(automate);
-        System.out.println(automate.toString());
-        System.out.println(Functions.function(automate, "+12.35e+10", 0));
+        System.out.println(automates);
     }
 
     //Regular helpers

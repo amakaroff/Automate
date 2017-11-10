@@ -1,7 +1,9 @@
-name_s : 5 : (\w\w\w | \d\d)* | \s*;
-oldAutomate : 10 : (34 | (34*) | \d);
-avt:5: ((+ | -)\d(\d)*) | \d(\d)*;
-variable : 5 : 'type' 'id' = 'real';
-type : 7 : int | double | char;
+Real : 1 : (+|-|\?)((\d(\d*)) | (\d(\d*)). | .(\d(\d*)) | (\d(\d*)).(\d(\d*)))(\? | ((e|E)(+|-|\?) (\d(\d*))));
+Int : 2 : (+|-|\?)(\d(\d*));
+KeyWord : 2 : lambda | cond | if | define;
+OpenBkt : 0 : \(;
+CloseBkt : 0 : \);
+Space : 0 : \s;
+Identify : 0 : (\w | + | - | \* | / | % | ! | _ | \d)(\w | + | - | \* | / | % | ! | _ | \d)* | \|\.(\.*)\|;
 
 

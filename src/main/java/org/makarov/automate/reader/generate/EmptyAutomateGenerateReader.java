@@ -1,6 +1,7 @@
 package org.makarov.automate.reader.generate;
 
 import org.makarov.automate.reader.AutomateReader;
+import org.makarov.automate.translators.constants.RegexConstants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +22,11 @@ public class EmptyAutomateGenerateReader implements AutomateReader<String> {
 
     @Override
     public Map<String, Map<String, String>> getTable() {
-        return new HashMap<>();
+        Map<String, Map<String, String>> table = new HashMap<>();
+        Map<String, String> transitions = new HashMap<>();
+        transitions.put(null, null);
+        table.put(POSITION, transitions);
+        return table;
     }
 
     @Override
