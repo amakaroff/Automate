@@ -173,10 +173,11 @@ public abstract class Automate<T> {
         int collectionSize = getCollectionSize();
         Set<String> states = new TreeSet<>(Functions.stringComparator);
         states.addAll(table.keySet());
+
         if (!alphabet.isEmpty()) {
             builder.append("\t\n\t")
                     .append(printEmptySpaces(elementSize + 3))
-                    .append(Functions.scheduleSymbols(printCollections(alphabet, collectionSize)))
+                    .append(printCollections(alphabet, collectionSize))
                     .append("\n");
         }
         if (!table.isEmpty()) {
@@ -239,7 +240,6 @@ public abstract class Automate<T> {
         for (String letter : alphabet) {
             letter = Functions.scheduleSymbols(letter);
             if (letter.length() > size) {
-                System.out.println(letter.length());
                 size = letter.length();
             }
         }
@@ -255,7 +255,8 @@ public abstract class Automate<T> {
             if (element == null) {
                 element = "-";
             }
-            StringBuilder collectionBuilder = new StringBuilder(String.valueOf(element));
+
+            StringBuilder collectionBuilder = new StringBuilder(Functions.scheduleSymbols(String.valueOf(element)));
             builder.append(collectionBuilder.toString())
                     .append(printEmptySpaces(collectionSize - collectionBuilder.length()))
                     .append(" ");

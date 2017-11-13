@@ -12,18 +12,20 @@ import org.makarov.util.transformer.AutomateTransformer;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) {
         AutomateSerializer serializer = new AutomateToJSONSerializer();
-        //System.out.println(LexerParser.getAutomates("lexic/lexer.lex"));
         Collection<Automate> automates = new ArrayList<>();
+
         for (Automate automate : LexerParser.getAutomates("lexic/lexer.lex")) {
             automate = AutomateTransformer.toDeterministicAutomateTransform(automate);
             AutomateOptimizationUtils.optimization(automate);
             automates.add(automate);
         }
+
 
         System.out.println(automates);
     }
