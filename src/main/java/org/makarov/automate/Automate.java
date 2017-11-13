@@ -2,6 +2,7 @@ package org.makarov.automate;
 
 import org.makarov.automate.exception.AutomateException;
 import org.makarov.automate.reader.AutomateReader;
+import org.makarov.automate.serialize.AutomateToStringSerializer;
 import org.makarov.automate.translators.Translator;
 import org.makarov.util.Functions;
 
@@ -154,116 +155,10 @@ public abstract class Automate<T> {
     @Override
     public String toString() {
         init();
-        return "Automate {\n" +
-                "\tName: " + name + ";\n" +
-                "\tPriority: " + priority + ";\n" +
-                "\tAlphabet: " + Functions.scheduleSymbols(alphabet.toString()) + ";\n" +
-                "\tBegin state: " + beginState + ";\n" +
-                "\tEnd state: " + endState + ";\n" +
-                "\tTransitions: " + getTransitions() + ";\n}";
+        return new AutomateToStringSerializer().serialize(this);
     }
 
     public boolean isInit() {
         return isInit;
-    }
-
-    private String getTransitions() {
-        StringBuilder builder = new StringBuilder();
-        int elementSize = getElementSize();
-        int collectionSize = getCollectionSize();
-        Set<String> states = new TreeSet<>(Functions.stringComparator);
-        states.addAll(table.keySet());
-
-        if (!alphabet.isEmpty()) {
-            builder.append("\t\n\t")
-                    .append(printEmptySpaces(elementSize + 3))
-                    .append(printCollections(alphabet, collectionSize))
-                    .append("\n");
-        }
-        if (!table.isEmpty()) {
-            for (String key : states) {
-                builder.append("\t")
-                        .append(getElement(key, elementSize))
-                        .append(printCollections(getStateList(key), collectionSize))
-                        .append("\n");
-            }
-
-            builder.deleteCharAt(builder.length() - 1);
-        }
-
-        return builder.toString();
-    }
-
-    private List<T> getStateList(String state) {
-        List<T> list = new ArrayList<>();
-        for (String letter : alphabet) {
-            list.add(table.get(state).get(letter));
-        }
-
-        return list;
-    }
-
-    private int getElementSize() {
-        int maxLength = 0;
-        for (String state : table.keySet()) {
-            if (state.length() > maxLength) {
-                maxLength = state.length();
-            }
-        }
-
-        return maxLength;
-    }
-
-    private String getElement(String line, int count) {
-        return "[" + line + "]" + printEmptySpaces(count - line.length() + 1);
-    }
-
-    private String printEmptySpaces(int count) {
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < count; i++) {
-            builder.append(" ");
-        }
-
-        return builder.toString();
-    }
-
-    private int getCollectionSize() {
-        int size = 0;
-        for (Map<String, T> map : table.values()) {
-            for (T element : map.values()) {
-                if (element != null && String.valueOf(element).length() > size) {
-                    size = String.valueOf(element).length();
-                }
-            }
-        }
-
-        for (String letter : alphabet) {
-            letter = Functions.scheduleSymbols(letter);
-            if (letter.length() > size) {
-                size = letter.length();
-            }
-        }
-
-        return size;
-    }
-
-    private String printCollections(Collection collection, int collectionSize) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("[");
-
-        for (Object element : collection) {
-            if (element == null) {
-                element = "-";
-            }
-
-            StringBuilder collectionBuilder = new StringBuilder(Functions.scheduleSymbols(String.valueOf(element)));
-            builder.append(collectionBuilder.toString())
-                    .append(printEmptySpaces(collectionSize - collectionBuilder.length()))
-                    .append(" ");
-        }
-        builder.deleteCharAt(builder.length() - 1);
-        builder.append("]");
-
-        return builder.toString();
     }
 }
