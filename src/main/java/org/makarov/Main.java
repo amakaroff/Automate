@@ -20,11 +20,11 @@ public class Main {
         AutomateSerializer serializer = new AutomateToJSONSerializer();
         Collection<Automate> automates = new ArrayList<>();
 
-        /*for (Automate automate : LexerParser.getAutomates("lexic/lexer.lex")) {
+        for (Automate automate : LexerParser.getAutomates("lexic/lexer.lex")) {
             automate = AutomateTransformer.toDeterministicAutomateTransform(automate);
             AutomateOptimizationUtils.optimization(automate);
             automates.add(automate);
-        }*/
+        }
 
         System.out.println(RegexParser.parseRegex(""));
 

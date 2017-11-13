@@ -34,9 +34,7 @@ public class AutomateToJSONSerializer implements AutomateSerializer {
             return object;
         } else {
             if (object == null) {
-                List<Object> arrayList = new ArrayList<>();
-                arrayList.add(null);
-                return arrayList.toArray();
+                return new ArrayList<>().toArray();
             } else {
                 return ((Collection) object).toArray();
             }
@@ -44,10 +42,9 @@ public class AutomateToJSONSerializer implements AutomateSerializer {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public String serialize(Automate automate) {
+    public <T> String serialize(Automate<T> automate) {
         automate.init();
-        AutomateReflection automateReflection = new AutomateReflection(automate);
+        AutomateReflection<T> automateReflection = new AutomateReflection<>(automate);
 
         String name = automate.getName();
         int priority = automate.getPriority();
@@ -77,7 +74,7 @@ public class AutomateToJSONSerializer implements AutomateSerializer {
 
         boolean isDeterminate = addBeginState(object, automateReflection.getBeginState());
 
-        Map<String, Map<String, Object>> table = (Map<String, Map<String, Object>>) automateReflection.getTransitions();
+        Map<String, Map<String, T>> table = automateReflection.getTransitions();
 
         List<JSONObject> rows = new ArrayList<>();
         Set<String> states = new TreeSet<>(Functions.stringComparator);
@@ -89,7 +86,7 @@ public class AutomateToJSONSerializer implements AutomateSerializer {
 
             List<Object> values = new ArrayList<>();
             for (String signal : alphabet) {
-                Map<String, Object> map = table.get(transition);
+                Map<String, T> map = table.get(transition);
                 values.add(getObjectToJsonValue(map.get(signal), isDeterminate));
             }
 

@@ -14,9 +14,9 @@ import java.util.TreeSet;
 public class AutomateToStringSerializer implements AutomateSerializer {
 
     @Override
-    @SuppressWarnings("unchecked")
-    public String serialize(Automate automate) {
-        AutomateReflection automateReflection = new AutomateReflection(automate);
+
+    public <T> String serialize(Automate<T> automate) {
+        AutomateReflection<T> automateReflection = new AutomateReflection<>(automate);
         return "Automate {\n" +
                 "\tName: " + automateReflection.getName() + ";\n" +
                 "\tPriority: " + automateReflection.getPriority() + ";\n" +
@@ -27,7 +27,7 @@ public class AutomateToStringSerializer implements AutomateSerializer {
     }
 
     @SuppressWarnings("unchecked")
-    private String getTransitions(AutomateReflection automateReflection) {
+    private <T> String getTransitions(AutomateReflection<T> automateReflection) {
         StringBuilder builder = new StringBuilder();
         int elementSize = getElementSize(automateReflection);
         int collectionSize = getCollectionSize(automateReflection);
@@ -55,20 +55,20 @@ public class AutomateToStringSerializer implements AutomateSerializer {
     }
 
     @SuppressWarnings("unchecked")
-    private List getStateList(AutomateReflection automateReflection, String state) {
-        List list = new ArrayList<>();
-        for (Object letter : automateReflection.getAlphabet()) {
-            list.add(((Map)automateReflection.getTransitions().get(state)).get(letter));
+    private <T> List<String> getStateList(AutomateReflection<T> automateReflection, String state) {
+        List<String> list = new ArrayList<>();
+        for (String letter : automateReflection.getAlphabet()) {
+            list.add(automateReflection.getTransitions().get(state).get(letter).toString());
         }
 
         return list;
     }
 
-    private int getElementSize(AutomateReflection automateReflection) {
+    private <T> int getElementSize(AutomateReflection<T> automateReflection) {
         int maxLength = 0;
-        for (Object state : automateReflection.getTransitions().keySet()) {
-            if (state.toString().length() > maxLength) {
-                maxLength = state.toString().length();
+        for (String state : automateReflection.getTransitions().keySet()) {
+            if (state.length() > maxLength) {
+                maxLength = state.length();
             }
         }
 
@@ -88,20 +88,20 @@ public class AutomateToStringSerializer implements AutomateSerializer {
         return builder.toString();
     }
 
-    private int getCollectionSize(AutomateReflection automateReflection) {
+    private <T> int getCollectionSize(AutomateReflection<T> automateReflection) {
         int size = 0;
-        for (Object map : automateReflection.getTransitions().values()) {
-            for (Object element : ((Map)map).values()) {
+        for (Map<String, T> map : automateReflection.getTransitions().values()) {
+            for (T element : map.values()) {
                 if (element != null && String.valueOf(element).length() > size) {
                     size = String.valueOf(element).length();
                 }
             }
         }
 
-        for (Object letter : automateReflection.getAlphabet()) {
-            letter = Functions.scheduleSymbols(letter.toString());
-            if (letter.toString().length() > size) {
-                size = letter.toString().length();
+        for (String letter : automateReflection.getAlphabet()) {
+            letter = Functions.scheduleSymbols(letter);
+            if (letter.length() > size) {
+                size = letter.length();
             }
         }
 
