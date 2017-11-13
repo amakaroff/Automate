@@ -40,7 +40,7 @@ public class RegexParser {
         return automate;
     }
 
-    private static Automate generateOneAutomate(String oneChar) {
+    private static Automate generateAutomate(String oneChar) {
         if (oneChar == null || oneChar.isEmpty() || RegexConstants.EMPTY_SYMBOL.equals(oneChar)) {
             Automate automate = new DeterministicAutomate(new EmptyAutomateGenerateReader());
             automate.init();
@@ -72,7 +72,12 @@ public class RegexParser {
 
         log(debug, "\nRegex is initialized!");
 
-    exit:   while (index < regex.length()) {
+        if (regex.trim().isEmpty()) {
+            return generateAutomate("");
+        }
+
+        exit:
+        while (index < regex.length()) {
             char character = regex.charAt(index);
             if (isSpace(character)) {
                 log(debug, "Skip space symbol");
@@ -83,46 +88,46 @@ public class RegexParser {
                 log(debug, "Shielding symbol of %s", character);
                 switch (character) {
                     case '\\':
-                        forConcat.add(generateOneAutomate("\\"));
+                        forConcat.add(generateAutomate("\\"));
                         break;
                     case 's':
-                        forConcat.add(generateOneAutomate(RegexConstants.SPACE_SYMBOL));
+                        forConcat.add(generateAutomate(RegexConstants.SPACE_SYMBOL));
                         break;
                     case 'w':
-                        forConcat.add(generateOneAutomate(RegexConstants.LETTER_SYMBOL));
+                        forConcat.add(generateAutomate(RegexConstants.LETTER_SYMBOL));
                         break;
                     case 'd':
-                        forConcat.add(generateOneAutomate(RegexConstants.NUMBER_SYMBOL));
+                        forConcat.add(generateAutomate(RegexConstants.NUMBER_SYMBOL));
                         break;
                     case '|':
-                        forConcat.add(generateOneAutomate("|"));
+                        forConcat.add(generateAutomate("|"));
                         break;
                     case '?':
-                        forConcat.add(generateOneAutomate(RegexConstants.EMPTY_SYMBOL));
+                        forConcat.add(generateAutomate(RegexConstants.EMPTY_SYMBOL));
                         break;
                     case '*':
-                        forConcat.add(generateOneAutomate("*"));
+                        forConcat.add(generateAutomate("*"));
                         break;
                     case '(':
-                        forConcat.add(generateOneAutomate("("));
+                        forConcat.add(generateAutomate("("));
                         break;
                     case ')':
-                        forConcat.add(generateOneAutomate(")"));
+                        forConcat.add(generateAutomate(")"));
                         break;
                     case ' ':
-                        forConcat.add(generateOneAutomate(" "));
+                        forConcat.add(generateAutomate(" "));
                         break;
                     case 't':
-                        forConcat.add(generateOneAutomate("\t"));
+                        forConcat.add(generateAutomate("\t"));
                         break;
                     case 'r':
-                        forConcat.add(generateOneAutomate("\r"));
+                        forConcat.add(generateAutomate("\r"));
                         break;
                     case 'n':
-                        forConcat.add(generateOneAutomate("\n"));
+                        forConcat.add(generateAutomate("\n"));
                         break;
                     case '.':
-                        forConcat.add(generateOneAutomate("\\."));
+                        forConcat.add(generateAutomate("\\."));
                         break;
                     default:
                         errors.add(MessageUtils.createMessage("Error at shielding symbol. Wrong character is " + character, index, regex));
@@ -152,7 +157,8 @@ public class RegexParser {
                 while (!queue.isEmpty()) {
                     if (index >= regex.length()) {
                         errors.add(MessageUtils.createMessage("Wrong open bracket. Position: " + currentIndex, currentIndex, regex));
-                        break exit;
+                        index++;
+                        continue exit;
                     }
                     character = regex.charAt(index);
                     log(debug, "In brackets character: {%s}", character);
@@ -186,7 +192,7 @@ public class RegexParser {
                 index++;
             } else {
                 log(debug, "Simple character: {%s}", character);
-                forConcat.add(generateOneAutomate(String.valueOf(character)));
+                forConcat.add(generateAutomate(String.valueOf(character)));
                 index++;
             }
         }
@@ -210,7 +216,7 @@ public class RegexParser {
         Automate automateResult;
         log(debug, "Concat operations above %s", automates);
         if (automates.isEmpty()) {
-            throw new AutomateException("Generation of concatenation is unreal! Automates is empty!");
+            return generateAutomate("");
         } else if (automates.size() == 1) {
             Automate automate = automates.get(index);
             automates.clear();
@@ -231,7 +237,7 @@ public class RegexParser {
 
     private static Automate generateUnionAutomate(List<Automate> automates, boolean debug) {
         if (automates.isEmpty()) {
-            throw new AutomateException("Generation of union is unreal! Automates is empty!");
+            return generateAutomate("");
         } else if (automates.size() == 1) {
             return automates.get(0);
         }
