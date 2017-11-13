@@ -144,7 +144,7 @@ public class RegexParser {
                     continue;
                 }
 
-                expressions.add(generateConcatAutomate(forConcat, debug));
+                expressions.add(generateConcatAutomate(forConcat));
                 unionCount++;
                 index++;
             } else if (character == '(') {
@@ -199,7 +199,7 @@ public class RegexParser {
 
         log(debug, "Generate concat by automates: {%s}", forConcat);
         if (!forConcat.isEmpty()) {
-            expressions.add(generateConcatAutomate(forConcat, debug));
+            expressions.add(generateConcatAutomate(forConcat));
         }
 
         if (expressions.size() <= unionCount) {
@@ -208,13 +208,12 @@ public class RegexParser {
         }
 
         log(debug, "Join automates: {%s}\n", expressions);
-        return generateUnionAutomate(expressions, debug);
+        return generateUnionAutomate(expressions);
     }
 
-    private static Automate generateConcatAutomate(List<Automate> automates, boolean debug) {
+    private static Automate generateConcatAutomate(List<Automate> automates) {
         int index = 0;
         Automate automateResult;
-        log(debug, "Concat operations above %s", automates);
         if (automates.isEmpty()) {
             return generateAutomate("");
         } else if (automates.size() == 1) {
@@ -235,14 +234,12 @@ public class RegexParser {
         return automateResult;
     }
 
-    private static Automate generateUnionAutomate(List<Automate> automates, boolean debug) {
+    private static Automate generateUnionAutomate(List<Automate> automates) {
         if (automates.isEmpty()) {
             return generateAutomate("");
         } else if (automates.size() == 1) {
             return automates.get(0);
         }
-
-        log(debug, "Union operations above %s", automates);
 
         Automate automateResult = AutomateOperations.union(automates.get(0), automates.get(1));
         for (int i = 2; i < automates.size(); i++) {
