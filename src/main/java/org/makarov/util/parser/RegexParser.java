@@ -257,12 +257,6 @@ public class RegexParser {
     @SuppressWarnings("unchecked")
     private static void log(boolean debug, String message, Object... objects) {
         if (debug) {
-            if (objects.length == 1 && (objects[0] instanceof Collection)) {
-                Collection<Automate> automates = (Collection<Automate>) objects[0];
-                for (Automate automate : automates) {
-                    automate.init(true);
-                }
-            }
             System.out.println(String.format(message, objects));
         }
     }
