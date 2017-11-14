@@ -4,14 +4,11 @@ import org.makarov.automate.exception.AutomateException;
 import org.makarov.automate.reader.AutomateReader;
 import org.makarov.automate.serialize.AutomateToStringSerializer;
 import org.makarov.automate.translators.Translator;
-import org.makarov.util.Functions;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 
 public abstract class Automate<T> {
 
@@ -23,7 +20,7 @@ public abstract class Automate<T> {
 
     protected T beginState;
 
-    protected List<String> endState;
+    protected Set<String> endState;
 
     protected List<String> alphabet;
 

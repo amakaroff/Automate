@@ -6,6 +6,7 @@ import org.makarov.automate.translators.constants.RegexConstants;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface AutomateReader<T> {
 
@@ -51,7 +52,7 @@ public interface AutomateReader<T> {
         return RegexConstants.ALWAYS_SYMBOL;
     }
 
-    List<String> getEndStates();
+    Set<String> getEndStates();
 
     String getName();
 

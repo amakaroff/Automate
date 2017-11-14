@@ -6,6 +6,7 @@ import org.makarov.automate.translators.Translator;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class AutomateReflection<T> {
 
@@ -17,7 +18,7 @@ public class AutomateReflection<T> {
 
     private T beginState;
 
-    private List<String> endStates;
+    private Set<String> endStates;
 
     public AutomateReflection(Automate<T> automate) {
         this.automate = automate;
@@ -65,9 +66,9 @@ public class AutomateReflection<T> {
     }
 
     @SuppressWarnings("unchecked")
-    public List<String> getEndStates() {
+    public Set<String> getEndStates() {
         if (endStates == null) {
-            endStates = (List<String>) getFieldValue("endState");
+            endStates = (Set<String>) getFieldValue("endState");
         }
 
         return endStates;

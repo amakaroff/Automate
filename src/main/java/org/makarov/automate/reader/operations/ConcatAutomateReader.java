@@ -81,8 +81,8 @@ public class ConcatAutomateReader implements AutomateReader<Set<String>> {
     }
 
     @Override
-    public List<String> getEndStates() {
-        List<String> endState = new ArrayList<>(second.getEndStates());
+    public Set<String> getEndStates() {
+        Set<String> endState = new HashSet<>(second.getEndStates());
         String emptyState = getEmptyState(second);
         if (emptyState != null) {
             endState.remove(emptyState);
@@ -103,7 +103,7 @@ public class ConcatAutomateReader implements AutomateReader<Set<String>> {
     }
 
     private String getEmptyState(AutomateReflection<Set<String>> automate) {
-        List<String> endStates = automate.getEndStates();
+        Set<String> endStates = automate.getEndStates();
         for (String state : automate.getBeginState()) {
             if (endStates.contains(state)) {
                 return state;

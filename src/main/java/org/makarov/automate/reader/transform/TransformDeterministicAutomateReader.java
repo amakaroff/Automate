@@ -50,8 +50,8 @@ public class TransformDeterministicAutomateReader implements AutomateReader<Stri
     }
 
     @Override
-    public List<String> getEndStates() {
-        return new ArrayList<>(endStates);
+    public Set<String> getEndStates() {
+        return endStates;
     }
 
     @Override
@@ -100,7 +100,7 @@ public class TransformDeterministicAutomateReader implements AutomateReader<Stri
     }
 
     private boolean isEndState(List<String> list) {
-        List<String> endStates = automateReflection.getEndStates();
+        Set<String> endStates = automateReflection.getEndStates();
         for (String state : list) {
             if (endStates.contains(state)) {
                 return true;

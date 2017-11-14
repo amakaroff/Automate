@@ -4,8 +4,10 @@ import org.makarov.automate.reader.AutomateReader;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class OneSignalAutomateGenerateReader implements AutomateReader<String> {
 
@@ -44,8 +46,8 @@ public class OneSignalAutomateGenerateReader implements AutomateReader<String> {
     }
 
     @Override
-    public List<String> getEndStates() {
-        List<String> endStates = new ArrayList<>();
+    public Set<String> getEndStates() {
+        Set<String> endStates = new HashSet<>();
         endStates.add(END_POSITION);
 
         return endStates;

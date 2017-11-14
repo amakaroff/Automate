@@ -1,12 +1,13 @@
 package org.makarov.automate.reader.generate;
 
 import org.makarov.automate.reader.AutomateReader;
-import org.makarov.automate.translators.constants.RegexConstants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class EmptyAutomateGenerateReader implements AutomateReader<String> {
 
@@ -35,11 +36,11 @@ public class EmptyAutomateGenerateReader implements AutomateReader<String> {
     }
 
     @Override
-    public List<String> getEndStates() {
-        List<String> list = new ArrayList<>();
-        list.add(POSITION);
+    public Set<String> getEndStates() {
+        Set<String> endStates = new HashSet<>();
+        endStates.add(POSITION);
 
-        return list;
+        return endStates;
     }
 
     @Override

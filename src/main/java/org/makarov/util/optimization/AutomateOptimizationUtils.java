@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 public class AutomateOptimizationUtils {
 
@@ -17,7 +18,7 @@ public class AutomateOptimizationUtils {
         AutomateReflection reflection = new AutomateReflection(automate);
         Map<String, Map<String, Object>> transitions = reflection.getTransitions();
         Object beginState = reflection.getBeginState();
-        List<String> endStates = reflection.getEndStates();
+        Set<String> endStates = reflection.getEndStates();
 
         List<String> removeStates = new ArrayList<>();
 

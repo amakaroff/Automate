@@ -12,7 +12,9 @@ import org.makarov.util.json.JSONUtils;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public abstract class JSONAutomateReader<T> implements AutomateReader<T> {
 
@@ -41,9 +43,9 @@ public abstract class JSONAutomateReader<T> implements AutomateReader<T> {
         return JSONUtils.toList(alphabet, String.class);
     }
 
-    public List<String> getEndStates() {
+    public Set<String> getEndStates() {
         JSONArray endState = json.getJSONArray(END_STATES);
-        return JSONUtils.toList(endState, String.class);
+        return new HashSet<>(JSONUtils.toList(endState, String.class));
     }
 
     public String getName() {

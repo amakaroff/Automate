@@ -67,11 +67,11 @@ public class UnionAutomateReader implements AutomateReader<Set<String>> {
     }
 
     @Override
-    public List<String> getEndStates() {
+    public Set<String> getEndStates() {
         Set<String> endStates = new HashSet<>();
         endStates.addAll(first.getEndStates());
         endStates.addAll(second.getEndStates());
-        return new ArrayList<>(endStates);
+        return endStates;
     }
 
     @Override

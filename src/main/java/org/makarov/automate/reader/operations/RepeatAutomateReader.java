@@ -38,7 +38,7 @@ public class RepeatAutomateReader implements AutomateReader<Set<String>> {
     public Map<String, Map<String, Set<String>>> getTable() {
         Map<String, Map<String, Set<String>>> table = new HashMap<>(automate.getTransitions());
         Set<String> beginStates = automate.getBeginState();
-        List<String> endStates = automate.getEndStates();
+        Set<String> endStates = automate.getEndStates();
 
         for (String endState : endStates) {
             Map<String, Set<String>> map = table.get(endState);
@@ -64,16 +64,16 @@ public class RepeatAutomateReader implements AutomateReader<Set<String>> {
 
     @Override
     public Set<String> getBeginState() {
-        Set<String> beginState = automate.getBeginState();
+        Set<String> beginState = new HashSet<>(automate.getBeginState());
         beginState.add(emptyState);
-        return new HashSet<>(beginState);
+        return beginState;
     }
 
     @Override
-    public List<String> getEndStates() {
+    public Set<String> getEndStates() {
         Set<String> endStates = new HashSet<>(automate.getEndStates());
         endStates.add(emptyState);
-        return new ArrayList<>(endStates);
+        return endStates;
     }
 
     @Override

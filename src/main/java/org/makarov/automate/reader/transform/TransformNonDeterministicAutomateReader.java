@@ -52,8 +52,8 @@ public class TransformNonDeterministicAutomateReader implements AutomateReader<S
     }
 
     @Override
-    public List<String> getEndStates() {
-        return new ArrayList<>(automateReflection.getEndStates());
+    public Set<String> getEndStates() {
+        return new HashSet<>(automateReflection.getEndStates());
     }
 
     @Override
