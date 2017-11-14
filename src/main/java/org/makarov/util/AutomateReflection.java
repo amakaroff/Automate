@@ -12,14 +12,6 @@ public class AutomateReflection<T> {
 
     private Automate<T> automate;
 
-    private Map<String, Map<String, T>> table;
-
-    private List<String> alphabet;
-
-    private T beginState;
-
-    private Set<String> endStates;
-
     public AutomateReflection(Automate<T> automate) {
         this.automate = automate;
         automate.init();
@@ -55,10 +47,7 @@ public class AutomateReflection<T> {
 
     @SuppressWarnings("unchecked")
     public T getBeginState() {
-        if (beginState == null) {
-            beginState = (T) getFieldValue("beginState");
-        }
-        return beginState;
+        return (T) getFieldValue("beginState");
     }
 
     public void setBeginState(T newBeginState) {
@@ -67,27 +56,17 @@ public class AutomateReflection<T> {
 
     @SuppressWarnings("unchecked")
     public Set<String> getEndStates() {
-        if (endStates == null) {
-            endStates = (Set<String>) getFieldValue("endState");
-        }
-
-        return endStates;
+        return (Set<String>) getFieldValue("endState");
     }
 
     @SuppressWarnings("unchecked")
     public List<String> getAlphabet() {
-        if (alphabet == null) {
-            alphabet = (List<String>) getFieldValue("alphabet");
-        }
-        return alphabet;
+        return (List<String>) getFieldValue("alphabet");
     }
 
     @SuppressWarnings("unchecked")
     public Map<String, Map<String, T>> getTransitions() {
-        if (table == null) {
-            table = (Map<String, Map<String, T>>) getFieldValue("table");
-        }
-        return table;
+        return (Map<String, Map<String, T>>) getFieldValue("table");
     }
 
     private Object getFieldValue(String fieldName) {

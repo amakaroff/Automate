@@ -21,9 +21,9 @@ public class AutomateOptimizationUtils {
     private static final String EQUALS_SYMBOL = "O";
 
     @SuppressWarnings("unchecked")
-    public static void optimization(Automate automate) {
-        AutomateReflection reflection = new AutomateReflection(automate);
-        Map<String, Map<String, Object>> transitions = reflection.getTransitions();
+    public static <T> void optimization(Automate<T> automate) {
+        AutomateReflection<T> reflection = new AutomateReflection<>(automate);
+        Map<String, Map<String, T>> transitions = reflection.getTransitions();
         Object beginState = reflection.getBeginState();
         Set<String> endStates = reflection.getEndStates();
 
@@ -38,8 +38,7 @@ public class AutomateOptimizationUtils {
                 currentState = states.get(i);
                 for (int j = i + 1; j < states.size(); j++) {
                     String newState = states.get(j);
-                    if ((endStates.contains(currentState) && endStates.contains(newState) ||
-                            !endStates.contains(currentState) && !endStates.contains(newState)) &&
+                    if (isEquivalentState(endStates, currentState, newState) &&
                             Objects.equals(transitions.get(currentState), transitions.get(newState))) {
                         removeStates.add(newState);
                     }
@@ -63,8 +62,8 @@ public class AutomateOptimizationUtils {
                             }
                         }
                     } else {
-                        if (beginState.equals(removeState)) {
-                            beginState = currentState;
+                        if (reflection.getBeginState().equals(removeState)) {
+                            reflection.setBeginState((T) currentState);
                         }
                     }
                     removeState(removeState, currentState, transitions);
@@ -96,26 +95,25 @@ public class AutomateOptimizationUtils {
         }
 
         if (automate instanceof DeterministicAutomate) {
-            //TODO: Add fix
-            //deleteEqualsState(reflection);
+            deleteEquivalentState((AutomateReflection<String>) reflection);
+            automateMinimization((AutomateReflection<String>) reflection);
         }
 
         AutomateRenamer.renameAutomate(automate);
     }
 
-    @SuppressWarnings("unchecked")
-    private static void deleteEqualsState(AutomateReflection automate) {
+    private static void deleteEquivalentState(AutomateReflection<String> automate) {
         Map<String, Map<String, String>> checkMap = createCheckMap(automate);
         Set<String> endStates = automate.getEndStates();
         Set<String> states = new HashSet<>(automate.getTransitions().keySet());
-        Map<String, Map<String, Object>> transitions = automate.getTransitions();
+        Map<String, Map<String, String>> transitions = automate.getTransitions();
 
         fillCheckMap(automate, checkMap);
 
         for (String state : states) {
             for (String innerState : states) {
-                if (checkMap.get(state).get(innerState).equals(EQUALS_SYMBOL)) {
-                    checkMap.get(innerState).put(state, NON_EQUALS_SYMBOL);
+                if (checkMap.get(innerState).get(state).equals(EQUALS_SYMBOL)) {
+                    checkMap.get(state).put(innerState, NON_EQUALS_SYMBOL);
                 }
             }
         }
@@ -123,12 +121,10 @@ public class AutomateOptimizationUtils {
         for (String state : states) {
             for (String innerState : states) {
                 if (checkMap.get(state).get(innerState).equals(EQUALS_SYMBOL)) {
-                    if (automate.getBeginState().equals(state)) {
-                        automate.setBeginState(innerState);
-                    }
-
-                    if (endStates.contains(state) && endStates.contains(innerState)
-                            || !endStates.contains(state) && !endStates.contains(innerState)) {
+                    if (isEquivalentState(endStates, state, innerState)) {
+                        if (automate.getBeginState().equals(state)) {
+                            automate.setBeginState(innerState);
+                        }
                         removeState(state, innerState, transitions);
                         endStates.remove(state);
                     }
@@ -137,10 +133,61 @@ public class AutomateOptimizationUtils {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private static void fillCheckMap(AutomateReflection automate, Map<String, Map<String, String>> checkMap) {
+    private static void automateMinimization(AutomateReflection<String> automate) {
+        Map<String, Map<String, String>> transitions = automate.getTransitions();
+        Set<String> states = transitions.keySet();
+        Set<String> endStates = automate.getEndStates();
+
+        boolean isEndOptimization = false;
+
+        Map<String, String> changes = new HashMap<>();
+
+        while (!isEndOptimization) {
+            isEndOptimization = true;
+            for (String state : states) {
+                for (String innerState : states) {
+                    if (!state.equals(innerState)) {
+                        Map<String, String> firstMap = getNewMap(transitions.get(state), state);
+                        Map<String, String> secondMap = getNewMap(transitions.get(innerState), innerState);
+                        if (firstMap.equals(secondMap)) {
+                            isEndOptimization = true;
+                            changes.put(state, innerState);
+                        }
+                    }
+                }
+            }
+
+            for (Map.Entry<String, String> entry : changes.entrySet()) {
+                if (isEquivalentState(endStates, entry.getKey(), entry.getValue())) {
+                    if (automate.getBeginState().equals(entry.getKey())) {
+                        automate.setBeginState(entry.getValue());
+                    }
+                    removeState(entry.getKey(), entry.getValue(), transitions);
+                    endStates.remove(entry.getKey());
+                }
+            }
+        }
+    }
+
+    private static boolean isEquivalentState(Set<String> endStates, String oldState, String newState) {
+        return endStates.contains(oldState) && endStates.contains(newState)
+                || !endStates.contains(oldState) && !endStates.contains(newState);
+    }
+
+    private static <T> Map<String, String> getNewMap(Map<String, T> map, String state) {
+        Map<String, String> newMap = new HashMap<>();
+        for (Map.Entry<String, T> entry : map.entrySet()) {
+            String value = state.equals(entry.getValue()) ? null : String.valueOf(entry.getValue());
+            newMap.put(entry.getKey(), value);
+        }
+
+        return newMap;
+    }
+
+
+    private static void fillCheckMap(AutomateReflection<String> automate, Map<String, Map<String, String>> checkMap) {
         Set<String> states = automate.getTransitions().keySet();
-        Map<String, Map<String, Object>> transitions = automate.getTransitions();
+        Map<String, Map<String, String>> transitions = automate.getTransitions();
         List<String> alphabet = automate.getAlphabet();
 
         boolean isEndChecking = false;
@@ -180,8 +227,7 @@ public class AutomateOptimizationUtils {
         }
     }
 
-
-    private static <T> Map<String, Map<String, String>> createCheckMap(AutomateReflection<T> automate) {
+    private static Map<String, Map<String, String>> createCheckMap(AutomateReflection<String> automate) {
         Map<String, Map<String, String>> checkMap = new HashMap<>();
         Set<String> endStates = automate.getEndStates();
         Set<String> states = automate.getTransitions().keySet();
@@ -191,8 +237,7 @@ public class AutomateOptimizationUtils {
             for (String innerState : states) {
                 if (state.equals(innerState)) {
                     innerMap.put(innerState, EQUALS_SYMBOL);
-                } else if (endStates.contains(state) && !endStates.contains(innerState)
-                        || !endStates.contains(state) && endStates.contains(innerState)) {
+                } else if (!isEquivalentState(endStates, state, innerState)) {
                     innerMap.put(innerState, NON_EQUALS_SYMBOL);
                 } else {
                     innerMap.put(innerState, EQUALS_SYMBOL);
@@ -206,8 +251,8 @@ public class AutomateOptimizationUtils {
     }
 
     @SuppressWarnings("unchecked")
-    private static boolean isUnattainableState(String state, Map<String, Map<String, Object>> transitions) {
-        for (Map.Entry<String, Map<String, Object>> entry : transitions.entrySet()) {
+    private static <T> boolean isUnattainableState(String state, Map<String, Map<String, T>> transitions) {
+        for (Map.Entry<String, Map<String, T>> entry : transitions.entrySet()) {
             if (!entry.getKey().equals(state)) {
                 for (Object value : entry.getValue().values()) {
                     if (value instanceof Collection) {
@@ -227,13 +272,13 @@ public class AutomateOptimizationUtils {
         return true;
     }
 
-    private static void removeState(String state, String newState, Map<String, Map<String, Object>> transitions) {
+    @SuppressWarnings("unchecked")
+    private static <T> void removeState(String state, String newState, Map<String, Map<String, T>> transitions) {
         transitions.remove(state);
-        for (Map<String, Object> map : transitions.values()) {
+        for (Map<String, T> map : transitions.values()) {
             List<String> removeTemplate = new ArrayList<>();
-            for (Map.Entry<String, Object> entry : map.entrySet()) {
+            for (Map.Entry<String, T> entry : map.entrySet()) {
                 if (entry.getValue() instanceof Collection) {
-                    @SuppressWarnings("unchecked")
                     Collection<String> values = (Collection<String>) entry.getValue();
                     if (values.contains(state)) {
                         values.remove(state);
@@ -247,7 +292,7 @@ public class AutomateOptimizationUtils {
             }
 
             for (String key : removeTemplate) {
-                map.put(key, newState);
+                map.put(key, (T) newState);
             }
         }
     }

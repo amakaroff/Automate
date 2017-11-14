@@ -77,8 +77,16 @@ public class AutomateRenamer {
             renameTransition(reflection, state, oldState);
         }
 
-        if (reflection.getBeginState() instanceof String) {
-            renameTransition(reflection, reflection.getBeginState().toString(), "1");
+        if (reflection.getBeginState() instanceof String && !reflection.getBeginState().equals("1")) {
+            if (states.contains("1")) {
+                String tempState = findTempState(transitions.keySet());
+                String oldBeginState = reflection.getBeginState().toString();
+                renameTransition(reflection, "1", tempState);
+                renameTransition(reflection, oldBeginState, "1");
+                renameTransition(reflection, tempState, oldBeginState);
+            } else {
+                renameTransition(reflection, reflection.getBeginState().toString(), "1");
+            }
         }
     }
 
@@ -92,8 +100,8 @@ public class AutomateRenamer {
     }
 
     private static <T> void renameTransition(AutomateReflection<T> reflection, String oldState, String newState) {
-        renameTransitions(reflection, oldState, newState);
         renameState(reflection, oldState, newState);
+        renameTransitions(reflection, oldState, newState);
         renameBeginState(reflection, oldState, newState);
         renameEndState(reflection, oldState, newState);
     }
@@ -112,9 +120,14 @@ public class AutomateRenamer {
     private static <T> void renameState(AutomateReflection<T> reflection, String oldState, String newState) {
         Map<String, Map<String, T>> transitions = reflection.getTransitions();
         Map<String, T> map = transitions.get(oldState);
+        Map<String, T> state = transitions.get(newState);
         if (map != null) {
             transitions.remove(oldState);
             transitions.put(newState, map);
+        }
+
+        if (state != null) {
+            transitions.put(oldState, state);
         }
     }
 

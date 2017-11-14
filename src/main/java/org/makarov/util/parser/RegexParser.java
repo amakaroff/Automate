@@ -9,6 +9,7 @@ import org.makarov.automate.translators.constants.RegexConstants;
 import org.makarov.util.MessageUtils;
 import org.makarov.util.operations.AutomateOperations;
 import org.makarov.util.optimization.AutomateOptimizationUtils;
+import org.makarov.util.transformer.AutomateTransformer;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class RegexParser {
     public static Automate parseRegex(String regex, boolean debug) {
         long time = System.currentTimeMillis();
         List<String> errors = new ArrayList<>();
-        Automate automate = parseRegex0(regex, debug, errors);
+        DeterministicAutomate automate = AutomateTransformer.toDeterministicAutomateTransform(parseRegex0(regex, debug, errors));
         AutomateOptimizationUtils.optimization(automate);
         time = System.currentTimeMillis() - time;
 
@@ -253,7 +254,6 @@ public class RegexParser {
         return symbol == ' ' || symbol == '\n' || symbol == '\t' || symbol == '\r';
     }
 
-    @SuppressWarnings("unchecked")
     private static void log(boolean debug, String message, Object... objects) {
         if (debug) {
             System.out.println(String.format(message, objects));
