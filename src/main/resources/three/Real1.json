@@ -4,48 +4,48 @@
   "alphabet": [
     "+", "-", "\\d", ".", "e", "E"
   ],
-  "beginState": "A",
-  "endStates": [
+  "begin-state": "A",
+  "end-states": [
     "C", "E", "G"
   ],
   "table": [
     {
-      "rowName": "A",
+      "row-name": "A",
       "transitions": [
         "B", "B", "C", "D", null, null
       ]
     }, {
-      "rowName": "B",
+      "row-name": "B",
       "transitions": [
         null, null, "C", "D", null, null
       ]
     }, {
-      "rowName": "C",
+      "row-name": "C",
       "transitions": [
         null, null, "C", "E", "F", "F"
       ]
     }, {
-      "rowName": "D",
+      "row-name": "D",
       "transitions": [
         null, null, "E", null, null, null
       ]
     }, {
-      "rowName": "E",
+      "row-name": "E",
       "transitions": [
         null, null, "E", null, "F", "F"
       ]
     }, {
-      "rowName": "F",
+      "row-name": "F",
       "transitions": [
         "H", "H", "G", null, null, null
       ]
     }, {
-      "rowName": "G",
+      "row-name": "G",
       "transitions": [
         null, null, "G", null, null, null
       ]
     }, {
-      "rowName": "H",
+      "row-name": "H",
       "transitions": [
         null, null, "G", null, null, null
       ]

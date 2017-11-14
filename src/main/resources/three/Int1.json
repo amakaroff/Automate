@@ -2,17 +2,17 @@
   "name": "Int",
   "priority": 5,
   "alphabet": ["+", "-", "\\d"],
-  "beginState": "A",
-  "endStates": ["C"],
+  "begin-state": "A",
+  "end-states": ["C"],
   "table": [
     {
-      "rowName": "A",
+      "row-name": "A",
       "transitions": ["B", "B", "C"]
     }, {
-      "rowName": "B",
+      "row-name": "B",
       "transitions": [null, null, "C"]
     }, {
-      "rowName": "C",
+      "row-name": "C",
       "transitions": [null, null, "C"]
     }
   ]

@@ -4,18 +4,18 @@
   "alphabet": [
     ")"
   ],
-  "beginState": "A",
-  "endStates": [
+  "begin-state": "A",
+  "end-states": [
     "B"
   ],
   "table": [
     {
-      "rowName": "A",
+      "row-name": "A",
       "transitions": [
         "B"
       ]
     }, {
-      "rowName": "B",
+      "row-name": "B",
       "transitions": [
         null
       ]

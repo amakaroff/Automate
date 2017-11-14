@@ -4,38 +4,38 @@
   "alphabet": [
     "|", "\\", "\\.", "\\w", "+", "-", "*", "/", "%", "!", "_", "\\d"
   ],
-  "beginState": "A",
-  "endStates": [
+  "begin-state": "A",
+  "end-states": [
     "B", "C", "E"
   ],
   "table": [
     {
-      "rowName": "A",
+      "row-name": "A",
       "transitions": [
         "D", "F", null, "B", "B", "B", "B", "B", "B", "B", "B", "B"
       ]
     }, {
-      "rowName": "B",
+      "row-name": "B",
       "transitions": [
         null, "F", null, "B", "B", "B", "B", "B", "B", "B", "B", "B"
       ]
     }, {
-      "rowName": "C",
+      "row-name": "C",
       "transitions": [
         null, null, null, null, null, null, null, null, null, null, null, null
       ]
     }, {
-      "rowName": "D",
+      "row-name": "D",
       "transitions": [
         "E", null, "D", null, null, null, null, null, null, null, null, null
       ]
     }, {
-      "rowName": "E",
+      "row-name": "E",
       "transitions": [
         null, null, null, null, null, null, null, null, null, null, null, null
       ]
     }, {
-      "rowName": "F",
+      "row-name": "F",
       "transitions": [
         "B", "B", null, null, null, null, null, null, null, null, null, null
       ]
