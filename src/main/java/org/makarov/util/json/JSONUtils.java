@@ -12,14 +12,11 @@ public class JSONUtils {
         List list = array.toList();
         List<T> result = new ArrayList<>();
         for (Object object : list) {
-            result.add((T) object);
+            if (clazz.isInstance(object) || object == null) {
+                result.add((T) object);
+            }
         }
 
         return result;
-    }
-
-
-    public static JSONArray toJSONArray(List<String> list) {
-        return new JSONArray(list);
     }
 }
