@@ -21,12 +21,11 @@ public class RepeatAutomateReader implements AutomateReader<Set<String>> {
 
     private String emptyState;
 
-    @SuppressWarnings("unchecked")
-    public RepeatAutomateReader(Automate automate) {
+    public RepeatAutomateReader(Automate<Set<String>> automate) {
         automate.init();
         AutomateRenamer.renameAutomate(automate);
 
-        this.automate = new AutomateReflection(automate);
+        this.automate = new AutomateReflection<>(automate);
         emptyState = getNextState(this.automate);
     }
 

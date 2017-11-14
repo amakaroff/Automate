@@ -20,15 +20,14 @@ public class UnionAutomateReader implements AutomateReader<Set<String>> {
 
     private AutomateReflection<Set<String>> second;
 
-    @SuppressWarnings("unchecked")
-    public UnionAutomateReader(Automate first, Automate second) {
+    public UnionAutomateReader(Automate<Set<String>> first, Automate<Set<String>> second) {
         first.init();
         second.init();
 
         AutomateRenamer.renameStates(first, second);
 
-        this.first = new AutomateReflection(first);
-        this.second = new AutomateReflection(second);
+        this.first = new AutomateReflection<>(first);
+        this.second = new AutomateReflection<>(second);
     }
 
     @Override

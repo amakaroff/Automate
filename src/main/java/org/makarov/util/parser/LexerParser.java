@@ -95,10 +95,10 @@ public class LexerParser {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private static Automate generate(AutomateTemplate template) {
-        Automate automate = RegexParser.parseRegex(template.getRegularExpression());
-        AutomateReflection reflection = new AutomateReflection(automate);
+    private static <T> Automate generate(AutomateTemplate template) {
+        @SuppressWarnings("unchecked")
+        Automate<T> automate = RegexParser.parseRegex(template.getRegularExpression());
+        AutomateReflection<T> reflection = new AutomateReflection<>(automate);
         reflection.setName(template.getName());
         reflection.setPriority(template.getPriority());
 

@@ -12,22 +12,22 @@ public class AutomateOperations {
     public static final String GENERATE_NAME = "Generate automate";
 
     public static Automate concat(Automate first, Automate second) {
-        first = AutomateTransformer.toNonDeterministicAutomateTransform(first);
-        second = AutomateTransformer.toNonDeterministicAutomateTransform(second);
+        NonDeterministicAutomate newFirst = AutomateTransformer.toNonDeterministicAutomateTransform(first);
+        NonDeterministicAutomate newSecond = AutomateTransformer.toNonDeterministicAutomateTransform(second);
 
-        return new NonDeterministicAutomate(new ConcatAutomateReader(first, second));
+        return new NonDeterministicAutomate(new ConcatAutomateReader(newFirst, newSecond));
     }
 
     public static Automate union(Automate first, Automate second) {
-        first = AutomateTransformer.toNonDeterministicAutomateTransform((first));
-        second = AutomateTransformer.toNonDeterministicAutomateTransform((second));
+        NonDeterministicAutomate newFirst = AutomateTransformer.toNonDeterministicAutomateTransform((first));
+        NonDeterministicAutomate newSecond = AutomateTransformer.toNonDeterministicAutomateTransform((second));
 
-        return new NonDeterministicAutomate(new UnionAutomateReader(first, second));
+        return new NonDeterministicAutomate(new UnionAutomateReader(newFirst, newSecond));
     }
 
     public static Automate repeat(Automate automate) {
-        automate = AutomateTransformer.toNonDeterministicAutomateTransform((automate));
+        NonDeterministicAutomate newAutomate = AutomateTransformer.toNonDeterministicAutomateTransform((automate));
 
-        return new NonDeterministicAutomate(new RepeatAutomateReader(automate));
+        return new NonDeterministicAutomate(new RepeatAutomateReader(newAutomate));
     }
 }

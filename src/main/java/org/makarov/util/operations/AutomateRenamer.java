@@ -14,17 +14,16 @@ import java.util.TreeSet;
 
 public class AutomateRenamer {
 
-    @SuppressWarnings("unchecked")
-    public static void renameStates(Automate first, Automate second) {
+    public static <T> void renameStates(Automate<T> first, Automate<T> second) {
         if (first == null || second == null) {
             return;
         }
 
-        AutomateReflection firstReflection = new AutomateReflection(first);
-        AutomateReflection secondReflection = new AutomateReflection(second);
+        AutomateReflection<T> firstReflection = new AutomateReflection<>(first);
+        AutomateReflection<T> secondReflection = new AutomateReflection<>(second);
 
-        Set firstSet = firstReflection.getTransitions().keySet();
-        Set secondSet = secondReflection.getTransitions().keySet();
+        Set<String> firstSet = firstReflection.getTransitions().keySet();
+        Set<String> secondSet = secondReflection.getTransitions().keySet();
 
         if (firstSet.size() > secondSet.size()) {
             renamingStates(firstReflection, secondReflection);
@@ -33,16 +32,16 @@ public class AutomateRenamer {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public static void renameAutomate(Automate automate) {
+
+    public static <T> void renameAutomate(Automate<T> automate) {
         if (automate == null) {
             return;
         }
 
         automate.init();
-        AutomateReflection reflection = new AutomateReflection(automate);
+        AutomateReflection<T> reflection = new AutomateReflection<>(automate);
         int index = 1;
-        Map transitions = reflection.getTransitions();
+        Map<String, Map<String, T>> transitions = reflection.getTransitions();
         Set<String> states = reflection.getTransitions().keySet();
 
         Map<String, String> changes = new HashMap<>();
@@ -92,14 +91,14 @@ public class AutomateRenamer {
         return String.valueOf(index);
     }
 
-    private static void renameTransition(AutomateReflection reflection, String oldState, String newState) {
+    private static <T> void renameTransition(AutomateReflection<T> reflection, String oldState, String newState) {
         renameTransitions(reflection, oldState, newState);
         renameState(reflection, oldState, newState);
         renameBeginState(reflection, oldState, newState);
         renameEndState(reflection, oldState, newState);
     }
 
-    private static void renamingStates(AutomateReflection first, AutomateReflection second) {
+    private static <T> void renamingStates(AutomateReflection<T> first, AutomateReflection<T> second) {
         int firstSize = first.getTransitions().keySet().size() + 1;
         int secondSize = second.getTransitions().keySet().size();
         renameAutomate(first.getAutomate());
@@ -110,10 +109,9 @@ public class AutomateRenamer {
         }
     }
 
-    private static void renameState(AutomateReflection reflection, String oldState, String newState) {
-        @SuppressWarnings("unchecked")
-        Map<String, Map<String, Object>> transitions = reflection.getTransitions();
-        Map<String, Object> map = transitions.get(oldState);
+    private static <T> void renameState(AutomateReflection<T> reflection, String oldState, String newState) {
+        Map<String, Map<String, T>> transitions = reflection.getTransitions();
+        Map<String, T> map = transitions.get(oldState);
         if (map != null) {
             transitions.remove(oldState);
             transitions.put(newState, map);
@@ -121,34 +119,34 @@ public class AutomateRenamer {
     }
 
     @SuppressWarnings("unchecked")
-    private static void renameBeginState(AutomateReflection reflection, String oldState, String newState) {
-        Object beginState = reflection.getBeginState();
+    private static <T> void renameBeginState(AutomateReflection<T> reflection, String oldState, String newState) {
+        T beginState = reflection.getBeginState();
         if (beginState instanceof Collection) {
             renameInCollection(beginState, oldState, newState);
         } else {
             if (String.valueOf(beginState).equals(oldState)) {
-                reflection.setBeginState(newState);
+                reflection.setBeginState((T) newState);
             }
         }
     }
 
-    private static void renameEndState(AutomateReflection reflection, String oldState, String newState) {
+    private static <T> void renameEndState(AutomateReflection<T> reflection, String oldState, String newState) {
         Object endState = reflection.getEndStates();
         renameInCollection(endState, oldState, newState);
     }
 
-    private static void renameTransitions(AutomateReflection reflection, String oldState, String newState) {
-        @SuppressWarnings("unchecked")
-        Map<String, Map<String, Object>> transitions = reflection.getTransitions();
-        for (Map<String, Object> map : transitions.values()) {
+    private static <T> void renameTransitions(AutomateReflection<T> reflection, String oldState, String newState) {
+        Map<String, Map<String, T>> transitions = reflection.getTransitions();
+        for (Map<String, T> map : transitions.values()) {
             renameInMap(map, oldState, newState);
         }
     }
 
-    private static void renameInMap(Map<String, Object> map, String oldState, String newState) {
+    @SuppressWarnings("unchecked")
+    private static <T> void renameInMap(Map<String, T> map, String oldState, String newState) {
         List<String> changeKeyList = new ArrayList<>();
         if (map != null) {
-            for (Map.Entry<String, Object> entry : map.entrySet()) {
+            for (Map.Entry<String, T> entry : map.entrySet()) {
                 if (entry.getValue() instanceof Collection) {
                     renameInCollection(entry.getValue(), oldState, newState);
                 } else {
@@ -162,7 +160,7 @@ public class AutomateRenamer {
 
             for (String key : changeKeyList) {
                 if (map.get(key) instanceof String) {
-                    map.replace(key, newState);
+                    map.replace(key, (T) newState);
                 }
             }
         }

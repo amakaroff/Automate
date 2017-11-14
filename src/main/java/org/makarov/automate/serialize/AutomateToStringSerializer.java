@@ -26,7 +26,6 @@ public class AutomateToStringSerializer implements AutomateSerializer {
                 "\tTransitions: " + getTransitions(automateReflection) + ";\n}";
     }
 
-    @SuppressWarnings("unchecked")
     private <T> String getTransitions(AutomateReflection<T> automateReflection) {
         StringBuilder builder = new StringBuilder();
         int elementSize = getElementSize(automateReflection);
@@ -54,11 +53,15 @@ public class AutomateToStringSerializer implements AutomateSerializer {
         return builder.toString();
     }
 
-    @SuppressWarnings("unchecked")
     private <T> List<String> getStateList(AutomateReflection<T> automateReflection, String state) {
         List<String> list = new ArrayList<>();
         for (String letter : automateReflection.getAlphabet()) {
-            list.add(automateReflection.getTransitions().get(state).get(letter).toString());
+            T selectedState = automateReflection.getTransitions().get(state).get(letter);
+            if (selectedState == null) {
+                list.add("-");
+            } else {
+                list.add(String.valueOf(selectedState));
+            }
         }
 
         return list;

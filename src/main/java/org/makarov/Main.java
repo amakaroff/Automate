@@ -26,8 +26,6 @@ public class Main {
             automates.add(automate);
         }
 
-        System.out.println(RegexParser.parseRegex(""));
-
         System.out.println(automates);
     }
 

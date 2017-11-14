@@ -15,9 +15,8 @@ public class TransformNonDeterministicAutomateReader implements AutomateReader<S
 
     private AutomateReflection<String> automateReflection;
 
-    @SuppressWarnings("unchecked")
     public TransformNonDeterministicAutomateReader(DeterministicAutomate automate) {
-        this.automateReflection = new AutomateReflection(automate);
+        this.automateReflection = new AutomateReflection<>(automate);
     }
 
     @Override

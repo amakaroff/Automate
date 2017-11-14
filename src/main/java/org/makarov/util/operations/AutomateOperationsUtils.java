@@ -41,7 +41,7 @@ public class AutomateOperationsUtils {
         return joinedMap;
     }
 
-    public static String getAlwaysSymbol(AutomateReflection first, AutomateReflection second) {
+    public static <T> String getAlwaysSymbol(AutomateReflection<T> first, AutomateReflection<T> second) {
         String firstAlwaysSymbol = first.getAlwaysSymbol();
         String secondAlwaysSymbol = second.getAlwaysSymbol();
 
