@@ -14,6 +14,8 @@ import java.util.TreeSet;
 
 public class AutomateRenamer {
 
+    private static final String BEGIN_STATE = "1";
+
     public static <T> void renameStates(Automate<T> first, Automate<T> second) {
         if (first == null || second == null) {
             return;
@@ -77,18 +79,22 @@ public class AutomateRenamer {
             renameTransition(reflection, state, oldState);
         }
 
-        if (reflection.getBeginState() instanceof String && !reflection.getBeginState().equals("1")) {
-            if (states.contains("1")) {
-                String tempState = findTempState(transitions.keySet());
-                String oldBeginState = reflection.getBeginState().toString();
-                renameTransition(reflection, "1", tempState);
-                renameTransition(reflection, oldBeginState, "1");
-                renameTransition(reflection, tempState, oldBeginState);
+        if (reflection.getBeginState() instanceof String && !reflection.getBeginState().equals(BEGIN_STATE)) {
+            if (states.contains(BEGIN_STATE)) {
+                swapTransitions(reflection, reflection.getBeginState().toString(), BEGIN_STATE);
             } else {
-                renameTransition(reflection, reflection.getBeginState().toString(), "1");
+                renameTransition(reflection, reflection.getBeginState().toString(), BEGIN_STATE);
             }
         }
     }
+
+    private static <T> void swapTransitions(AutomateReflection<T> reflection, String oneState, String twoState) {
+        String tempState = findTempState(reflection.getTransitions().keySet());
+        renameTransition(reflection, twoState, tempState);
+        renameTransition(reflection, oneState, twoState);
+        renameTransition(reflection, tempState, oneState);
+    }
+
 
     private static String findTempState(Set<String> states) {
         int index = 1;
