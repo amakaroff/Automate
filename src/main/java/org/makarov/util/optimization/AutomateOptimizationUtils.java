@@ -89,44 +89,33 @@ public class AutomateOptimizationUtils {
             }
         }
 
-        System.out.println(automate.toString());
+        AutomateRenamer.renameAutomate(automate);
 
-        if (automate instanceof DeterministicAutomate) {
+        //TODO: Add minimization of automate
+        /*if (automate instanceof DeterministicAutomate) {
+            System.out.println(automate.toString());
             deleteEqualsState(reflection);
-        }
+            AutomateRenamer.renameAutomate(automate);
+            System.out.println(automate.toString());
+        }*/
 
         AutomateRenamer.renameAutomate(automate);
     }
 
     @SuppressWarnings("unchecked")
-    private static DeterministicAutomate deleteEqualsState(AutomateReflection automate) {
-        Map<String, Map<String, String>> checkMap = new HashMap<>();
+    private static void deleteEqualsState(AutomateReflection automate) {
+        Map<String, Map<String, String>> checkMap = createCheckMap(automate);
         Set<String> endStates = automate.getEndStates();
         Set<String> states = new HashSet<>(automate.getTransitions().keySet());
         Map<String, Map<String, Object>> transitions = automate.getTransitions();
         List<String> alphabet = automate.getAlphabet();
-
-        for (String state : states) {
-            Map<String, String> innerMap = new HashMap<>();
-            for (String innerState : states) {
-                if (state.equals(innerState)) {
-                    innerMap.put(innerState, EQUALS_SYMBOL);
-                } else if (endStates.contains(state) && !endStates.contains(innerState)
-                        || !endStates.contains(state) && endStates.contains(innerState)) {
-                    innerMap.put(innerState, NON_EQUALS_SYMBOL);
-                } else {
-                    innerMap.put(innerState, "");
-                }
-            }
-
-            checkMap.put(state, innerMap);
-        }
 
         for (Map<String, String> stringStringMap : checkMap.values()) {
             System.out.println(stringStringMap);
         }
 
         boolean isEndChecking = false;
+        boolean isNullStates = false;
 
         while (!isEndChecking) {
             isEndChecking = true;
@@ -137,8 +126,12 @@ public class AutomateOptimizationUtils {
                             String firstState = String.valueOf(transitions.get(state).get(letter));
                             String secondState = String.valueOf(transitions.get(innerState).get(letter));
 
-                            if (!firstState.equals("null") && !secondState.equals("null") &&
-                                    NON_EQUALS_SYMBOL.equals(checkMap.get(firstState).get(secondState))) {
+                            if (firstState.equals("null") || secondState.equals("null")) {
+                                isNullStates = true;
+                                continue;
+                            }
+
+                            if (NON_EQUALS_SYMBOL.equals(checkMap.get(firstState).get(secondState))) {
                                 isEndChecking = false;
                                 checkMap.get(state).put(innerState, NON_EQUALS_SYMBOL);
                                 checkMap.get(innerState).put(state, NON_EQUALS_SYMBOL);
@@ -147,12 +140,24 @@ public class AutomateOptimizationUtils {
                         }
                     }
 
+                    if (isNullStates) {
+                        isNullStates = false;
+                        isEndChecking = false;
+                        checkMap.get(state).put(innerState, NON_EQUALS_SYMBOL);
+                        checkMap.get(innerState).put(state, NON_EQUALS_SYMBOL);
+                    }
+
                     if (!checkMap.get(innerState).get(state).equals(NON_EQUALS_SYMBOL)) {
                         checkMap.get(innerState).put(state, EQUALS_SYMBOL);
                         checkMap.get(state).put(innerState, EQUALS_SYMBOL);
                     }
                 }
             }
+        }
+
+        System.out.println();
+        for (Map<String, String> stringStringMap : checkMap.values()) {
+            System.out.println(stringStringMap);
         }
 
         for (String state : states) {
@@ -177,10 +182,31 @@ public class AutomateOptimizationUtils {
                 }
             }
         }
-
-        return (DeterministicAutomate) automate.getAutomate();
     }
 
+    private static <T> Map<String, Map<String, String>> createCheckMap(AutomateReflection<T> automate) {
+        Map<String, Map<String, String>> checkMap = new HashMap<>();
+        Set<String> endStates = automate.getEndStates();
+        Set<String> states = automate.getTransitions().keySet();
+
+        for (String state : states) {
+            Map<String, String> innerMap = new HashMap<>();
+            for (String innerState : states) {
+                if (state.equals(innerState)) {
+                    innerMap.put(innerState, EQUALS_SYMBOL);
+                } else if (endStates.contains(state) && !endStates.contains(innerState)
+                        || !endStates.contains(state) && endStates.contains(innerState)) {
+                    innerMap.put(innerState, NON_EQUALS_SYMBOL);
+                } else {
+                    innerMap.put(innerState, EQUALS_SYMBOL);
+                }
+            }
+
+            checkMap.put(state, innerMap);
+        }
+
+        return checkMap;
+    }
 
     @SuppressWarnings("unchecked")
     private static boolean isUnattainableState(String state, Map<String, Map<String, Object>> transitions) {

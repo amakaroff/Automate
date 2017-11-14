@@ -29,7 +29,7 @@ public class Main {
 
         //01011010001010
         //01011111000101
-        System.out.println(automates);
+        //System.out.println(automates);
 
         System.out.println(Functions.function(automate1, "01011111000101", 0));
 
