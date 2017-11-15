@@ -21,7 +21,7 @@ public class AutomateToJSONSerializer implements AutomateSerializer {
 
     private static boolean addBeginState(JSONObject object, Object element) {
         if (element instanceof Collection) {
-            Collection<String> collection = AutomateOperationsUtils.toList(element);
+            Collection<String> collection = AutomateOperationsUtils.toStringsCollection(element);
             object.put(AutomateReader.BEGIN_STATES, (new TreeSet<>(collection)).toArray());
             return false;
         } else {

@@ -67,7 +67,7 @@ public class AutomateOptimizationUtils {
             } else {
                 for (String removeState : removeStates) {
                     if (beginState instanceof Collection) {
-                        Collection<String> beginStates = AutomateOperationsUtils.toList(beginState);
+                        Collection<String> beginStates = AutomateOperationsUtils.toStringsCollection(beginState);
                         if (beginStates.contains(removeState)) {
                             beginStates.remove(removeState);
                             if (!beginStates.contains(currentState)) {
@@ -101,7 +101,7 @@ public class AutomateOptimizationUtils {
 
         for (String unattainableState : unattainableStates) {
             if (beginState instanceof Collection) {
-                Collection<String> states = AutomateOperationsUtils.toList(beginState);
+                Collection<String> states = AutomateOperationsUtils.toStringsCollection(beginState);
                 if (!states.contains(unattainableState)) {
                     transitions.remove(unattainableState);
                 }
@@ -274,7 +274,7 @@ public class AutomateOptimizationUtils {
             if (!entry.getKey().equals(state)) {
                 for (Object value : entry.getValue().values()) {
                     if (value instanceof Collection) {
-                        Collection<String> states = AutomateOperationsUtils.toList(value);
+                        Collection<String> states = AutomateOperationsUtils.toStringsCollection(value);
                         if (states.contains(state)) {
                             return false;
                         }
@@ -296,7 +296,7 @@ public class AutomateOptimizationUtils {
             List<String> removeTemplate = new ArrayList<>();
             for (Map.Entry<String, T> entry : map.entrySet()) {
                 if (entry.getValue() instanceof Collection) {
-                    Collection<String> values = AutomateOperationsUtils.toList(entry.getValue());
+                    Collection<String> values = AutomateOperationsUtils.toStringsCollection(entry.getValue());
                     if (values.contains(state)) {
                         values.remove(state);
                         values.add(newState);

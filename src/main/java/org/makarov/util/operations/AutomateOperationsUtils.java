@@ -68,7 +68,7 @@ public class AutomateOperationsUtils {
     }
 
     @SuppressWarnings("unchecked")
-    public static Collection<String> toList(Object object) {
+    public static Collection<String> toStringsCollection(Object object) {
         if (object instanceof Collection) {
             return (Collection<String>) object;
         }
