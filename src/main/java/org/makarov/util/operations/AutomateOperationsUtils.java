@@ -4,6 +4,7 @@ import org.makarov.automate.exception.AutomateException;
 import org.makarov.automate.translators.constants.RegexConstants;
 import org.makarov.util.AutomateReflection;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -64,5 +65,19 @@ public class AutomateOperationsUtils {
         } else {
             return set;
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Collection<String> toList(Object object) {
+        if (object instanceof Collection) {
+            return (Collection<String>) object;
+        }
+
+        return new ArrayList<>();
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> T geneticCastHack(Object object) {
+        return (T) object;
     }
 }

@@ -8,6 +8,7 @@ import org.makarov.automate.translators.Translator;
 import org.makarov.automate.translators.constants.RegexConstants;
 import org.makarov.util.AutomateReflection;
 import org.makarov.util.Functions;
+import org.makarov.util.operations.AutomateOperationsUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,10 +19,10 @@ import java.util.TreeSet;
 
 public class AutomateToJSONSerializer implements AutomateSerializer {
 
-    @SuppressWarnings("unchecked")
     private static boolean addBeginState(JSONObject object, Object element) {
         if (element instanceof Collection) {
-            object.put(AutomateReader.BEGIN_STATES, (new TreeSet<>((Collection) element)).toArray());
+            Collection<String> collection = AutomateOperationsUtils.toList(element);
+            object.put(AutomateReader.BEGIN_STATES, (new TreeSet<>(collection)).toArray());
             return false;
         } else {
             object.put(AutomateReader.BEGIN_STATE, element);

@@ -137,14 +137,13 @@ public class AutomateRenamer {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private static <T> void renameBeginState(AutomateReflection<T> reflection, String oldState, String newState) {
         T beginState = reflection.getBeginState();
         if (beginState instanceof Collection) {
             renameInCollection(beginState, oldState, newState);
         } else {
             if (String.valueOf(beginState).equals(oldState)) {
-                reflection.setBeginState((T) newState);
+                reflection.setBeginState(AutomateOperationsUtils.geneticCastHack(newState));
             }
         }
     }
@@ -161,7 +160,6 @@ public class AutomateRenamer {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private static <T> void renameInMap(Map<String, T> map, String oldState, String newState) {
         List<String> changeKeyList = new ArrayList<>();
         if (map != null) {
@@ -179,7 +177,7 @@ public class AutomateRenamer {
 
             for (String key : changeKeyList) {
                 if (map.get(key) instanceof String) {
-                    map.replace(key, (T) newState);
+                    map.replace(key, AutomateOperationsUtils.geneticCastHack(newState));
                 }
             }
         }

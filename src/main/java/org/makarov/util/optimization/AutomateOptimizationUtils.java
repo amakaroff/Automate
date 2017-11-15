@@ -3,6 +3,7 @@ package org.makarov.util.optimization;
 import org.makarov.automate.Automate;
 import org.makarov.automate.DeterministicAutomate;
 import org.makarov.util.AutomateReflection;
+import org.makarov.util.operations.AutomateOperationsUtils;
 import org.makarov.util.operations.AutomateRenamer;
 
 import java.util.ArrayList;
@@ -23,9 +24,21 @@ public class AutomateOptimizationUtils {
     @SuppressWarnings("unchecked")
     public static <T> void optimization(Automate<T> automate) {
         AutomateReflection<T> reflection = new AutomateReflection<>(automate);
-        Map<String, Map<String, T>> transitions = reflection.getTransitions();
-        Object beginState = reflection.getBeginState();
-        Set<String> endStates = reflection.getEndStates();
+        doBasicOptimization(reflection);
+        removeUnattainableStates(reflection);
+        automateMinimization(reflection);
+
+        if (automate instanceof DeterministicAutomate) {
+            removeEquivalentState((AutomateReflection<String>) reflection);
+        }
+
+        AutomateRenamer.renameAutomate(automate);
+    }
+
+    private static <T> void doBasicOptimization(AutomateReflection<T> automate) {
+        Map<String, Map<String, T>> transitions = automate.getTransitions();
+        Object beginState = automate.getBeginState();
+        Set<String> endStates = automate.getEndStates();
 
         List<String> removeStates = new ArrayList<>();
 
@@ -54,7 +67,7 @@ public class AutomateOptimizationUtils {
             } else {
                 for (String removeState : removeStates) {
                     if (beginState instanceof Collection) {
-                        Collection<String> beginStates = (Collection<String>) beginState;
+                        Collection<String> beginStates = AutomateOperationsUtils.toList(beginState);
                         if (beginStates.contains(removeState)) {
                             beginStates.remove(removeState);
                             if (!beginStates.contains(currentState)) {
@@ -62,8 +75,8 @@ public class AutomateOptimizationUtils {
                             }
                         }
                     } else {
-                        if (reflection.getBeginState().equals(removeState)) {
-                            reflection.setBeginState((T) currentState);
+                        if (automate.getBeginState().equals(removeState)) {
+                            automate.setBeginState(AutomateOperationsUtils.geneticCastHack(currentState));
                         }
                     }
                     removeState(removeState, currentState, transitions);
@@ -73,6 +86,11 @@ public class AutomateOptimizationUtils {
                 removeStates.clear();
             }
         }
+    }
+
+    private static <T> void removeUnattainableStates(AutomateReflection<T> automate) {
+        Map<String, Map<String, T>> transitions = automate.getTransitions();
+        Object beginState = automate.getBeginState();
 
         List<String> unattainableStates = new ArrayList<>();
         for (String state : transitions.keySet()) {
@@ -83,7 +101,7 @@ public class AutomateOptimizationUtils {
 
         for (String unattainableState : unattainableStates) {
             if (beginState instanceof Collection) {
-                Collection<String> states = (Collection<String>) beginState;
+                Collection<String> states = AutomateOperationsUtils.toList(beginState);
                 if (!states.contains(unattainableState)) {
                     transitions.remove(unattainableState);
                 }
@@ -93,16 +111,9 @@ public class AutomateOptimizationUtils {
                 }
             }
         }
-
-        if (automate instanceof DeterministicAutomate) {
-            deleteEquivalentState((AutomateReflection<String>) reflection);
-            automateMinimization((AutomateReflection<String>) reflection);
-        }
-
-        AutomateRenamer.renameAutomate(automate);
     }
 
-    private static void deleteEquivalentState(AutomateReflection<String> automate) {
+    private static void removeEquivalentState(AutomateReflection<String> automate) {
         Map<String, Map<String, String>> checkMap = createCheckMap(automate);
         Set<String> endStates = automate.getEndStates();
         Set<String> states = new HashSet<>(automate.getTransitions().keySet());
@@ -133,8 +144,8 @@ public class AutomateOptimizationUtils {
         }
     }
 
-    private static void automateMinimization(AutomateReflection<String> automate) {
-        Map<String, Map<String, String>> transitions = automate.getTransitions();
+    private static <T> void automateMinimization(AutomateReflection<T> automate) {
+        Map<String, Map<String, T>> transitions = automate.getTransitions();
         Set<String> states = transitions.keySet();
         Set<String> endStates = automate.getEndStates();
 
@@ -147,8 +158,8 @@ public class AutomateOptimizationUtils {
             for (String state : states) {
                 for (String innerState : states) {
                     if (!state.equals(innerState)) {
-                        Map<String, String> firstMap = getNewMap(transitions.get(state), state);
-                        Map<String, String> secondMap = getNewMap(transitions.get(innerState), innerState);
+                        Map<String, T> firstMap = getNewMap(transitions.get(state), state);
+                        Map<String, T> secondMap = getNewMap(transitions.get(innerState), innerState);
                         if (firstMap.equals(secondMap)) {
                             isEndOptimization = true;
                             changes.put(state, innerState);
@@ -160,7 +171,7 @@ public class AutomateOptimizationUtils {
             for (Map.Entry<String, String> entry : changes.entrySet()) {
                 if (isEquivalentState(endStates, entry.getKey(), entry.getValue())) {
                     if (automate.getBeginState().equals(entry.getKey())) {
-                        automate.setBeginState(entry.getValue());
+                        automate.setBeginState(AutomateOperationsUtils.geneticCastHack(entry.getValue()));
                     }
                     removeState(entry.getKey(), entry.getValue(), transitions);
                     endStates.remove(entry.getKey());
@@ -174,11 +185,18 @@ public class AutomateOptimizationUtils {
                 || !endStates.contains(oldState) && !endStates.contains(newState);
     }
 
-    private static <T> Map<String, String> getNewMap(Map<String, T> map, String state) {
-        Map<String, String> newMap = new HashMap<>();
+    private static <T> Map<String, T> getNewMap(Map<String, T> map, String state) {
+        Map<String, T> newMap = new HashMap<>();
         for (Map.Entry<String, T> entry : map.entrySet()) {
-            String value = state.equals(entry.getValue()) ? null : String.valueOf(entry.getValue());
-            newMap.put(entry.getKey(), value);
+            if (entry.getValue() instanceof Collection) {
+                Collection collection = new ArrayList((Collection) entry.getValue());
+                collection.remove(state);
+                newMap.put(entry.getKey(), (T) collection);
+                ((Collection) entry.getValue()).remove(state);
+            } else {
+                String value = state.equals(entry.getValue()) ? null : String.valueOf(entry.getValue());
+                newMap.put(entry.getKey(), AutomateOperationsUtils.geneticCastHack(value));
+            }
         }
 
         return newMap;
@@ -250,13 +268,12 @@ public class AutomateOptimizationUtils {
         return checkMap;
     }
 
-    @SuppressWarnings("unchecked")
     private static <T> boolean isUnattainableState(String state, Map<String, Map<String, T>> transitions) {
         for (Map.Entry<String, Map<String, T>> entry : transitions.entrySet()) {
             if (!entry.getKey().equals(state)) {
                 for (Object value : entry.getValue().values()) {
                     if (value instanceof Collection) {
-                        Collection<String> states = (Collection<String>) value;
+                        Collection<String> states = AutomateOperationsUtils.toList(value);
                         if (states.contains(state)) {
                             return false;
                         }
@@ -272,14 +289,13 @@ public class AutomateOptimizationUtils {
         return true;
     }
 
-    @SuppressWarnings("unchecked")
     private static <T> void removeState(String state, String newState, Map<String, Map<String, T>> transitions) {
         transitions.remove(state);
         for (Map<String, T> map : transitions.values()) {
             List<String> removeTemplate = new ArrayList<>();
             for (Map.Entry<String, T> entry : map.entrySet()) {
                 if (entry.getValue() instanceof Collection) {
-                    Collection<String> values = (Collection<String>) entry.getValue();
+                    Collection<String> values = AutomateOperationsUtils.toList(entry.getValue());
                     if (values.contains(state)) {
                         values.remove(state);
                         values.add(newState);
@@ -292,7 +308,7 @@ public class AutomateOptimizationUtils {
             }
 
             for (String key : removeTemplate) {
-                map.put(key, (T) newState);
+                map.put(key, AutomateOperationsUtils.geneticCastHack(newState));
             }
         }
     }

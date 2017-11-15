@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+@SuppressWarnings("unchecked")
 public class AutomateReflection<T> {
 
     private Automate<T> automate;
@@ -45,7 +46,7 @@ public class AutomateReflection<T> {
         setFieldValue("priority", newPriority);
     }
 
-    @SuppressWarnings("unchecked")
+
     public T getBeginState() {
         return (T) getFieldValue("beginState");
     }
@@ -54,17 +55,14 @@ public class AutomateReflection<T> {
         setFieldValue("beginState", newBeginState);
     }
 
-    @SuppressWarnings("unchecked")
     public Set<String> getEndStates() {
         return (Set<String>) getFieldValue("endState");
     }
 
-    @SuppressWarnings("unchecked")
     public List<String> getAlphabet() {
         return (List<String>) getFieldValue("alphabet");
     }
 
-    @SuppressWarnings("unchecked")
     public Map<String, Map<String, T>> getTransitions() {
         return (Map<String, Map<String, T>>) getFieldValue("table");
     }
