@@ -33,19 +33,16 @@ public class AutomateToStringSerializer implements AutomateSerializer {
         Set<String> states = new TreeSet<>(Functions.stringComparator);
         states.addAll(automateReflection.getTransitions().keySet());
 
-        if (!automateReflection.getAlphabet().isEmpty()) {
-            builder.append("\t\n\t")
-                    .append(printEmptySpaces(elementSize + 3))
-                    .append(printCollections(automateReflection.getAlphabet(), collectionSize))
+        builder.append("\t\n\t")
+                .append(printEmptySpaces(elementSize + 3))
+                .append(printCollections(automateReflection.getAlphabet(), collectionSize))
+                .append("\n");
+
+        for (String key : states) {
+            builder.append("\t")
+                    .append(getElement(key, elementSize))
+                    .append(printCollections(getStateList(automateReflection, key), collectionSize))
                     .append("\n");
-        }
-        if (!automateReflection.getTransitions().isEmpty()) {
-            for (String key : states) {
-                builder.append("\t")
-                        .append(getElement(key, elementSize))
-                        .append(printCollections(getStateList(automateReflection, key), collectionSize))
-                        .append("\n");
-            }
 
             builder.deleteCharAt(builder.length() - 1);
         }
@@ -115,17 +112,19 @@ public class AutomateToStringSerializer implements AutomateSerializer {
         StringBuilder builder = new StringBuilder();
         builder.append("[");
 
-        for (Object element : collection) {
-            if (element == null) {
-                element = "-";
-            }
+        if (!collection.isEmpty()) {
+            for (Object element : collection) {
+                if (element == null) {
+                    element = "-";
+                }
 
-            StringBuilder collectionBuilder = new StringBuilder(Functions.scheduleSymbols(String.valueOf(element)));
-            builder.append(collectionBuilder.toString())
-                    .append(printEmptySpaces(collectionSize - collectionBuilder.length()))
-                    .append(" ");
+                StringBuilder collectionBuilder = new StringBuilder(Functions.scheduleSymbols(String.valueOf(element)));
+                builder.append(collectionBuilder.toString())
+                        .append(printEmptySpaces(collectionSize - collectionBuilder.length()))
+                        .append(" ");
+            }
+            builder.deleteCharAt(builder.length() - 1);
         }
-        builder.deleteCharAt(builder.length() - 1);
         builder.append("]");
 
         return builder.toString();

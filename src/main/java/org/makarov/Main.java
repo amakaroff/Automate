@@ -4,6 +4,7 @@ import org.makarov.automate.Automate;
 import org.makarov.automate.serialize.AutomateSerializer;
 import org.makarov.automate.serialize.AutomateToJSONSerializer;
 import org.makarov.util.parser.LexerParser;
+import org.makarov.util.parser.RegexParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +14,8 @@ public class Main {
     public static void main(String[] args) {
         AutomateSerializer serializer = new AutomateToJSONSerializer();
 
-        System.out.println(LexerParser.getAutomates("lexic/lexer.lex"));
-
+        //System.out.println(LexerParser.getAutomates("lexic/lexer.lex"));
+        System.out.println(RegexParser.parseRegex(""));
         //01011010001010
         //01011111000101
 
