@@ -118,8 +118,8 @@ public class LexerParser {
             }
             automates = new HashMap<>();
 
-            for (String key : this.automateTemplates.keySet()) {
-                automates.computeIfAbsent(key, value -> getAutomate(key));
+            for (Map.Entry<String, AutomateTemplate> entry : this.automateTemplates.entrySet()) {
+               automates.put(entry.getKey(), generate(entry.getValue()));
             }
         }
 

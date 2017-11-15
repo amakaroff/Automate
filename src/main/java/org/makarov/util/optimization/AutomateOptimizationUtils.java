@@ -185,6 +185,7 @@ public class AutomateOptimizationUtils {
                 || !endStates.contains(oldState) && !endStates.contains(newState);
     }
 
+    @SuppressWarnings("unchecked")
     private static <T> Map<String, T> getNewMap(Map<String, T> map, String state) {
         Map<String, T> newMap = new HashMap<>();
         for (Map.Entry<String, T> entry : map.entrySet()) {

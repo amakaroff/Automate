@@ -12,11 +12,8 @@ public class Main {
 
     public static void main(String[] args) {
         AutomateSerializer serializer = new AutomateToJSONSerializer();
-        List<Automate> automates = new ArrayList<>();
 
-        automates.addAll(LexerParser.getAutomates("lexic/lexer.lex"));
-
-        System.out.println(automates);
+        System.out.println(LexerParser.getAutomates("lexic/lexer.lex"));
 
         //01011010001010
         //01011111000101
