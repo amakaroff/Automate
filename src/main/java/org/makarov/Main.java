@@ -1,26 +1,23 @@
 package org.makarov;
 
-import org.makarov.automate.Automate;
 import org.makarov.automate.serialize.AutomateSerializer;
 import org.makarov.automate.serialize.AutomateToJSONSerializer;
-import org.makarov.util.parser.LexerParser;
 import org.makarov.util.parser.RegexParser;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) {
         AutomateSerializer serializer = new AutomateToJSONSerializer();
 
-        //System.out.println(LexerParser.getAutomates("lexic/lexer.lex"));
-        System.out.println(RegexParser.parseRegex(""));
-        //01011010001010
-        //01011111000101
+        //Collection<Automate> automates = LexerParser.getAutomates("lexic/lexer.lex");
 
-        //System.out.println(TaskTree.getLexemes(FileReader.readFile("code.txt")));
-        //System.out.println(Functions.getLexemes(automates, FileReader.readFile("code.txt")));
+        /*System.out.println(automates);
+
+
+        System.out.println(TaskTree.getLexemes(FileReader.readFile("code.txt")));
+        System.out.println(Functions.getLexemes(automates, FileReader.readFile("code.txt")));*/
+
+        System.out.println(RegexParser.parseRegex("((00|11)*(01|10)(00|11)*(01|10))*(00|11)*"));
     }
 
     //Regular helpers

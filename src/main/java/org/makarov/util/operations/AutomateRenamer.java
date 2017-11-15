@@ -4,13 +4,7 @@ import org.makarov.automate.Automate;
 import org.makarov.util.AutomateReflection;
 import org.makarov.util.Functions;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public class AutomateRenamer {
 
@@ -59,6 +53,9 @@ public class AutomateRenamer {
 
             if (states.contains(newState)) {
                 String tempState = findTempState(transitions.keySet());
+                if (tempState.equals(newState)) {
+                    continue;
+                }
                 renameTransition(reflection, newState, tempState);
                 changes.put(newState, tempState);
             }
@@ -73,11 +70,11 @@ public class AutomateRenamer {
             index++;
         }
 
-        if (changes.size() > 1) {
+        /*if (changes.size() > 1) {
             String state = String.valueOf(index - 1);
             String oldState = changes.get(state);
             renameTransition(reflection, state, oldState);
-        }
+        }*/
 
         if (reflection.getBeginState() instanceof String && !reflection.getBeginState().equals(BEGIN_STATE)) {
             if (states.contains(BEGIN_STATE)) {

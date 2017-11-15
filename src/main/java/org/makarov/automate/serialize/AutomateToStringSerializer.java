@@ -43,9 +43,9 @@ public class AutomateToStringSerializer implements AutomateSerializer {
                     .append(getElement(key, elementSize))
                     .append(printCollections(getStateList(automateReflection, key), collectionSize))
                     .append("\n");
-
-            builder.deleteCharAt(builder.length() - 1);
         }
+
+        builder.deleteCharAt(builder.length() - 1);
 
         return builder.toString();
     }

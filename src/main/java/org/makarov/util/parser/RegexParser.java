@@ -23,8 +23,9 @@ public class RegexParser {
     }
 
     public static Automate parseRegex(String regex, boolean debug) {
-        long time = System.currentTimeMillis();
         List<String> errors = new ArrayList<>();
+
+        long time = System.currentTimeMillis();
         DeterministicAutomate automate = AutomateTransformer.toDeterministicAutomateTransform(parseRegex0(regex, debug, errors));
         AutomateOptimizationUtils.optimization(automate);
         time = System.currentTimeMillis() - time;

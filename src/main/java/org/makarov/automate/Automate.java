@@ -2,6 +2,7 @@ package org.makarov.automate;
 
 import org.makarov.automate.exception.AutomateException;
 import org.makarov.automate.reader.AutomateReader;
+import org.makarov.automate.serialize.AutomateSerializer;
 import org.makarov.automate.serialize.AutomateToStringSerializer;
 import org.makarov.automate.translators.Translator;
 
@@ -11,6 +12,8 @@ import java.util.Map;
 import java.util.Set;
 
 public abstract class Automate<T> {
+
+    private static final AutomateSerializer serializer = new AutomateToStringSerializer();
 
     protected String name;
 
@@ -152,7 +155,7 @@ public abstract class Automate<T> {
     @Override
     public String toString() {
         init();
-        return new AutomateToStringSerializer().serialize(this);
+        return serializer.serialize(this);
     }
 
     public boolean isInit() {
