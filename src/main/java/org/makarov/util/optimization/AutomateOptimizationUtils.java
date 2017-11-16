@@ -26,7 +26,6 @@ public class AutomateOptimizationUtils {
         AutomateReflection<T> reflection = new AutomateReflection<>(automate);
         doBasicOptimization(reflection);
         removeUnattainableStates(reflection);
-        automateMinimization(reflection);
 
         if (automate instanceof DeterministicAutomate) {
             removeEquivalentState((AutomateReflection<String>) reflection);
@@ -114,6 +113,7 @@ public class AutomateOptimizationUtils {
     }
 
     private static void removeEquivalentState(AutomateReflection<String> automate) {
+        String removedState = addTempState(automate);
         Map<String, Map<String, String>> checkMap = createCheckMap(automate);
         Set<String> endStates = automate.getEndStates();
         Set<String> states = new HashSet<>(automate.getTransitions().keySet());
@@ -142,39 +142,42 @@ public class AutomateOptimizationUtils {
                 }
             }
         }
+
+        removeTempState(automate, removedState);
     }
 
-    private static <T> void automateMinimization(AutomateReflection<T> automate) {
-        Map<String, Map<String, T>> transitions = automate.getTransitions();
-        Set<String> states = transitions.keySet();
-        Set<String> endStates = automate.getEndStates();
+    private static String addTempState(AutomateReflection<String> automate) {
+        String removedState = AutomateOperationsUtils.getNextState(automate);
+        Map<String, Map<String, String>> transitions = automate.getTransitions();
 
-        boolean isEndOptimization = false;
+        Map<String, String> map = new HashMap<>();
+        for (String letter : automate.getAlphabet()) {
+            map.put(letter, removedState);
+        }
 
-        Map<String, String> changes = new HashMap<>();
+        transitions.put(removedState, map);
 
-        while (!isEndOptimization) {
-            isEndOptimization = true;
-            for (String state : states) {
-                for (String innerState : states) {
-                    if (!state.equals(innerState)) {
-                        Map<String, T> firstMap = getNewMap(transitions.get(state), state);
-                        Map<String, T> secondMap = getNewMap(transitions.get(innerState), innerState);
-                        if (firstMap.equals(secondMap)) {
-                            isEndOptimization = true;
-                            changes.put(state, innerState);
-                        }
-                    }
+        for (Map<String, String> transitionMap : transitions.values()) {
+            for (Map.Entry<String, String> entry : transitionMap.entrySet()) {
+                if (entry.getValue() == null) {
+                    transitionMap.replace(entry.getKey(), null, removedState);
                 }
             }
+        }
 
-            for (Map.Entry<String, String> entry : changes.entrySet()) {
-                if (isEquivalentState(endStates, entry.getKey(), entry.getValue())) {
-                    if (automate.getBeginState().equals(entry.getKey())) {
-                        automate.setBeginState(AutomateOperationsUtils.geneticCastHack(entry.getValue()));
-                    }
-                    removeState(entry.getKey(), entry.getValue(), transitions);
-                    endStates.remove(entry.getKey());
+        return removedState;
+    }
+
+    private static void removeTempState(AutomateReflection<String> automate, String state) {
+        Map<String, Map<String, String>> transitions = automate.getTransitions();
+
+        transitions.remove(state);
+
+
+        for (Map<String, String> transitionMap : transitions.values()) {
+            for (Map.Entry<String, String> entry : transitionMap.entrySet()) {
+                if (entry.getValue().equals(state)) {
+                    transitionMap.replace(entry.getKey(), state, null);
                 }
             }
         }
@@ -185,32 +188,12 @@ public class AutomateOptimizationUtils {
                 || !endStates.contains(oldState) && !endStates.contains(newState);
     }
 
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> getNewMap(Map<String, T> map, String state) {
-        Map<String, T> newMap = new HashMap<>();
-        for (Map.Entry<String, T> entry : map.entrySet()) {
-            if (entry.getValue() instanceof Collection) {
-                Collection collection = new ArrayList((Collection) entry.getValue());
-                collection.remove(state);
-                newMap.put(entry.getKey(), (T) collection);
-                ((Collection) entry.getValue()).remove(state);
-            } else {
-                String value = state.equals(entry.getValue()) ? null : String.valueOf(entry.getValue());
-                newMap.put(entry.getKey(), AutomateOperationsUtils.geneticCastHack(value));
-            }
-        }
-
-        return newMap;
-    }
-
-
     private static void fillCheckMap(AutomateReflection<String> automate, Map<String, Map<String, String>> checkMap) {
         Set<String> states = automate.getTransitions().keySet();
         Map<String, Map<String, String>> transitions = automate.getTransitions();
         List<String> alphabet = automate.getAlphabet();
 
         boolean isEndChecking = false;
-        boolean isNullStates = false;
 
         while (!isEndChecking) {
             isEndChecking = true;
@@ -221,11 +204,6 @@ public class AutomateOptimizationUtils {
                             String firstState = String.valueOf(transitions.get(state).get(letter));
                             String secondState = String.valueOf(transitions.get(innerState).get(letter));
 
-                            if (firstState.equals("null") || secondState.equals("null")) {
-                                isNullStates = true;
-                                continue;
-                            }
-
                             if (NON_EQUALS_SYMBOL.equals(checkMap.get(firstState).get(secondState))) {
                                 isEndChecking = false;
                                 checkMap.get(state).put(innerState, NON_EQUALS_SYMBOL);
@@ -233,13 +211,6 @@ public class AutomateOptimizationUtils {
                                 break;
                             }
                         }
-                    }
-
-                    if (isNullStates) {
-                        isNullStates = false;
-                        isEndChecking = false;
-                        checkMap.get(state).put(innerState, NON_EQUALS_SYMBOL);
-                        checkMap.get(innerState).put(state, NON_EQUALS_SYMBOL);
                     }
                 }
             }

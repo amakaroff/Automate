@@ -80,4 +80,17 @@ public class AutomateOperationsUtils {
     public static <T> T geneticCastHack(Object object) {
         return (T) object;
     }
+
+    public static <T> String getNextState(AutomateReflection<T> automate) {
+        Set<String> strings = automate.getTransitions().keySet();
+        int nextState = 0;
+        for (String state : strings) {
+            int numberState = Integer.valueOf(state);
+            if (numberState > nextState) {
+                nextState = numberState;
+            }
+        }
+
+        return String.valueOf(nextState + 1);
+    }
 }

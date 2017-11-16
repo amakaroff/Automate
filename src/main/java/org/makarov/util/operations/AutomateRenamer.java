@@ -28,7 +28,6 @@ public class AutomateRenamer {
         }
     }
 
-
     public static <T> void renameAutomate(Automate<T> automate) {
         if (automate == null) {
             return;
@@ -52,7 +51,7 @@ public class AutomateRenamer {
             }
 
             if (states.contains(newState)) {
-                String tempState = findTempState(transitions.keySet());
+                String tempState = AutomateOperationsUtils.getNextState(reflection);
                 if (tempState.equals(newState)) {
                     continue;
                 }
@@ -70,12 +69,6 @@ public class AutomateRenamer {
             index++;
         }
 
-        /*if (changes.size() > 1) {
-            String state = String.valueOf(index - 1);
-            String oldState = changes.get(state);
-            renameTransition(reflection, state, oldState);
-        }*/
-
         if (reflection.getBeginState() instanceof String && !reflection.getBeginState().equals(BEGIN_STATE)) {
             if (states.contains(BEGIN_STATE)) {
                 swapTransitions(reflection, reflection.getBeginState().toString(), BEGIN_STATE);
@@ -86,20 +79,10 @@ public class AutomateRenamer {
     }
 
     private static <T> void swapTransitions(AutomateReflection<T> reflection, String oneState, String twoState) {
-        String tempState = findTempState(reflection.getTransitions().keySet());
+        String tempState = AutomateOperationsUtils.getNextState(reflection);
         renameTransition(reflection, twoState, tempState);
         renameTransition(reflection, oneState, twoState);
         renameTransition(reflection, tempState, oneState);
-    }
-
-
-    private static String findTempState(Set<String> states) {
-        int index = 1;
-        while (states.contains(String.valueOf(index))) {
-            index++;
-        }
-
-        return String.valueOf(index);
     }
 
     private static <T> void renameTransition(AutomateReflection<T> reflection, String oldState, String newState) {
