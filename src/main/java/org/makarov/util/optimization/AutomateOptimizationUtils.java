@@ -123,7 +123,7 @@ public class AutomateOptimizationUtils {
 
         for (String state : states) {
             for (String innerState : states) {
-                if (checkMap.get(innerState).get(state).equals(EQUALS_SYMBOL)) {
+                if (EQUALS_SYMBOL.equals(checkMap.get(innerState).get(state))) {
                     checkMap.get(state).put(innerState, NON_EQUALS_SYMBOL);
                 }
             }
@@ -131,7 +131,7 @@ public class AutomateOptimizationUtils {
 
         for (String state : states) {
             for (String innerState : states) {
-                if (checkMap.get(state).get(innerState).equals(EQUALS_SYMBOL)) {
+                if (EQUALS_SYMBOL.equals(checkMap.get(state).get(innerState))) {
                     if (isEquivalentState(endStates, state, innerState)) {
                         if (automate.getBeginState().equals(state)) {
                             automate.setBeginState(innerState);
@@ -173,7 +173,6 @@ public class AutomateOptimizationUtils {
 
         transitions.remove(state);
 
-
         for (Map<String, String> transitionMap : transitions.values()) {
             for (Map.Entry<String, String> entry : transitionMap.entrySet()) {
                 if (entry.getValue().equals(state)) {
@@ -200,7 +199,7 @@ public class AutomateOptimizationUtils {
             for (String state : states) {
                 for (String innerState : states) {
                     for (String letter : alphabet) {
-                        if (checkMap.get(state).get(innerState).equals(EQUALS_SYMBOL) && !state.equals(innerState)) {
+                        if (EQUALS_SYMBOL.equals(checkMap.get(state).get(innerState)) && !state.equals(innerState)) {
                             String firstState = String.valueOf(transitions.get(state).get(letter));
                             String secondState = String.valueOf(transitions.get(innerState).get(letter));
 

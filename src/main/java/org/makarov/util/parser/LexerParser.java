@@ -7,9 +7,7 @@ import org.makarov.util.FileReader;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 public class LexerParser {
@@ -50,15 +48,16 @@ public class LexerParser {
             }
 
             AutomateTemplate automateTemplate = new AutomateTemplate(name, Integer.parseInt(priority), regex);
-
             log(debug, automateTemplate.toString());
-
             automateTemplates.add(automateTemplate);
         }
 
-        LexicalEnvironment lexicalEnvironment = new LexicalEnvironment(automateTemplates);
+        List<Automate> automates = new ArrayList<>();
+        for (AutomateTemplate automateTemplate : automateTemplates) {
+            automates.add(generate(automateTemplate));
+        }
 
-        return lexicalEnvironment.getAutomates();
+        return automates;
     }
 
     private static boolean isNumber(String line) {
@@ -103,45 +102,6 @@ public class LexerParser {
         reflection.setPriority(template.getPriority());
 
         return reflection.getAutomate();
-    }
-
-    public static class LexicalEnvironment {
-
-        private Map<String, AutomateTemplate> automateTemplates;
-
-        private Map<String, Automate> automates;
-
-        public LexicalEnvironment(List<AutomateTemplate> automateTemplates) {
-            this.automateTemplates = new HashMap<>();
-            for (AutomateTemplate template : automateTemplates) {
-                this.automateTemplates.put(template.getName(), template);
-            }
-            automates = new HashMap<>();
-
-            for (Map.Entry<String, AutomateTemplate> entry : this.automateTemplates.entrySet()) {
-               automates.put(entry.getKey(), generate(entry.getValue()));
-            }
-        }
-
-        public Automate getAutomate(String name) {
-            Automate automate = automates.get(name);
-            if (automate == null) {
-                AutomateTemplate automateTemplate = automateTemplates.get(name);
-                if (automateTemplate == null) {
-                    throw new AutomateException("Automate " + name + " is not found!");
-                } else {
-                    Automate generate = generate(automateTemplate);
-                    automates.put(name, generate);
-                    return generate;
-                }
-            } else {
-                return automate;
-            }
-        }
-
-        public Collection<Automate> getAutomates() {
-            return automates.values();
-        }
     }
 
     public static class AutomateTemplate {

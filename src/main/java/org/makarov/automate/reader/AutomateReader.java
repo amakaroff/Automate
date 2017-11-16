@@ -2,7 +2,6 @@ package org.makarov.automate.reader;
 
 import org.makarov.automate.translators.DefaultTranslator;
 import org.makarov.automate.translators.Translator;
-import org.makarov.automate.translators.constants.RegexConstants;
 
 import java.util.List;
 import java.util.Map;
@@ -49,7 +48,7 @@ public interface AutomateReader<T> {
     T getBeginState();
 
     default String getAlwaysSymbol() {
-        return RegexConstants.ALWAYS_SYMBOL;
+        return Translator.ALWAYS_SYMBOL;
     }
 
     Set<String> getEndStates();

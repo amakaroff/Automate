@@ -91,6 +91,7 @@ public class Functions {
 
         while (index < line.length()) {
             try {
+                allRefresh(automates);
                 Pair<String, String> lexeme = getLexeme(automates, line, index, debug);
                 log(debug, "Find lexeme: %s", lexeme);
                 lexemes.add(lexeme);
@@ -103,7 +104,7 @@ public class Functions {
 
         if (debug) {
             for (Pair<Integer, String> error : errors) {
-                System.out.println(MessageUtils.createMessage(error.getValue(), error.getKey(), line));
+                System.err.println(MessageUtils.createMessage(error.getValue(), error.getKey(), line));
             }
         }
 
@@ -117,8 +118,10 @@ public class Functions {
     public static Pair<String, String> getLexeme(Collection<Automate> automates, String line, int index, boolean debug) {
         Map<Automate, Pair<Boolean, Integer>> results = new HashMap<>();
         for (Automate automate : automates) {
-            results.put(automate, function(automate, line, index, debug));
-            allRefresh(automates);
+            Pair<Boolean, Integer> token = function(automate, line, index, debug);
+            if (token.getKey()) {
+                results.put(automate, token);
+            }
         }
 
         Automate resultAutomate = getAutomateWithMaxPriority(results);
@@ -130,8 +133,6 @@ public class Functions {
     private static Automate getAutomateWithMaxPriority(Map<Automate, Pair<Boolean, Integer>> results) {
         if (results.isEmpty()) {
             throw new AutomateException("Results is incorrect!");
-        } else if (!isCorrectResults(results.values())) {
-            throw new AutomateException("Automate for this lexeme is not found!");
         }
 
         Map<Automate, Pair<Boolean, Integer>> newResults = new HashMap<>();
@@ -169,16 +170,6 @@ public class Functions {
         }
 
         return finalResult.get(first);
-    }
-
-    private static boolean isCorrectResults(Collection<Pair<Boolean, Integer>> results) {
-        for (Pair<Boolean, Integer> result : results) {
-            if (result.getKey()) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     private static void allRefresh(Collection<Automate> automates) {

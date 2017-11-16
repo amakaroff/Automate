@@ -5,7 +5,7 @@ import org.makarov.automate.DeterministicAutomate;
 import org.makarov.automate.exception.AutomateException;
 import org.makarov.automate.reader.generate.EmptyAutomateGenerateReader;
 import org.makarov.automate.reader.generate.OneSignalAutomateGenerateReader;
-import org.makarov.automate.translators.constants.RegexConstants;
+import org.makarov.automate.translators.Translator;
 import org.makarov.util.MessageUtils;
 import org.makarov.util.operations.AutomateOperations;
 import org.makarov.util.optimization.AutomateOptimizationUtils;
@@ -26,7 +26,8 @@ public class RegexParser {
         List<String> errors = new ArrayList<>();
 
         long time = System.currentTimeMillis();
-        DeterministicAutomate automate = AutomateTransformer.toDeterministicAutomateTransform(parseRegex0(regex, debug, errors));
+        Automate tempAutomate = parseRegex0(regex, debug, errors);
+        DeterministicAutomate automate = AutomateTransformer.toDeterministicAutomateTransform(tempAutomate);
         AutomateOptimizationUtils.optimization(automate);
         time = System.currentTimeMillis() - time;
 
@@ -42,7 +43,7 @@ public class RegexParser {
     }
 
     private static Automate generateAutomate(String oneChar) {
-        if (oneChar == null || oneChar.isEmpty() || RegexConstants.EMPTY_SYMBOL.equals(oneChar)) {
+        if (oneChar == null || oneChar.isEmpty() || Translator.EMPTY_SYMBOL.equals(oneChar)) {
             Automate automate = new DeterministicAutomate(new EmptyAutomateGenerateReader());
             automate.init();
             return automate;
@@ -77,7 +78,7 @@ public class RegexParser {
             return generateAutomate("");
         }
 
-        exit:
+        next:
         while (index < regex.length()) {
             char character = regex.charAt(index);
             if (isSpace(character)) {
@@ -92,19 +93,19 @@ public class RegexParser {
                         forConcat.add(generateAutomate("\\"));
                         break;
                     case 's':
-                        forConcat.add(generateAutomate(RegexConstants.SPACE_SYMBOL));
+                        forConcat.add(generateAutomate(Translator.SPACE_SYMBOL));
                         break;
                     case 'w':
-                        forConcat.add(generateAutomate(RegexConstants.LETTER_SYMBOL));
+                        forConcat.add(generateAutomate(Translator.LETTER_SYMBOL));
                         break;
                     case 'd':
-                        forConcat.add(generateAutomate(RegexConstants.NUMBER_SYMBOL));
+                        forConcat.add(generateAutomate(Translator.NUMBER_SYMBOL));
                         break;
                     case '|':
                         forConcat.add(generateAutomate("|"));
                         break;
                     case '?':
-                        forConcat.add(generateAutomate(RegexConstants.EMPTY_SYMBOL));
+                        forConcat.add(generateAutomate(Translator.EMPTY_SYMBOL));
                         break;
                     case '*':
                         forConcat.add(generateAutomate("*"));
@@ -131,7 +132,8 @@ public class RegexParser {
                         forConcat.add(generateAutomate("\\."));
                         break;
                     default:
-                        errors.add(MessageUtils.createMessage("Error at shielding symbol. Wrong character is " + character, index, regex));
+                        errors.add(MessageUtils.createMessage("Error at shielding symbol. Wrong character is "
+                                + character, index, regex));
                         index++;
                         continue;
                 }
@@ -157,9 +159,10 @@ public class RegexParser {
                 log(debug, "In brackets character: {%s}", '(');
                 while (!queue.isEmpty()) {
                     if (index >= regex.length()) {
-                        errors.add(MessageUtils.createMessage("Wrong open bracket. Position: " + currentIndex, currentIndex, regex));
+                        errors.add(MessageUtils.createMessage("Wrong open bracket. Position: " + currentIndex,
+                                currentIndex, regex));
                         index++;
-                        continue exit;
+                        continue next;
                     }
                     character = regex.charAt(index);
                     log(debug, "In brackets character: {%s}", character);
@@ -189,7 +192,8 @@ public class RegexParser {
 
                 index++;
             } else if (character == ')') {
-                errors.add(MessageUtils.createMessage("Not opened close bracket on position: " + index, index, regex));
+                errors.add(MessageUtils.createMessage("Not opened close bracket on position: " + index, index,
+                        regex));
                 index++;
             } else {
                 log(debug, "Simple character: {%s}", character);

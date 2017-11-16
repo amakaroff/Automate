@@ -1,7 +1,5 @@
 package org.makarov.automate.translators;
 
-import org.makarov.automate.translators.constants.RegexConstants;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,18 +17,18 @@ public class DefaultTranslator implements Translator {
         List<String> letters = new ArrayList<>();
         fillListOfSymbols(letters, 'a', 'z');
         fillListOfSymbols(letters, 'A', 'Z');
-        translators.put(RegexConstants.LETTER_SYMBOL, letters);
+        translators.put(Translator.LETTER_SYMBOL, letters);
 
         List<String> numbers = new ArrayList<>();
         fillListOfSymbols(numbers, '0', '9');
-        translators.put(RegexConstants.NUMBER_SYMBOL, numbers);
+        translators.put(Translator.NUMBER_SYMBOL, numbers);
 
         List<String> spaces = new ArrayList<>();
         spaces.add(" ");
         spaces.add("\t");
         spaces.add("\r");
         spaces.add("\n");
-        translators.put(RegexConstants.SPACE_SYMBOL, spaces);
+        translators.put(Translator.SPACE_SYMBOL, spaces);
     }
 
     @Override

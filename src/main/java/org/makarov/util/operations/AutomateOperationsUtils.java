@@ -1,7 +1,7 @@
 package org.makarov.util.operations;
 
 import org.makarov.automate.exception.AutomateException;
-import org.makarov.automate.translators.constants.RegexConstants;
+import org.makarov.automate.translators.Translator;
 import org.makarov.util.AutomateReflection;
 
 import java.util.ArrayList;
@@ -46,15 +46,15 @@ public class AutomateOperationsUtils {
         String firstAlwaysSymbol = first.getAlwaysSymbol();
         String secondAlwaysSymbol = second.getAlwaysSymbol();
 
-        if (RegexConstants.ALWAYS_SYMBOL.equals(firstAlwaysSymbol) &&
-                !RegexConstants.ALWAYS_SYMBOL.equals(secondAlwaysSymbol)) {
+        if (Translator.ALWAYS_SYMBOL.equals(firstAlwaysSymbol) &&
+                !Translator.ALWAYS_SYMBOL.equals(secondAlwaysSymbol)) {
             return secondAlwaysSymbol;
-        } else if (!RegexConstants.ALWAYS_SYMBOL.equals(firstAlwaysSymbol) &&
-                RegexConstants.ALWAYS_SYMBOL.equals(secondAlwaysSymbol)) {
+        } else if (!Translator.ALWAYS_SYMBOL.equals(firstAlwaysSymbol) &&
+                Translator.ALWAYS_SYMBOL.equals(secondAlwaysSymbol)) {
             return firstAlwaysSymbol;
-        } else if (RegexConstants.ALWAYS_SYMBOL.equals(firstAlwaysSymbol) &&
-                RegexConstants.ALWAYS_SYMBOL.equals(secondAlwaysSymbol)) {
-            return RegexConstants.ALWAYS_SYMBOL;
+        } else if (Translator.ALWAYS_SYMBOL.equals(firstAlwaysSymbol) &&
+                Translator.ALWAYS_SYMBOL.equals(secondAlwaysSymbol)) {
+            return Translator.ALWAYS_SYMBOL;
         }
         throw new AutomateException("Two automates is can't have different always symbols!");
     }

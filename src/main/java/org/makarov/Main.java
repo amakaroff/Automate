@@ -4,7 +4,6 @@ import org.makarov.automate.Automate;
 import org.makarov.automate.serialize.AutomateSerializer;
 import org.makarov.automate.serialize.AutomateToJSONSerializer;
 import org.makarov.util.parser.LexerParser;
-import org.makarov.util.parser.RegexParser;
 
 import java.util.Collection;
 

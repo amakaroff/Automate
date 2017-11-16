@@ -4,7 +4,13 @@ import org.makarov.automate.Automate;
 import org.makarov.util.AutomateReflection;
 import org.makarov.util.Functions;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class AutomateRenamer {
 
@@ -53,6 +59,7 @@ public class AutomateRenamer {
             if (states.contains(newState)) {
                 String tempState = AutomateOperationsUtils.getNextState(reflection);
                 if (tempState.equals(newState)) {
+                    index++;
                     continue;
                 }
                 renameTransition(reflection, newState, tempState);
@@ -69,7 +76,7 @@ public class AutomateRenamer {
             index++;
         }
 
-        if (reflection.getBeginState() instanceof String && !reflection.getBeginState().equals(BEGIN_STATE)) {
+        if (reflection.getBeginState() instanceof String && !BEGIN_STATE.equals(reflection.getBeginState())) {
             if (states.contains(BEGIN_STATE)) {
                 swapTransitions(reflection, reflection.getBeginState().toString(), BEGIN_STATE);
             } else {

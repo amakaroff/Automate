@@ -110,7 +110,7 @@ public abstract class Automate<T> {
     }
 
     protected void checkNext(String currentSignal) {
-        if ((!alphabet.contains(currentSignal) && !alphabet.contains(alwaysSymbol))) {
+        if (!alphabet.contains(currentSignal) && !alphabet.contains(alwaysSymbol)) {
             log("Signal: {%s} is can't complete next", currentSignal);
             throw new AutomateException();
         }
