@@ -75,7 +75,7 @@ public class RegexParser {
         log(debug, "\nRegex is initialized!");
 
         if (regex.trim().isEmpty()) {
-            return generateAutomate("");
+            return generateAutomate(Translator.EMPTY_SYMBOL);
         }
 
         next:
@@ -188,6 +188,8 @@ public class RegexParser {
                     forConcat.remove(forConcat.size() - 1);
                     log(debug, "End of expression. Repeat automate {%s}", automate);
                     forConcat.add(AutomateOperations.repeat(automate));
+                } else {
+                    errors.add(MessageUtils.createMessage("Wrong symbol * on position: " + index, index, regex));
                 }
 
                 index++;
@@ -207,7 +209,7 @@ public class RegexParser {
             expressions.add(generateConcatAutomate(forConcat));
         }
 
-        if (expressions.size() <= unionCount) {
+        if (expressions.size() <= unionCount && expressions.size() != 0) {
             int errorIndex = regex.lastIndexOf('|');
             errors.add(MessageUtils.createMessage("Wrong symbol | on position: " + errorIndex, errorIndex, regex));
         }
@@ -220,7 +222,7 @@ public class RegexParser {
         int index = 0;
         Automate automateResult;
         if (automates.isEmpty()) {
-            return generateAutomate("");
+            return generateAutomate(Translator.EMPTY_SYMBOL);
         } else if (automates.size() == 1) {
             Automate automate = automates.get(index);
             automates.clear();
@@ -241,7 +243,7 @@ public class RegexParser {
 
     private static Automate generateUnionAutomate(List<Automate> automates) {
         if (automates.isEmpty()) {
-            return generateAutomate("");
+            return generateAutomate(Translator.EMPTY_SYMBOL);
         } else if (automates.size() == 1) {
             return automates.get(0);
         }

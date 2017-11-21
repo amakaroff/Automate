@@ -54,6 +54,7 @@ public class Rule {
 			this.symbol = symbol;
 		}
 
+		@Override
 		public String getSymbol() {
 			return symbol;
 		}
@@ -72,6 +73,7 @@ public class Rule {
 			this.symbol = symbol;
 		}
 
+		@Override
 		public String getSymbol() {
 			return symbol;
 		}

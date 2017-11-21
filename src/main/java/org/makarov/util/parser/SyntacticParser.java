@@ -32,17 +32,17 @@ public class SyntacticParser {
 
     public void parseText(String line) {
         List<Pair<String, String>> tokens = new ArrayList<>(Functions.getLexemes(lexicon, line));
-        parseText0(tokens, 0, new SyntacticNode(new Pair<>(startRule.getName(), "")), startRule);
+        parseTokens(tokens, 0, new SyntacticNode(new Pair<>(startRule.getName(), "")), startRule);
     }
 
-    private void parseText0(List<Pair<String, String>> tokens, int tokenIndex, SyntacticNode node, Rule currentRule) {
+    private int parseTokens(List<Pair<String, String>> tokens, int tokenIndex, SyntacticNode node, Rule currentRule) {
         SyntacticNode currentNode = new SyntacticNode(new Pair<>(currentRule.getName(), ""));
         int currentIndex = tokenIndex;
         for (Rule.Symbol symbol : currentRule.getExpression().getSymbols()) {
             while (tokenIndex < tokens.size()) {
                 Pair<String, String> token = tokens.get(currentIndex);
                 if (symbol.isTerminate()) {
-                    parseText0(tokens, currentIndex, currentNode, rules.get(symbol.getSymbol()));
+                    currentIndex += parseTokens(tokens, currentIndex, currentNode, rules.get(symbol.getSymbol()));
                 } else {
                     String tokenValue = token.getValue();
                     if (symbol.getSymbol().equals(tokenValue)) {
@@ -57,6 +57,7 @@ public class SyntacticParser {
         }
 
         node.addNode(currentNode);
+        return currentIndex;
     }
 
     public static class SyntacticNode {
@@ -105,5 +106,4 @@ public class SyntacticParser {
             return builder.toString();
         }
     }
-
 }

@@ -13,6 +13,10 @@ import java.util.regex.Pattern;
 
 public class LexerParser {
 
+    private static final char LETTER_SEPARATOR = ':';
+
+    private static final char EXPRESSION_SEPARATOR = ';';
+
     public static Collection<Automate> getAutomates(String filePath) {
         return getAutomates(filePath, false);
     }
@@ -28,15 +32,15 @@ public class LexerParser {
         List<AutomateTemplate> automateTemplates = new ArrayList<>();
 
         while (!content.substring(index, content.length()).trim().isEmpty() && index < content.length()) {
-            String name = readBeforeChar(content, index, ':');
+            String name = readBeforeChar(content, index, LETTER_SEPARATOR);
             index += name.length() + 1;
             name = name.trim();
 
-            String priority = readBeforeChar(content, index, ':');
+            String priority = readBeforeChar(content, index, LETTER_SEPARATOR);
             index += priority.length() + 1;
             priority = priority.trim();
 
-            String regex = readBeforeChar(content, index, ';');
+            String regex = readBeforeChar(content, index, EXPRESSION_SEPARATOR);
             index += regex.length() + 1;
             regex = regex.trim();
 
