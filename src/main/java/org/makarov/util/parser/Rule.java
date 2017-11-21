@@ -7,22 +7,78 @@ public class Rule {
 
 	private String name;
 
-	private List<List<String>> expressions;
+	private Expression expression;
 
-	public Rule(String name, List<List<String>> expressions) {
+	public Rule(String name, Expression expression) {
 		this.name = name;
-		this.expressions = expressions;
+		this.expression = expression;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public List<List<String>> getExpressions() {
-		return expressions;
+	public Expression getExpression() {
+		return expression;
 	}
 
-	public void addRule(List<String> rule) {
-		expressions.add(rule);
+	public static class Expression {
+
+		private List<Symbol> symbols;
+
+		public Expression(List<Symbol> symbols) {
+			this.symbols = symbols;
+		}
+
+		public List<Symbol> getSymbols() {
+			return symbols;
+		}
+
+		public void add(Symbol symbol) {
+			symbols.add(symbol);
+		}
+	}
+
+	public interface Symbol {
+
+		boolean isTerminate();
+
+		String getSymbol();
+	}
+
+	public static class TerminateSymbol implements Symbol {
+
+		private String symbol;
+
+		public TerminateSymbol(String symbol) {
+			this.symbol = symbol;
+		}
+
+		public String getSymbol() {
+			return symbol;
+		}
+
+		@Override
+		public boolean isTerminate() {
+			return true;
+		}
+	}
+
+	public static class NonTerminateSymbol implements Symbol {
+
+		private String symbol;
+
+		public NonTerminateSymbol(String symbol) {
+			this.symbol = symbol;
+		}
+
+		public String getSymbol() {
+			return symbol;
+		}
+
+		@Override
+		public boolean isTerminate() {
+			return false;
+		}
 	}
 }

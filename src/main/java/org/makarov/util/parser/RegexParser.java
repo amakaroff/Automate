@@ -8,7 +8,7 @@ import org.makarov.automate.reader.generate.OneSignalAutomateGenerateReader;
 import org.makarov.automate.translators.Translator;
 import org.makarov.util.MessageUtils;
 import org.makarov.util.operations.AutomateOperations;
-import org.makarov.util.optimization.AutomateOptimizationUtils;
+import org.makarov.util.optimization.AutomateOptimization;
 import org.makarov.util.transformer.AutomateTransformer;
 
 import java.util.ArrayDeque;
@@ -28,7 +28,7 @@ public class RegexParser {
         long time = System.currentTimeMillis();
         Automate tempAutomate = parseRegex0(regex, debug, errors);
         DeterministicAutomate automate = AutomateTransformer.toDeterministicAutomateTransform(tempAutomate);
-        AutomateOptimizationUtils.optimization(automate);
+        AutomateOptimization.optimization(automate);
         time = System.currentTimeMillis() - time;
 
         if (!errors.isEmpty()) {

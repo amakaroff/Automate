@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-public class AutomateOptimizationUtils {
+public class AutomateOptimization {
 
     private static final String NON_EQUALS_SYMBOL = "X";
 
