@@ -1,4 +1,4 @@
-package org.makarov.util.parser;
+package org.makarov.parser;
 
 import org.makarov.automate.Automate;
 import org.makarov.automate.DeterministicAutomate;

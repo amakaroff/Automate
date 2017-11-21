@@ -1,4 +1,4 @@
-package org.makarov.util.parser;
+package org.makarov.parser;
 
 import org.makarov.automate.Automate;
 import org.makarov.automate.exception.AutomateException;
@@ -9,7 +9,6 @@ import org.makarov.util.operations.AutomateOperationsUtils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class LexerParser {
 

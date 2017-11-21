@@ -3,10 +3,7 @@ package org.makarov;
 import org.makarov.automate.Automate;
 import org.makarov.automate.serialize.AutomateSerializer;
 import org.makarov.automate.serialize.AutomateToJSONSerializer;
-import org.makarov.util.Pair;
-import org.makarov.util.parser.LexerParser;
-import org.makarov.util.parser.RegexParser;
-import org.makarov.util.parser.SyntacticParser;
+import org.makarov.parser.LexerParser;
 
 import java.util.Collection;
 
@@ -34,7 +31,6 @@ public class Main {
         node.addNode(node3);
 
         System.out.println(node.toString());*/
-        System.out.println(RegexParser.parseRegex(""));
     }
 
     //Regular helpers

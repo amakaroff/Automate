@@ -1,4 +1,4 @@
-package org.makarov.util.parser;
+package org.makarov.parser;
 
 import org.makarov.automate.Automate;
 import org.makarov.util.Functions;
@@ -30,9 +30,11 @@ public class SyntacticParser {
         }
     }
 
-    public void parseText(String line) {
+    public SyntacticNode parseText(String line) {
         List<Pair<String, String>> tokens = new ArrayList<>(Functions.getLexemes(lexicon, line));
-        parseTokens(tokens, 0, new SyntacticNode(new Pair<>(startRule.getName(), "")), startRule);
+        SyntacticNode rootNode = new SyntacticNode(new Pair<>(startRule.getName(), ""));
+        parseTokens(tokens, 0, rootNode, startRule);
+        return rootNode;
     }
 
     private int parseTokens(List<Pair<String, String>> tokens, int tokenIndex, SyntacticNode node, Rule currentRule) {
@@ -42,15 +44,17 @@ public class SyntacticParser {
             while (tokenIndex < tokens.size()) {
                 Pair<String, String> token = tokens.get(currentIndex);
                 if (symbol.isTerminate()) {
-                    currentIndex += parseTokens(tokens, currentIndex, currentNode, rules.get(symbol.getSymbol()));
+                    int appendIndex = parseTokens(tokens, currentIndex, currentNode, rules.get(symbol.getSymbol()));
+                    if (appendIndex == 0) {
+                        break;
+                    }
                 } else {
                     String tokenValue = token.getValue();
                     if (symbol.getSymbol().equals(tokenValue)) {
                         currentNode.addNode(new SyntacticNode(token));
                         currentIndex++;
                     } else {
-                        errors.add("Error in line: " + currentIndex);
-                        currentIndex++;
+                        return 0;
                     }
                 }
             }
