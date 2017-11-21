@@ -1,6 +1,6 @@
 package org.makarov.util;
 
-public class MessageUtils {
+public class MessageConstructor {
 
     public static String createMessage(String message, int position, String line) {
         StringBuilder stringBuilder = new StringBuilder();

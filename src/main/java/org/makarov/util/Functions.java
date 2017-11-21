@@ -104,7 +104,7 @@ public class Functions {
 
         if (debug) {
             for (Pair<Integer, String> error : errors) {
-                System.err.println(MessageUtils.createMessage(error.getValue(), error.getKey(), line));
+                System.err.println(MessageConstructor.createMessage(error.getValue(), error.getKey(), line));
             }
         }
 

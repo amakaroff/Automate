@@ -16,7 +16,9 @@ public class AutomateOperationsUtils {
 
     private static final Pattern pattern = Pattern.compile("\\d+");
 
-    public static Map<String, Set<String>> joinMap(Map<String, Set<String>> first, Map<String, Set<String>> second, Collection<String> alphabet) {
+    public static Map<String, Set<String>> joinMap(Map<String, ? extends Collection<String>> first,
+                                                   Map<String, ? extends Collection<String>> second,
+                                                   Collection<String> alphabet) {
         if (first == null) {
             first = new HashMap<>();
         }
@@ -29,14 +31,14 @@ public class AutomateOperationsUtils {
         for (String signal : alphabet) {
             Set<String> newState = new HashSet<>();
 
-            Set<String> tempFirstState = getState(first.get(signal));
-            if (tempFirstState.size() > 1 || !tempFirstState.contains(null)) {
-                newState.addAll(tempFirstState);
+            Collection<String> firstState = first.get(signal);
+            if (firstState != null && !firstState.isEmpty()) {
+                newState.addAll(firstState);
             }
 
-            Set<String> tempSecondState = getState(second.get(signal));
-            if (tempSecondState.size() > 1 || !tempSecondState.contains(null)) {
-                newState.addAll(tempSecondState);
+            Collection<String> secondState = second.get(signal);
+            if (secondState != null && !secondState.isEmpty()) {
+                newState.addAll(secondState);
             }
 
             joinedMap.put(signal, newState);

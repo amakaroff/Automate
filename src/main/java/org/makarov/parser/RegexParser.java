@@ -6,7 +6,7 @@ import org.makarov.automate.exception.AutomateException;
 import org.makarov.automate.reader.generate.EmptyAutomateGenerateReader;
 import org.makarov.automate.reader.generate.OneSignalAutomateGenerateReader;
 import org.makarov.automate.translators.Translator;
-import org.makarov.util.MessageUtils;
+import org.makarov.util.MessageConstructor;
 import org.makarov.util.operations.AutomateOperations;
 import org.makarov.util.optimization.AutomateOptimization;
 import org.makarov.util.transformer.AutomateTransformer;
@@ -132,7 +132,7 @@ public class RegexParser {
                         forConcat.add(generateAutomate("\\."));
                         break;
                     default:
-                        errors.add(MessageUtils.createMessage("Error at shielding symbol. Wrong character is "
+                        errors.add(MessageConstructor.createMessage("Error at shielding symbol. Wrong character is "
                                 + character, index, regex));
                         index++;
                         continue;
@@ -142,7 +142,7 @@ public class RegexParser {
             } else if (character == '|') {
                 log(debug, "End of expression. Concat %s", forConcat);
                 if (forConcat.isEmpty()) {
-                    errors.add(MessageUtils.createMessage("Wrong symbol | on position: " + index, index, regex));
+                    errors.add(MessageConstructor.createMessage("Wrong symbol | on position: " + index, index, regex));
                     index++;
                     continue;
                 }
@@ -159,7 +159,7 @@ public class RegexParser {
                 log(debug, "In brackets character: {%s}", '(');
                 while (!queue.isEmpty()) {
                     if (index >= regex.length()) {
-                        errors.add(MessageUtils.createMessage("Wrong open bracket. Position: " + currentIndex,
+                        errors.add(MessageConstructor.createMessage("Wrong open bracket. Position: " + currentIndex,
                                 currentIndex, regex));
                         index++;
                         continue next;
@@ -189,12 +189,12 @@ public class RegexParser {
                     log(debug, "End of expression. Repeat automate {%s}", automate);
                     forConcat.add(AutomateOperations.repeat(automate));
                 } else {
-                    errors.add(MessageUtils.createMessage("Wrong symbol * on position: " + index, index, regex));
+                    errors.add(MessageConstructor.createMessage("Wrong symbol * on position: " + index, index, regex));
                 }
 
                 index++;
             } else if (character == ')') {
-                errors.add(MessageUtils.createMessage("Not opened close bracket on position: " + index, index,
+                errors.add(MessageConstructor.createMessage("Not opened close bracket on position: " + index, index,
                         regex));
                 index++;
             } else {
@@ -211,7 +211,7 @@ public class RegexParser {
 
         if (expressions.size() <= unionCount && expressions.size() != 0) {
             int errorIndex = regex.lastIndexOf('|');
-            errors.add(MessageUtils.createMessage("Wrong symbol | on position: " + errorIndex, errorIndex, regex));
+            errors.add(MessageConstructor.createMessage("Wrong symbol | on position: " + errorIndex, errorIndex, regex));
         }
 
         log(debug, "Join automates: {%s}\n", expressions);

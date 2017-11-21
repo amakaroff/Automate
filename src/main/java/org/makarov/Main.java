@@ -12,7 +12,7 @@ public class Main {
     public static void main(String[] args) {
         AutomateSerializer serializer = new AutomateToJSONSerializer();
         Collection<Automate> automates = LexerParser.getAutomates("lexic/lexer.lex");
-        //System.out.println(automates);
+        System.out.println(automates);
 
         /*SyntacticParser.SyntacticNode node = new SyntacticParser.SyntacticNode(new Pair<>("KeyWord", "if"));
         SyntacticParser.SyntacticNode node1 = new SyntacticParser.SyntacticNode(new Pair<>("OpenBkt", "("));
