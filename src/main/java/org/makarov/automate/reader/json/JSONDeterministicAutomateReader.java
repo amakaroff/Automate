@@ -2,7 +2,7 @@ package org.makarov.automate.reader.json;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.makarov.util.json.JSONUtils;
+import org.makarov.util.JSONUtils;
 
 import java.util.HashMap;
 import java.util.List;

@@ -5,9 +5,9 @@ import org.makarov.automate.Automate;
 import org.makarov.automate.reader.AutomateReader;
 import org.makarov.automate.translators.JSONTranslator;
 import org.makarov.automate.translators.Translator;
+import org.makarov.operations.AutomateOperationsUtils;
 import org.makarov.util.AutomateReflection;
 import org.makarov.util.Functions;
-import org.makarov.util.operations.AutomateOperationsUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;

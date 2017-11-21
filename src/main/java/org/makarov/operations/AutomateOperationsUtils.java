@@ -1,4 +1,4 @@
-package org.makarov.util.operations;
+package org.makarov.operations;
 
 import org.makarov.automate.exception.AutomateException;
 import org.makarov.automate.translators.Translator;

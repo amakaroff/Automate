@@ -5,82 +5,82 @@ import java.util.List;
 
 public class Rule {
 
-	private String name;
+    private String name;
 
-	private Expression expression;
+    private Expression expression;
 
-	public Rule(String name, Expression expression) {
-		this.name = name;
-		this.expression = expression;
-	}
+    public Rule(String name, Expression expression) {
+        this.name = name;
+        this.expression = expression;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public Expression getExpression() {
-		return expression;
-	}
+    public Expression getExpression() {
+        return expression;
+    }
 
-	public static class Expression {
+    public interface Symbol {
 
-		private List<Symbol> symbols;
+        boolean isTerminate();
 
-		public Expression(List<Symbol> symbols) {
-			this.symbols = symbols;
-		}
+        String getSymbol();
+    }
 
-		public List<Symbol> getSymbols() {
-			return symbols;
-		}
+    public static class Expression {
 
-		public void add(Symbol symbol) {
-			symbols.add(symbol);
-		}
-	}
+        private List<Symbol> symbols;
 
-	public interface Symbol {
+        public Expression(List<Symbol> symbols) {
+            this.symbols = symbols;
+        }
 
-		boolean isTerminate();
+        public List<Symbol> getSymbols() {
+            return symbols;
+        }
 
-		String getSymbol();
-	}
+        public void add(Symbol symbol) {
+            symbols.add(symbol);
+        }
+    }
 
-	public static class TerminateSymbol implements Symbol {
+    public static class TerminateSymbol implements Symbol {
 
-		private String symbol;
+        private String symbol;
 
-		public TerminateSymbol(String symbol) {
-			this.symbol = symbol;
-		}
+        public TerminateSymbol(String symbol) {
+            this.symbol = symbol;
+        }
 
-		@Override
-		public String getSymbol() {
-			return symbol;
-		}
+        @Override
+        public String getSymbol() {
+            return symbol;
+        }
 
-		@Override
-		public boolean isTerminate() {
-			return true;
-		}
-	}
+        @Override
+        public boolean isTerminate() {
+            return true;
+        }
+    }
 
-	public static class NonTerminateSymbol implements Symbol {
+    public static class NonTerminateSymbol implements Symbol {
 
-		private String symbol;
+        private String symbol;
 
-		public NonTerminateSymbol(String symbol) {
-			this.symbol = symbol;
-		}
+        public NonTerminateSymbol(String symbol) {
+            this.symbol = symbol;
+        }
 
-		@Override
-		public String getSymbol() {
-			return symbol;
-		}
+        @Override
+        public String getSymbol() {
+            return symbol;
+        }
 
-		@Override
-		public boolean isTerminate() {
-			return false;
-		}
-	}
+        @Override
+        public boolean isTerminate() {
+            return false;
+        }
+    }
 }

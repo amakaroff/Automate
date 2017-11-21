@@ -2,9 +2,9 @@ package org.makarov.parser;
 
 import org.makarov.automate.Automate;
 import org.makarov.automate.exception.AutomateException;
+import org.makarov.operations.AutomateOperationsUtils;
 import org.makarov.util.AutomateReflection;
 import org.makarov.util.FileReader;
-import org.makarov.util.operations.AutomateOperationsUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;

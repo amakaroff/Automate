@@ -1,8 +1,8 @@
 package org.makarov.automate.translators;
 
 import org.json.JSONArray;
-import org.makarov.util.json.JSONUtils;
-import org.makarov.util.operations.AutomateOperationsUtils;
+import org.makarov.operations.AutomateOperationsUtils;
+import org.makarov.util.JSONUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

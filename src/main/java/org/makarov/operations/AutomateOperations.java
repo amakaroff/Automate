@@ -1,11 +1,10 @@
-package org.makarov.util.operations;
+package org.makarov.operations;
 
 import org.makarov.automate.Automate;
 import org.makarov.automate.NonDeterministicAutomate;
 import org.makarov.automate.reader.operations.ConcatAutomateReader;
 import org.makarov.automate.reader.operations.RepeatAutomateReader;
 import org.makarov.automate.reader.operations.UnionAutomateReader;
-import org.makarov.util.transformer.AutomateTransformer;
 
 public class AutomateOperations {
 

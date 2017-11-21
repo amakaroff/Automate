@@ -1,7 +1,7 @@
-package org.makarov.util.json;
+package org.makarov.util;
 
 import org.json.JSONArray;
-import org.makarov.util.operations.AutomateOperationsUtils;
+import org.makarov.operations.AutomateOperationsUtils;
 
 import java.util.ArrayList;
 import java.util.List;

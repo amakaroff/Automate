@@ -7,7 +7,7 @@ import org.makarov.automate.translators.DefaultTranslator;
 import org.makarov.automate.translators.JSONTranslator;
 import org.makarov.automate.translators.Translator;
 import org.makarov.util.FileReader;
-import org.makarov.util.json.JSONUtils;
+import org.makarov.util.JSONUtils;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

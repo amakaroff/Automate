@@ -1,10 +1,8 @@
-package org.makarov.util.optimization;
+package org.makarov.operations;
 
 import org.makarov.automate.Automate;
 import org.makarov.automate.DeterministicAutomate;
 import org.makarov.util.AutomateReflection;
-import org.makarov.util.operations.AutomateOperationsUtils;
-import org.makarov.util.operations.AutomateRenamer;
 
 import java.util.ArrayList;
 import java.util.Collection;

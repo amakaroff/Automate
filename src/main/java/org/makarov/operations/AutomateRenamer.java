@@ -1,4 +1,4 @@
-package org.makarov.util.operations;
+package org.makarov.operations;
 
 import org.makarov.automate.Automate;
 import org.makarov.util.AutomateReflection;

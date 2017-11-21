@@ -6,10 +6,10 @@ import org.makarov.automate.exception.AutomateException;
 import org.makarov.automate.reader.generate.EmptyAutomateGenerateReader;
 import org.makarov.automate.reader.generate.OneSignalAutomateGenerateReader;
 import org.makarov.automate.translators.Translator;
+import org.makarov.operations.AutomateOperations;
+import org.makarov.operations.AutomateOptimization;
+import org.makarov.operations.AutomateTransformer;
 import org.makarov.util.MessageConstructor;
-import org.makarov.util.operations.AutomateOperations;
-import org.makarov.util.optimization.AutomateOptimization;
-import org.makarov.util.transformer.AutomateTransformer;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
