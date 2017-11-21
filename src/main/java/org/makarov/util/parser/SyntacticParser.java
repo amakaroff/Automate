@@ -32,23 +32,21 @@ public class SyntacticParser {
 
     public void parseText(String line) {
         List<Pair<String, String>> tokens = new ArrayList<>(Functions.getLexemes(lexicon, line));
-        parseText0(tokens, 0, new SyntacticNode(startRule.getName()), startRule);
+        parseText0(tokens, 0, new SyntacticNode(new Pair<>(startRule.getName(), "")), startRule);
     }
 
     private void parseText0(List<Pair<String, String>> tokens, int tokenIndex, SyntacticNode node, Rule currentRule) {
-        String value = currentRule.getName();
+        SyntacticNode currentNode = new SyntacticNode(new Pair<>(currentRule.getName(), ""));
         int currentIndex = tokenIndex;
         for (Rule.Symbol symbol : currentRule.getExpression().getSymbols()) {
             while (tokenIndex < tokens.size()) {
                 Pair<String, String> token = tokens.get(currentIndex);
                 if (symbol.isTerminate()) {
-                    SyntacticNode newNode = new SyntacticNode(value);
-                    node.addNode(newNode);
-                    parseText0(tokens, currentIndex, newNode, rules.get(symbol.getSymbol()));
+                    parseText0(tokens, currentIndex, currentNode, rules.get(symbol.getSymbol()));
                 } else {
                     String tokenValue = token.getValue();
                     if (symbol.getSymbol().equals(tokenValue)) {
-                        value += tokenValue;
+                        currentNode.addNode(new SyntacticNode(token));
                         currentIndex++;
                     } else {
                         errors.add("Error in line: " + currentIndex);
@@ -57,16 +55,18 @@ public class SyntacticParser {
                 }
             }
         }
+
+        node.addNode(currentNode);
     }
 
-    public class SyntacticNode {
+    public static class SyntacticNode {
 
-        private String name;
+        private Pair<String, String> token;
 
         private List<SyntacticNode> childes;
 
-        public SyntacticNode(String name) {
-            this.name = name;
+        public SyntacticNode(Pair<String, String> token) {
+            this.token = token;
             this.childes = new ArrayList<>();
         }
 
@@ -85,7 +85,7 @@ public class SyntacticParser {
             } else {
                 StringBuilder builder = new StringBuilder();
                 for (SyntacticNode child : childes) {
-                    builder.append(printEmptySpaces(count)).append(child.toString(count + 1)).append("\n");
+                    builder.append(child.toString(count + 4));
                 }
 
                 return builder.toString();
@@ -93,7 +93,7 @@ public class SyntacticParser {
         }
 
         private String toString(int count) {
-            return "{" + name + "}\n" + resolveList(count);
+            return printEmptySpaces(count) + (token.getValue().isEmpty() ? token.getKey() : token) + "\n" + resolveList(count);
         }
 
         private String printEmptySpaces(int count) {
