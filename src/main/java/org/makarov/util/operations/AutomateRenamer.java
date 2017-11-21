@@ -4,10 +4,8 @@ import org.makarov.automate.Automate;
 import org.makarov.util.AutomateReflection;
 import org.makarov.util.Functions;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -112,15 +110,10 @@ public class AutomateRenamer {
 
     private static <T> void renameState(AutomateReflection<T> reflection, String oldState, String newState) {
         Map<String, Map<String, T>> transitions = reflection.getTransitions();
-        Map<String, T> map = transitions.get(oldState);
-        Map<String, T> state = transitions.get(newState);
-        if (map != null) {
+        if (transitions.keySet().contains(oldState)) {
+            Map<String, T> map = transitions.get(oldState);
             transitions.remove(oldState);
             transitions.put(newState, map);
-        }
-
-        if (state != null) {
-            transitions.put(oldState, state);
         }
     }
 
@@ -128,7 +121,7 @@ public class AutomateRenamer {
         T beginState = reflection.getBeginState();
         if (beginState instanceof Collection) {
             renameInCollection(beginState, oldState, newState);
-        } else {
+        } else if (beginState instanceof String) {
             if (String.valueOf(beginState).equals(oldState)) {
                 reflection.setBeginState(AutomateOperationsUtils.geneticCastHack(newState));
             }
@@ -143,28 +136,12 @@ public class AutomateRenamer {
     private static <T> void renameTransitions(AutomateReflection<T> reflection, String oldState, String newState) {
         Map<String, Map<String, T>> transitions = reflection.getTransitions();
         for (Map<String, T> map : transitions.values()) {
-            renameInMap(map, oldState, newState);
-        }
-    }
-
-    private static <T> void renameInMap(Map<String, T> map, String oldState, String newState) {
-        List<String> changeKeyList = new ArrayList<>();
-        if (map != null) {
-            for (Map.Entry<String, T> entry : map.entrySet()) {
-                if (entry.getValue() instanceof Collection) {
-                    renameInCollection(entry.getValue(), oldState, newState);
-                } else {
-                    Object value = entry.getValue();
-                    value = (value == null ? null : String.valueOf(value));
-                    if (oldState.equals(value)) {
-                        changeKeyList.add(entry.getKey());
-                    }
-                }
-            }
-
-            for (String key : changeKeyList) {
-                if (map.get(key) instanceof String) {
-                    map.replace(key, AutomateOperationsUtils.geneticCastHack(newState));
+            for (String letter : reflection.getAlphabet()) {
+                T element = map.get(letter);
+                if (element instanceof Collection) {
+                    renameInCollection(element, oldState, newState);
+                } else if (element instanceof String && element.equals(oldState)) {
+                    map.replace(letter, AutomateOperationsUtils.geneticCastHack(newState));
                 }
             }
         }
@@ -172,8 +149,7 @@ public class AutomateRenamer {
 
     private static void renameInCollection(Object states, String oldState, String newState) {
         if (states instanceof Collection) {
-            @SuppressWarnings("unchecked")
-            Collection<String> value = (Collection<String>) states;
+            Collection<String> value = AutomateOperationsUtils.toStringsCollection(states);
             if (value.contains(oldState)) {
                 value.remove(oldState);
                 value.add(newState);

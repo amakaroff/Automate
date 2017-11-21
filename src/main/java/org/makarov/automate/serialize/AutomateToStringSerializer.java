@@ -54,7 +54,7 @@ public class AutomateToStringSerializer implements AutomateSerializer {
         List<String> list = new ArrayList<>();
         for (String letter : automateReflection.getAlphabet()) {
             T selectedState = automateReflection.getTransitions().get(state).get(letter);
-            if (selectedState == null) {
+            if (selectedState == null || selectedState instanceof Collection && ((Collection) selectedState).isEmpty()) {
                 list.add("-");
             } else {
                 list.add(String.valueOf(selectedState));
@@ -108,16 +108,12 @@ public class AutomateToStringSerializer implements AutomateSerializer {
         return size;
     }
 
-    private String printCollections(Collection collection, int collectionSize) {
+    private String printCollections(Collection<String> collection, int collectionSize) {
         StringBuilder builder = new StringBuilder();
         builder.append("[");
 
         if (!collection.isEmpty()) {
-            for (Object element : collection) {
-                if (element == null) {
-                    element = "-";
-                }
-
+            for (String element : collection) {
                 StringBuilder collectionBuilder = new StringBuilder(Functions.scheduleSymbols(String.valueOf(element)));
                 builder.append(collectionBuilder.toString())
                         .append(printEmptySpaces(collectionSize - collectionBuilder.length()))

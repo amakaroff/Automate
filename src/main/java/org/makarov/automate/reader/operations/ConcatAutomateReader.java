@@ -42,14 +42,12 @@ public class ConcatAutomateReader implements AutomateReader<Set<String>> {
     @Override
     public Map<String, Map<String, Set<String>>> getTable() {
         Map<String, Map<String, Set<String>>> table = new HashMap<>();
-        Map<String, Map<String, Set<String>>> firstTable = new HashMap<>(first.getTransitions());
-        Map<String, Map<String, Set<String>>> secondTable = new HashMap<>(second.getTransitions());
+        Map<String, Map<String, Set<String>>> firstTable = first.getTransitions();
+        Map<String, Map<String, Set<String>>> secondTable = second.getTransitions();
 
         Set<String> transitions = new HashSet<>();
-        transitions.addAll(first.getTransitions().keySet());
-        transitions.addAll(second.getTransitions().keySet());
-
-        String emptyState = getEmptyState(second);
+        transitions.addAll(firstTable.keySet());
+        transitions.addAll(secondTable.keySet());
 
         for (String state : transitions) {
             Map<String, Set<String>> newState = AutomateOperationsUtils.joinMap(firstTable.get(state),
@@ -58,10 +56,10 @@ public class ConcatAutomateReader implements AutomateReader<Set<String>> {
         }
 
         Set<String> beginStates = new HashSet<>(second.getBeginState());
-        beginStates.remove(emptyState);
+        beginStates.remove(getEmptyState(second));
 
         for (String endState : first.getEndStates()) {
-            Map<String, Set<String>> endStateMap = new HashMap<>(table.get(endState));
+            Map<String, Set<String>> endStateMap = table.get(endState);
             for (String beginState : beginStates) {
                 Map<String, Set<String>> beginStateMap = secondTable.get(beginState);
                 for (String signal : getAlphabet()) {

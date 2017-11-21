@@ -32,9 +32,9 @@ public class OneSignalAutomateGenerateReader implements AutomateReader<String> {
     @Override
     public Map<String, Map<String, String>> getTable() {
         Map<String, Map<String, String>> table = new HashMap<>();
-        Map<String, String> first = new HashMap<>();
-        first.put(character, END_POSITION);
-        table.put(BEGIN_POSITION, first);
+        Map<String, String> transition = new HashMap<>();
+        transition.put(character, END_POSITION);
+        table.put(BEGIN_POSITION, transition);
         table.put(END_POSITION, new HashMap<>());
 
         return table;

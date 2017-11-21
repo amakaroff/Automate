@@ -11,16 +11,8 @@ public class Main {
 
     public static void main(String[] args) {
         AutomateSerializer serializer = new AutomateToJSONSerializer();
-
         Collection<Automate> automates = LexerParser.getAutomates("lexic/lexer.lex");
-
-        System.out.println(automates);/*
-
-
-        System.out.println(TaskTree.getLexemes(FileReader.readFile("code.txt")));
-        System.out.println(Functions.getLexemes(automates, FileReader.readFile("code.txt")));*/
-
-        //System.out.println(RegexParser.parseRegex("((00|11)*(01|10)(00|11)*(01|10))*(00|11)*"));
+        System.out.println(automates);
     }
 
     //Regular helpers

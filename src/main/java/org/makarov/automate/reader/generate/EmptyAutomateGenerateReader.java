@@ -24,9 +24,7 @@ public class EmptyAutomateGenerateReader implements AutomateReader<String> {
     @Override
     public Map<String, Map<String, String>> getTable() {
         Map<String, Map<String, String>> table = new HashMap<>();
-        Map<String, String> transitions = new HashMap<>();
-        transitions.put(null, null);
-        table.put(POSITION, transitions);
+        table.put(POSITION, new HashMap<>());
         return table;
     }
 

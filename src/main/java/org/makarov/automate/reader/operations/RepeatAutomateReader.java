@@ -83,6 +83,11 @@ public class RepeatAutomateReader implements AutomateReader<Set<String>> {
 
     @Override
     public int getPriority() {
-        return 0;
+        return automate.getPriority();
+    }
+
+    @Override
+    public String getAlwaysSymbol() {
+        return automate.getAlwaysSymbol();
     }
 }

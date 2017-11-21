@@ -10,8 +10,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 public class AutomateOperationsUtils {
+
+    private static final Pattern pattern = Pattern.compile("\\d+");
 
     public static Map<String, Set<String>> joinMap(Map<String, Set<String>> first, Map<String, Set<String>> second, Collection<String> alphabet) {
         if (first == null) {
@@ -85,12 +88,18 @@ public class AutomateOperationsUtils {
         Set<String> strings = automate.getTransitions().keySet();
         int nextState = 0;
         for (String state : strings) {
-            int numberState = Integer.valueOf(state);
-            if (numberState > nextState) {
-                nextState = numberState;
+            if (isNumber(state)) {
+                int numberState = Integer.valueOf(state);
+                if (numberState > nextState) {
+                    nextState = numberState;
+                }
             }
         }
 
         return String.valueOf(nextState + 1);
+    }
+
+    public static boolean isNumber(String line) {
+        return pattern.matcher(line).matches();
     }
 }

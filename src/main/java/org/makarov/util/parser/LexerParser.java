@@ -4,6 +4,7 @@ import org.makarov.automate.Automate;
 import org.makarov.automate.exception.AutomateException;
 import org.makarov.util.AutomateReflection;
 import org.makarov.util.FileReader;
+import org.makarov.util.operations.AutomateOperationsUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,8 +12,6 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class LexerParser {
-
-    private static final Pattern pattern = Pattern.compile("\\d+");
 
     public static Collection<Automate> getAutomates(String filePath) {
         return getAutomates(filePath, false);
@@ -41,7 +40,7 @@ public class LexerParser {
             index += regex.length() + 1;
             regex = regex.trim();
 
-            if (name.isEmpty() || priority.isEmpty() || regex.isEmpty() || !isNumber(priority)) {
+            if (name.isEmpty() || priority.isEmpty() || regex.isEmpty() || !AutomateOperationsUtils.isNumber(priority)) {
                 int lineNumber = countLineSeparators(content, index);
                 int positionIndex = index - content.lastIndexOf("\n", index);
                 throw new AutomateException("Automate reading error. Line: " + lineNumber + ", " + "Position: " + positionIndex);
@@ -58,10 +57,6 @@ public class LexerParser {
         }
 
         return automates;
-    }
-
-    private static boolean isNumber(String line) {
-        return pattern.matcher(line).matches();
     }
 
 

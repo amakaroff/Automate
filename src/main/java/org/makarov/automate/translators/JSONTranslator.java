@@ -2,6 +2,7 @@ package org.makarov.automate.translators;
 
 import org.json.JSONArray;
 import org.makarov.util.json.JSONUtils;
+import org.makarov.util.operations.AutomateOperationsUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +23,7 @@ public class JSONTranslator implements Translator {
         for (Map translation : translations) {
             String symbol = String.valueOf(translation.get(SYMBOL));
             @SuppressWarnings("unchecked")
-            List<String> translationSymbols = (List<String>) translation.get(TRANSLATION);
+            List<String> translationSymbols = (List<String>) AutomateOperationsUtils.toStringsCollection(translation.get(TRANSLATION));
             if (!translators.containsKey(symbol)) {
                 translators.put(symbol, getTranslationSymbols(translationSymbols));
             } else {
