@@ -1,11 +1,11 @@
 package org.makarov.automate.reader.operations;
 
 import org.makarov.automate.Automate;
+import org.makarov.automate.AutomateReflection;
 import org.makarov.automate.reader.AutomateReader;
 import org.makarov.operations.AutomateOperations;
 import org.makarov.operations.AutomateOperationsUtils;
 import org.makarov.operations.AutomateRenamer;
-import org.makarov.automate.AutomateReflection;
 
 import java.util.ArrayList;
 import java.util.HashMap;

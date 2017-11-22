@@ -2,11 +2,11 @@ package org.makarov.automate.serialize;
 
 import org.json.JSONObject;
 import org.makarov.automate.Automate;
+import org.makarov.automate.AutomateReflection;
 import org.makarov.automate.reader.AutomateReader;
 import org.makarov.automate.translators.JSONTranslator;
 import org.makarov.automate.translators.Translator;
 import org.makarov.operations.AutomateOperationsUtils;
-import org.makarov.automate.AutomateReflection;
 import org.makarov.util.Functions;
 
 import java.util.ArrayList;

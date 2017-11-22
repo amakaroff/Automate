@@ -1,8 +1,8 @@
 package org.makarov.operations;
 
+import org.makarov.automate.AutomateReflection;
 import org.makarov.automate.exception.AutomateException;
 import org.makarov.automate.translators.Translator;
-import org.makarov.automate.AutomateReflection;
 
 import java.util.ArrayList;
 import java.util.Collection;

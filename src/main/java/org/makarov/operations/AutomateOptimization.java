@@ -1,8 +1,8 @@
 package org.makarov.operations;
 
 import org.makarov.automate.Automate;
-import org.makarov.automate.DeterministicAutomate;
 import org.makarov.automate.AutomateReflection;
+import org.makarov.automate.DeterministicAutomate;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -1,6 +1,5 @@
 package org.makarov.automate;
 
-import org.makarov.automate.Automate;
 import org.makarov.automate.translators.Translator;
 
 import java.lang.reflect.Field;
@@ -45,7 +44,6 @@ public class AutomateReflection<T> {
     public void setPriority(int newPriority) {
         setFieldValue("priority", newPriority);
     }
-
 
     public T getBeginState() {
         return (T) getFieldValue("beginState");

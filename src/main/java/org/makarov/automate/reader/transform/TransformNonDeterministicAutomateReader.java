@@ -1,8 +1,8 @@
 package org.makarov.automate.reader.transform;
 
+import org.makarov.automate.AutomateReflection;
 import org.makarov.automate.DeterministicAutomate;
 import org.makarov.automate.reader.AutomateReader;
-import org.makarov.automate.AutomateReflection;
 
 import java.util.ArrayList;
 import java.util.HashMap;

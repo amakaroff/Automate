@@ -1,7 +1,6 @@
 package org.makarov.parser;
 
 import org.makarov.automate.Automate;
-import org.makarov.automate.exception.AutomateException;
 import org.makarov.util.Functions;
 import org.makarov.util.Pair;
 
