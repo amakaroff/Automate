@@ -2,7 +2,7 @@ package org.makarov.automate.reader.transform;
 
 import org.makarov.automate.NonDeterministicAutomate;
 import org.makarov.automate.reader.AutomateReader;
-import org.makarov.util.AutomateReflection;
+import org.makarov.automate.AutomateReflection;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;

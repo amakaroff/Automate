@@ -1,6 +1,7 @@
 package org.makarov.parser;
 
 import org.makarov.automate.Automate;
+import org.makarov.automate.exception.AutomateException;
 import org.makarov.util.Functions;
 import org.makarov.util.Pair;
 
@@ -40,12 +41,15 @@ public class SyntacticParser {
     private int parseTokens(List<Pair<String, String>> tokens, int tokenIndex, SyntacticNode node, Rule currentRule) {
         SyntacticNode currentNode = new SyntacticNode(new Pair<>(currentRule.getName(), ""));
         int currentIndex = tokenIndex;
+        boolean isEnd = true;
         for (Rule.Symbol symbol : currentRule.getExpression().getSymbols()) {
+            isEnd = true;
             while (tokenIndex < tokens.size()) {
                 Pair<String, String> token = tokens.get(currentIndex);
                 if (symbol.isTerminate()) {
                     int appendIndex = parseTokens(tokens, currentIndex, currentNode, rules.get(symbol.getSymbol()));
                     if (appendIndex == 0) {
+                        isEnd = false;
                         break;
                     }
                 } else {
@@ -54,10 +58,18 @@ public class SyntacticParser {
                         currentNode.addNode(new SyntacticNode(token));
                         currentIndex++;
                     } else {
-                        return 0;
+                        isEnd = false;
+                        break;
                     }
                 }
             }
+            if (isEnd) {
+                break;
+            }
+        }
+
+        if (!isEnd) {
+            return 0;
         }
 
         node.addNode(currentNode);

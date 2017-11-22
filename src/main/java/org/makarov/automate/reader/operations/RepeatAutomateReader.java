@@ -5,7 +5,7 @@ import org.makarov.automate.reader.AutomateReader;
 import org.makarov.operations.AutomateOperations;
 import org.makarov.operations.AutomateOperationsUtils;
 import org.makarov.operations.AutomateRenamer;
-import org.makarov.util.AutomateReflection;
+import org.makarov.automate.AutomateReflection;
 
 import java.util.ArrayList;
 import java.util.HashMap;

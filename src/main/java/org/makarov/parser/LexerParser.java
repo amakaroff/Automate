@@ -3,7 +3,7 @@ package org.makarov.parser;
 import org.makarov.automate.Automate;
 import org.makarov.automate.exception.AutomateException;
 import org.makarov.operations.AutomateOperationsUtils;
-import org.makarov.util.AutomateReflection;
+import org.makarov.automate.AutomateReflection;
 import org.makarov.util.FileReader;
 
 import java.util.ArrayList;

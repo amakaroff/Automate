@@ -1,4 +1,4 @@
-package org.makarov.util;
+package org.makarov.automate;
 
 import org.makarov.automate.Automate;
 import org.makarov.automate.translators.Translator;

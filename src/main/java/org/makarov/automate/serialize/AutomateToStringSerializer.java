@@ -1,7 +1,7 @@
 package org.makarov.automate.serialize;
 
 import org.makarov.automate.Automate;
-import org.makarov.util.AutomateReflection;
+import org.makarov.automate.AutomateReflection;
 import org.makarov.util.Functions;
 
 import java.util.ArrayList;

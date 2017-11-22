@@ -2,7 +2,7 @@ package org.makarov.operations;
 
 import org.makarov.automate.Automate;
 import org.makarov.automate.DeterministicAutomate;
-import org.makarov.util.AutomateReflection;
+import org.makarov.automate.AutomateReflection;
 
 import java.util.ArrayList;
 import java.util.Collection;
